@@ -1,0 +1,11 @@
+1.8:
+	*.dds and .tga file format compatibility added
+	*64 bit
+1.9:
+	*Zoom feature added
+	*AppSettings now saves to local appdata
+2.0: (FUTURE)
+	BUGFIX: next&previous image button functionality fixed
+	settings screen added (options available in the AppSettings.json but not available at the interface + color scheme selection)
+	Lavender Color Scheme
+	Updated Original Black Color Scheme
