@@ -22,8 +22,8 @@ namespace ArdaViewer
     public partial class Form1 : Form
     {
         public OpenFileDialog Ofd;
-        public string Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.gif, *.tga, *.dds)|*.bmp;*.jpg;*.png;*.tiff;*.gif;*.tga;.dds";
-        public string[] Filters = new string[]{".bmp", ".jpg", ".png", ".tiff", ".gif", ".tga", ".dds" };
+        public string Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.tif, *.gif, *.tga, *.dds)|*.bmp;*.jpg;*.png;*.tiff;*.tif;*.gif;*.tga;.dds";
+        public string[] Filters = new string[]{".bmp", ".jpg", ".png", ".tiff", "tif", ".gif", ".tga", ".dds" };
 
         public string CurrentFile;
         public string CurrentDir;
@@ -34,6 +34,7 @@ namespace ArdaViewer
         public Image CurrentImage;
         public Image TempImage; //For zooming purposes
         public int ZoomFactor = 1;
+        public int ActivePage = 0;
 
         public bool Fullscreen;
         public bool HideUi;
@@ -348,14 +349,29 @@ namespace ArdaViewer
             RefleshDisplayedImage();
 
             CurrentDir = Path.GetDirectoryName(CurrentFile);
-            OtherFiles = Directory.GetFiles(CurrentDir);
+            List<string> tempList = new List<string>(Directory.GetFiles(CurrentDir));
+            List<int> elementsToRemove = new List<int>();
+
+            for (int i = 0; i < tempList.Count; i++)
+            {
+                if (!FileIsImageType(tempList[i]))
+                    elementsToRemove.Add(i);
+            }
+
+            for (int i = elementsToRemove.Count - 1; i > -1; i--)
+			{
+                tempList.RemoveAt(elementsToRemove[i]);               
+            }
+
+            OtherFiles = tempList.ToArray();
+
             for (int i = 0; i < OtherFiles.Length; i++)
             {
                 if (OtherFiles[i] == CurrentFile)
                 {
                     CurrentIndex = i;
                 }
-            }
+            }            
         }
 
         public bool FileIsImageType(string fileName)
@@ -394,8 +410,8 @@ namespace ArdaViewer
             else
                 this.Text = GetSafeName(CurrentFile);
 
-            fileNameText.Text = GetSafeName(CurrentFile);
-            fileNameBox.Size = fileNameText.Size;
+            SetFileNameText(GetSafeName(CurrentFile));
+            ChangeMultiPageImage(0);
 
             if (CurrentImage.Width > this.Width || CurrentImage.Height > this.Height)
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -407,12 +423,46 @@ namespace ArdaViewer
                 TempImage.Dispose();
         }
 
+        public void ChangeMultiPageImage(int i)
+        {
+            if (CurrentFile.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            int pageCount = CurrentImage.GetFrameCount(FrameDimension.Page);
+            
+            if (pageCount == 1)
+			{
+                ActivePage = 0;
+                return;
+			}
+
+            if (i < 0 || i >= pageCount)
+                return;
+
+            CurrentImage.SelectActiveFrame(FrameDimension.Page, i);
+
+            pictureBox1.Image = CurrentImage;
+
+            ActivePage = i;
+
+            SetFileNameText(GetSafeName(CurrentFile) + " " + (i+1).ToString() + "/" + pageCount.ToString());
+        }
+
+        private void SetFileNameText(string nametext)
+		{
+            fileNameText.Text = nametext;
+            fileNameBox.Size = fileNameText.Size;
+        }
+       
         public void ZoomDisplayedImage(int direction, int x = -1, int y = -1)
         {
             if (ArdaVirusInvoked)
                 return;
 
             if (CurrentImage == null)
+                return;
+
+            if (CurrentFile.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
                 return;
 
             if (direction < 0 && ZoomFactor + direction <= 1)
@@ -535,6 +585,12 @@ namespace ArdaViewer
                 case Keys.NumPad6:
                     ChangeScreen(5);
                     return;
+                case Keys.PageUp:
+                    ChangeMultiPageImage(ActivePage-1);
+                    return;
+                case Keys.PageDown:
+                    ChangeMultiPageImage(ActivePage+1);
+                    return;
             }
 
             if(e.Alt && e.KeyCode == Keys.Enter)
@@ -579,7 +635,7 @@ namespace ArdaViewer
 
         private void RotateImage(bool clockwise = true)
         {
-            if (CurrentImage == null || CurrentFile.ToLower().EndsWith(".gif"))
+            if (CurrentImage == null || CurrentFile.ToLower().EndsWith(".gif") || CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase) || CurrentFile.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase) || CurrentFile.EndsWith(".tif", StringComparison.OrdinalIgnoreCase))
                 return;
 
             if(clockwise)
@@ -589,7 +645,7 @@ namespace ArdaViewer
 
             pictureBox1.Image = CurrentImage;
 
-            if(!(CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase) || CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase)))
+            if(!(CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase) ))
                 CurrentImage.Save(CurrentFile);
         }
 
@@ -603,19 +659,6 @@ namespace ArdaViewer
                     CurrentIndex += 1;
                     CurrentFile = OtherFiles[CurrentIndex];
                     RefleshDisplayedImage();
-                }
-                else
-                {
-                    for (int i = CurrentIndex; i < OtherFiles.Length; i++)
-                    {
-                        if (FileIsImageType(OtherFiles[i]))
-                        {
-                            CurrentIndex = i;
-                            CurrentFile = OtherFiles[CurrentIndex];
-                            RefleshDisplayedImage();
-                            return;
-                        }
-                    }
                 }
             }
         }
@@ -631,19 +674,6 @@ namespace ArdaViewer
                     CurrentIndex -= 1;
                     CurrentFile = OtherFiles[CurrentIndex];
                     RefleshDisplayedImage();
-                }
-                else
-                {
-                    for (int i = CurrentIndex; i > 0; i--)
-                    {
-                        if (FileIsImageType(OtherFiles[i]))
-                        {
-                            CurrentIndex = i;
-                            CurrentFile = OtherFiles[CurrentIndex];
-                            RefleshDisplayedImage();
-                            return;
-                        }
-                    }
                 }
             }
         }
