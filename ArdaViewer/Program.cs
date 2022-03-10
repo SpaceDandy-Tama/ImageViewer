@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Microsoft.Win32;
+using System.Security.Permissions;
+
 namespace ArdaViewer
 {
     static class Program

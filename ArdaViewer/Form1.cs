@@ -14,16 +14,15 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Net.Http;
 using System.Net;
-using Microsoft.Win32;
-using System.Security.Permissions;
+
 
 namespace ArdaViewer
 {
     public partial class Form1 : Form
     {
         public OpenFileDialog Ofd;
-        public string Filter = "Image Files (*.bmp, *.jpg, *.png, *.tiff, *.tif, *.gif, *.tga, *.dds)|*.bmp;*.jpg;*.png;*.tiff;*.tif;*.gif;*.tga;.dds";
-        public string[] Filters = new string[]{".bmp", ".jpg", ".png", ".tiff", "tif", ".gif", ".tga", ".dds" };
+        public string Filter = "Image Files (*.bmp, *.jpg, *.jpeg, *.png, *.tiff, *.tif, *.gif, *.tga, *.dds)|*.bmp;*.jpg;*.jepg;*.png;*.tiff;*.tif;*.gif;*.tga;.dds";
+        public string[] Filters = new string[]{".bmp", ".jpg", ".jpeg", ".png", ".tiff", "tif", ".gif", ".tga", ".dds" };
 
         public string CurrentFile;
         public string CurrentDir;
@@ -39,7 +38,7 @@ namespace ArdaViewer
         public bool Fullscreen;
         public bool HideUi;
 
-        public string AppSettingPath = "AppSetting.json";
+        public string AppSettingPath = "ArdaViewerSettings.json";
         //public string AppSettingPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),"ArdaViewer"), "AppSetting.json");
 
         public DataContractJsonSerializer Ser;
@@ -60,7 +59,7 @@ namespace ArdaViewer
                 else
                 {
                     string[] tempFileName = args[0].Split('\\');
-                    if(tempFileName[tempFileName.Length - 1] == "ardavirus.png")
+                    if (tempFileName[tempFileName.Length - 1] == "ardavirus.png")
                     {
                         ArdaVirusInvoked = true;
                     }
@@ -75,7 +74,12 @@ namespace ArdaViewer
 
             this.pictureBox1.MouseWheel += pictureBox1_MouseWheel;
 
-            AppSettingPath = Application.StartupPath + "\\" + AppSettingPath;
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string fileName = AppSettingPath;
+            AppSettingPath = Path.Combine(appDataPath, "ArdaSuite");
+            if (!Directory.Exists(AppSettingPath))
+                Directory.CreateDirectory(AppSettingPath);
+            AppSettingPath = Path.Combine(AppSettingPath, fileName);
 
             //Set the parents for the UI buttons. Otherwise their transparency doesn't work.
             fileNameBox.Parent = pictureBox1;
@@ -127,40 +131,8 @@ namespace ArdaViewer
                 CurrentFile = args[0];
                 OpenImage();
             }
-
-            AssociateFiles();
         }
         #endregion
-
-        public void AssociateFiles()
-        {
-            new System.Security.Permissions.RegistryPermission(System.Security.Permissions.PermissionState.Unrestricted).Assert();
-            try
-            {
-                using (RegistryKey myKey = Registry.ClassesRoot.CreateSubKey(".tga"))
-                {
-                    myKey?.SetValue("", "ArdaViewer.tga");
-                }
-                using (RegistryKey myKey = Registry.ClassesRoot.CreateSubKey("ArdaViewer.tga"))
-                {
-                    myKey?.SetValue("", "TGA");
-                    RegistryKey shell = myKey?.CreateSubKey("shell");
-                    shell = shell?.CreateSubKey("open");
-                    shell?.CreateSubKey("command").SetValue("", "\"" + Application.ExecutablePath + "\" \"" + "%1\"");
-                }
-
-                MessageBox.Show("Restart might be required for changes to take full effect.");
-            }
-            catch
-            {
-                MessageBox.Show("This action requires Registry Write Permission. Try running the application with administrator privileges and try again.");
-            }
-            finally
-            {
-                System.Security.Permissions.RegistryPermission.RevertAssert();
-            }
-
-        }
 
         #region Starting Screen Types
         private void GoDefault()
@@ -205,7 +177,6 @@ namespace ArdaViewer
         #endregion
 
         #region App Settings
-
         [DataContract]
         public class AppSetting
         {
@@ -319,15 +290,7 @@ namespace ArdaViewer
         }
         #endregion
 
-        public string GetSafeName(string fileName)
-        {
-            //if (fileName == "")
-            //{
-            //    return SafePackageName;
-            //}
-            string[] temp = fileName.Split('\\');
-            return temp[temp.Length - 1];
-        }
+        public string GetSafeName(string fileName) => Path.GetFileName(fileName);
 
         public void OpenFileDialog()
         {
@@ -389,38 +352,39 @@ namespace ArdaViewer
 
         public void RefleshDisplayedImage()
         {
-            if(CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
+            CurrentImage?.Dispose();
+            TempImage?.Dispose();
+            ZoomFactor = 1;
+
+            if (CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
             {
-                CurrentImage = Paloma.TargaImage.LoadTargaImage(CurrentFile);
+                Paloma.TargaImage targaImage = new Paloma.TargaImage(CurrentFile);
+                CurrentImage = Paloma.TargaImage.CopyToBitmap(targaImage);
                 pictureBox1.Image = CurrentImage;
+                SetFileNameText(GetSafeName(CurrentFile), String.Format("{0} bpp {1}", targaImage.Header.PixelDepth, targaImage.Header.IsRLE ? "RLE" : "RAW"));
+                targaImage.Dispose();
             }
             else if (CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
             {
-                CurrentImage = Imaging.DDSReader.DDS.LoadImage(CurrentFile);
+                Imaging.DDSReader.DDSImage ddsImage = Imaging.DDSReader.DDS.LoadImage(CurrentFile);
+                CurrentImage = Imaging.DDSReader.DDS.CopyToBitmap(ddsImage);
                 pictureBox1.Image = CurrentImage;
+                SetFileNameText(GetSafeName(CurrentFile), ddsImage.PixelFormat.ToString());
+                ddsImage.Dispose();
             }
             else
             {
                 CurrentImage = Image.FromFile(CurrentFile);
                 pictureBox1.Image = CurrentImage;
+                SetFileNameText(GetSafeName(CurrentFile));
             }
 
-            if (ArdaVirusInvoked)
-                this.Text = "Desktop";
-            else
-                this.Text = GetSafeName(CurrentFile);
-
-            SetFileNameText(GetSafeName(CurrentFile));
             ChangeMultiPageImage(0);
 
             if (CurrentImage.Width > this.Width || CurrentImage.Height > this.Height)
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             else
                 pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-
-            ZoomFactor = 1;
-            if (TempImage != null)
-                TempImage.Dispose();
         }
 
         public void ChangeMultiPageImage(int i)
@@ -440,17 +404,17 @@ namespace ArdaViewer
                 return;
 
             CurrentImage.SelectActiveFrame(FrameDimension.Page, i);
-
-            pictureBox1.Image = CurrentImage;
-
             ActivePage = i;
-
-            SetFileNameText(GetSafeName(CurrentFile) + " " + (i+1).ToString() + "/" + pageCount.ToString());
+            pictureBox1.Image = CurrentImage;
+            SetFileNameText(GetSafeName(CurrentFile), String.Format("Page {0} of {1}", i + 1, pageCount));
         }
 
-        private void SetFileNameText(string nametext)
+        private void SetFileNameText(string name, string extra = null)
 		{
-            fileNameText.Text = nametext;
+            this.Text = ArdaVirusInvoked ? "Desktop" : name;
+            fileNameText.Text = name;
+            if (extra != null && extra.Length > 0)
+                fileNameText.Text += String.Format(" ({0})", extra);
             fileNameBox.Size = fileNameText.Size;
         }
        

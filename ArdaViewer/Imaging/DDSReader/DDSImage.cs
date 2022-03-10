@@ -10,6 +10,7 @@ namespace Imaging.DDSReader
 		private System.Drawing.Bitmap _bitmap;
 		private bool _isValid;
 		private bool _alpha;
+		Utils.PixelFormat _pixelFormat = Utils.PixelFormat.UNKNOWN;
 
 		public System.Drawing.Bitmap BitmapImage
 		{
@@ -26,6 +27,8 @@ namespace Imaging.DDSReader
 			get { return _alpha; }
 			set { _alpha = value; }
 		}
+
+		public Utils.PixelFormat PixelFormat => _pixelFormat;
 
 		public DDSImage(byte[] ddsImage, bool preserveAlpha = true)
 		{
@@ -77,7 +80,6 @@ namespace Imaging.DDSReader
 		private void Parse(BinaryReader reader)
 		{
 			DDSStruct header = new DDSStruct();
-			Utils.PixelFormat pixelFormat = Utils.PixelFormat.UNKNOWN;
 			byte[] data = null;
 
 			if (ReadHeader(reader, ref header))
@@ -87,8 +89,8 @@ namespace Imaging.DDSReader
 				if (header.depth == 0) header.depth = 1;
 
 				uint blocksize = 0;
-				pixelFormat = GetFormat(header, ref blocksize);
-				if (pixelFormat == Utils.PixelFormat.UNKNOWN)
+				_pixelFormat = GetFormat(header, ref blocksize);
+				if (_pixelFormat == Utils.PixelFormat.UNKNOWN)
 				{
 					throw new InvalidFileHeaderException();
 				}
@@ -96,7 +98,7 @@ namespace Imaging.DDSReader
 				data = ReadData(reader, header);
 				if (data != null)
 				{
-					byte[] rawData = Decompressor.Expand(header, data, pixelFormat);
+					byte[] rawData = Decompressor.Expand(header, data, _pixelFormat);
 					_bitmap = CreateBitmap((int)header.width, (int)header.height, rawData);
 				}
 			}

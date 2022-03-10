@@ -15,10 +15,10 @@ namespace Imaging.DDSReader
 		/// <param name="data">The image data, as a byte array.</param>
 		/// <param name="alpha">Preserve the alpha channel or not. (default: true)</param>
 		/// <returns>The Bitmap representation of the image.</returns>
-		public static Bitmap LoadImage(byte[] data, bool alpha = true)
+		public static DDSImage LoadImage(byte[] data, bool alpha = true)
 		{
 			DDSImage im = new DDSImage(data, alpha);
-			return im.BitmapImage;
+			return im;
 		}
 
 		/// <summary>
@@ -27,11 +27,11 @@ namespace Imaging.DDSReader
 		/// <param name="file">The image file.</param>
 		/// <param name="alpha">Preserve the alpha channel or not. (default: true)</param>
 		/// <returns>The Bitmap representation of the image.</returns>
-		public static Bitmap LoadImage(string file, bool alpha = true)
+		public static DDSImage LoadImage(string file, bool alpha = true)
 		{
 			byte[] data = File.ReadAllBytes(file);
 			DDSImage im = new DDSImage(data, alpha);
-			return im.BitmapImage;
+			return im;
 		}
 
 		/// <summary>
@@ -40,11 +40,13 @@ namespace Imaging.DDSReader
 		/// <param name="stream">The stream to read the image data from.</param>
 		/// <param name="alpha">Preserve the alpha channel or not. (default: true)</param>
 		/// <returns>The Bitmap representation of the image.</returns>
-		public static Bitmap LoadImage(Stream stream, bool alpha = true)
+		public static DDSImage LoadImage(Stream stream, bool alpha = true)
 		{
 			DDSImage im = new DDSImage(stream, alpha);
-			return im.BitmapImage;
+			return im;
 		}
+
+		public static Bitmap CopyToBitmap(DDSImage ddsImage) => (Bitmap)ddsImage.BitmapImage.Clone();
 	}
 
 	/// <summary>

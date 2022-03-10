@@ -1488,7 +1488,7 @@ namespace Paloma
             }
         }
 
-        private static Bitmap CopyToBitmap(TargaImage ti)
+        public static Bitmap CopyToBitmap(TargaImage ti)
         {
             Bitmap b = null;
             if (ti.Image.PixelFormat == PixelFormat.Format8bppIndexed)
@@ -1675,6 +1675,17 @@ namespace Paloma
         public ImageType ImageType
         {
             get { return this.eImageType; }
+        }
+
+        public bool IsRLE
+        {
+            get
+            {
+                bool result = this.eImageType == ImageType.RUN_LENGTH_ENCODED_BLACK_AND_WHITE;
+                result |= this.eImageType == ImageType.RUN_LENGTH_ENCODED_COLOR_MAPPED;
+                result |= this.eImageType == ImageType.RUN_LENGTH_ENCODED_TRUE_COLOR;
+                return result;
+            }
         }
 
         /// <summary>
