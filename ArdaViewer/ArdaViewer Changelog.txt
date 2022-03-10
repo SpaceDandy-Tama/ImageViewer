@@ -9,7 +9,7 @@
 
 - 	BUGFIX: next&previous image button functionality fixed
 - 	BUGFIX: memory leaks
-- 	AppSettings now saves to local appdata
+- 	AppSettings now saves to roaming appdata
 - 	Tiff file multipage support added (PageUp & PageDn)
 - 	Current page and page count of multipage .tiff is now displayed
 - 	PixelFormat of .dds is now displayed
