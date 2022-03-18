@@ -1,9 +1,19 @@
-**2.1:** (FUTURE)
+**2.2:** (FUTURE)
 
 -	Settings Menu
 -	Updated Original Black Color Scheme
 -	Windows Accent Color Scheme
 -	.webp file format capability added
+
+**2.1:**
+
+-	ArdaBing Created (Improved Bing Functionality)
+-	Ctrl + B downloads last 8 images of the day from Bing
+-	-silentBingMultiple command added as a multiple equivalent of -silentBing command
+-	default SaveFilePathBing is now "My Pictures/Bing Images" instead of "Desktop"
+-	-saveFilePathBing command added (example: ./ArdaViewer.exe -saveFilePathBing="C:\My Images")
+-	Ctrl + O pops up Open File Dialog
+-	Documentation.htm added
 
 **2.0:**
 

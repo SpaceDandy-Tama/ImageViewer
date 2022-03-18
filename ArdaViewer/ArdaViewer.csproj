@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ArdaViewer</RootNamespace>
     <AssemblyName>ArdaViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publish\</PublishUrl>
@@ -114,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="arda.ico" />
+    <None Include="Documentation.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ArdaViewer Changelog.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -143,6 +146,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ArdaBing\ArdaBing.csproj">
+      <Project>{C47D39CF-9A23-40D3-A427-617AD69AB12D}</Project>
+      <Name>ArdaBing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

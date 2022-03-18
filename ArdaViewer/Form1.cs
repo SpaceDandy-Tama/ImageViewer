@@ -14,7 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Net.Http;
 using System.Net;
-
+using ArdaBing;
 
 namespace ArdaViewer
 {
@@ -45,8 +45,11 @@ namespace ArdaViewer
         public AppSetting CurAppSetting;
         public string SaveFilePathBing;
 
-        public bool SilentBigInvoked = false;
+        public bool SilentBingInvoked = false;
+        public int SilentBingNumberOfImages = 8; //Bing API doesn't seem to return more than 8 images
         public bool ArdaVirusInvoked = false;
+        public bool SaveFilePathBingInvoked = false;
+        public string SaveFilePathBingOverride = null;
         public bool NoCommandInvoked = false;
 
         #region Constructor
@@ -55,7 +58,19 @@ namespace ArdaViewer
             if (args.Length > 0)
             {
                 if (args[0] == "-silentBing")
-                    SilentBigInvoked = true;
+                {
+                    SilentBingInvoked = true;
+                    SilentBingNumberOfImages = 1;
+                }
+                else if (args[0].StartsWith("-silentBingMultiple", StringComparison.Ordinal))
+                {
+                    SilentBingInvoked = true;
+                }
+                else if(args[0].StartsWith("-saveFilePathBing=", StringComparison.Ordinal))
+                {
+                    SaveFilePathBingInvoked = true;
+                    SaveFilePathBingOverride = args[0].Split('=')[1];
+                }
                 else
                 {
                     string[] tempFileName = args[0].Split('\\');
@@ -117,7 +132,7 @@ namespace ArdaViewer
             {
                 HideUi = false;
                 GoDefault();
-                SaveFilePathBing = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                SaveFilePathBing = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Bing Images");
             }
 
             this.BackColor = Color.Black;
@@ -287,6 +302,10 @@ namespace ArdaViewer
         public void BingAction()
         {
             RetrieveBingImageOfTheDay();
+        }
+        public void BingActionMultiple()
+        {
+            RetrieveBingImageOfTheDayMultiple();
         }
         #endregion
 
@@ -528,9 +547,6 @@ namespace ArdaViewer
                 case Keys.Subtract: //ZoomOut
                     ZoomDisplayedImage(-1);
                     return;
-                case Keys.B: //Bing Image of the Day
-                    RetrieveBingImageOfTheDay();
-                    return;
                 case Keys.NumPad1:
                     ChangeScreen(0);
                     return;
@@ -555,12 +571,17 @@ namespace ArdaViewer
                 case Keys.PageDown:
                     ChangeMultiPageImage(ActivePage+1);
                     return;
+                case Keys.B: //Bing Image of the Day
+                    RetrieveBingImageOfTheDay();
+                    return;
             }
 
-            if(e.Alt && e.KeyCode == Keys.Enter)
-            {
+            if (e.Alt && e.KeyCode == Keys.Enter)
                 FullscreenAction();
-            }
+            else if (e.Control && e.KeyCode == Keys.B)
+                RetrieveBingImageOfTheDayMultiple();
+            else if (e.Control && e.KeyCode == Keys.O)
+                OpenImage(true);
         }
 
         private void ShowHide(bool justApply = false)
@@ -643,175 +664,64 @@ namespace ArdaViewer
         }
 
         #region BingStuff
-        /// <summary>
-        /// Depracated.
-        /// </summary>
-        private async void RetrieveBingImageOfTheDayAll()
+        private void RetrieveBingImageOfTheDay()
         {
             if (CurAppSetting != null && CurAppSetting.enableBingFeature == false)
                 return;
 
-            int numOfImages = 10;
+            BingImageDownloader.OnImageDownloadedAndSaved += BingImageDownloader_OnImageDownloadedAndSaved;
 
-            // We can specify the region we want for the Bing Image of the Day.
-            //string strRegion = "en-US";
-            //string strBingImageURL = string.Format("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n={0}&mkt={1}", numOfImages, strRegion);
-            string strBingImageURL = string.Format("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n={0}", numOfImages);
-            string strJSONString = "";
-
-            HttpClient client = new HttpClient();
-
-            // Using an Async call makes sure the app is responsive during the time the response is fetched.
-            // GetAsync sends an Async GET request to the Specified URI.
-            HttpResponseMessage response = await client.GetAsync(new Uri(strBingImageURL));
-
-            // Content property get or sets the content of a HTTP response message. 
-            // ReadAsStringAsync is a method of the HttpContent which asynchronously 
-            // reads the content of the HTTP Response and returns as a string.
-            strJSONString = await response.Content.ReadAsStringAsync();
-
-            //Parse the Data without using json implementations.
-            string[] strJsonData = strJSONString.Split(new char[] { ',' });
-
-            for (int i = 0; i < strJsonData.Length; i++) {
-                if (strJsonData[i].StartsWith("\"url\""))
-                {
-                    string ImageDate;
-                    if (strJsonData[i - 3].StartsWith("{\"images\""))
-                        ImageDate = strJsonData[i - 3].Split(new char[] { '"' })[5];
-                    else
-                        ImageDate = strJsonData[i - 3].Split(new char[] { '"' })[3];
-                    string[] strJsonData2 = strJsonData[i].Split(new char[] { '"' });
-                    string ImageUrl = "http://www.bing.com" + strJsonData2[3];
-                    string ImagePath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "//Bing Images//" + ImageDate + ".jpg";
-
-                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "//Bing Images//"))
-                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "//Bing Images//");
-
-                    if (File.Exists(ImagePath))
-                        continue;
-
-                    //Download the image
-                    using (WebClient wc = new WebClient())
-                    {
-                        wc.DownloadFileAsync(new Uri(ImageUrl), ImagePath);
-                        if (SilentBigInvoked)
-                            wc.DownloadFileCompleted += ExitDownloadedBingImageOfTheDay;
-                        else
-                            wc.DownloadFileCompleted += OpenDownloadedBingImageOfTheDay(ImagePath);
-                    }
-                }
-            }
-
-            
+            BingImageDownloader.DownloadImageOfTheDay(SaveFilePathBing, null);
         }
 
-        private static bool WebsiteExists(string url)
+        private void BingImageDownloader_OnImageDownloadedAndSaved(object sender, BingImageDownloadedEventArgs args)
         {
-            try
+            if (SilentBingInvoked)
+                Application.Exit();
+            else
             {
-                WebRequest request = WebRequest.Create(url);
-                request.Method = "HEAD";
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                return response.StatusCode == HttpStatusCode.OK;
-            }
-            catch
-            {
-                return false;
+                CurrentFile = args.ImagePath;
+                OpenImage();
             }
         }
 
-        private async void RetrieveBingImageOfTheDay()
+        private async void RetrieveBingImageOfTheDayMultiple()
         {
-            if (CurAppSetting != null && CurAppSetting.enableBingFeature == false)
-                return;
+            string jsonString = await BingUtils.GetJsonStringOfImageOfTheDay(SilentBingNumberOfImages, null);
 
-            int numOfImages = 1;
-
-            // We can specify the region we want for the Bing Image of the Day.
-            //string strRegion = "en-US";
-            //string strBingImageURL = string.Format("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n={0}&mkt={1}", numOfImages, strRegion);
-            string strBingImageURL = string.Format("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n={0}", numOfImages);
-            string strJSONString = "";
-
-            HttpClient client = new HttpClient();
-
-            // Using an Async call makes sure the app is responsive during the time the response is fetched.
-            // GetAsync sends an Async GET request to the Specified URI.
-            HttpResponseMessage response = await client.GetAsync(new Uri(strBingImageURL));
-
-            // Content property get or sets the content of a HTTP response message. 
-            // ReadAsStringAsync is a method of the HttpContent which asynchronously 
-            // reads the content of the HTTP Response and returns as a string.
-            strJSONString = await response.Content.ReadAsStringAsync();
-
-            //Parse the Data without using json implementations.
-            string[] strJsonData = strJSONString.Split(new char[] { ',' });
-            string ImageDate = strJsonData[0].Split(new char[] { '"' })[5];
-            strJsonData = strJsonData[3].Split(new char[] { '"' });
-            string ImageUrl = "http://www.bing.com" + strJsonData[3];
 #if DEBUG
-            MessageBox.Show(ImageUrl);
-            if(!WebsiteExists(ImageUrl))
-                ImageUrl = "http://www.bing.com" + strJsonData[2];
-
-            using (StreamWriter sw = new StreamWriter(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "//dump.txt"))
-            {
-                sw.WriteLine(strJSONString);
-                sw.WriteLine("");
-                sw.WriteLine(ImageUrl);
-            }
+            using (StreamWriter sw = new StreamWriter(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "jsonStringDump.json")))
+                await sw.WriteAsync(jsonString);
 #endif
-            //string ImagePath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "//Bing Images//" + ImageDate + ".jpg";
-            string ImagePath = SaveFilePathBing + "//" + ImageDate + ".jpg";
 
-            //if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "//Bing Images//"))
-            //    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "//Bing Images//");
             if (!Directory.Exists(SaveFilePathBing))
                 Directory.CreateDirectory(SaveFilePathBing);
 
-            if (File.Exists(ImagePath))
+            BingImageData[] bingImages = null;
+            BingUtils.ParseMultipleImageJsonString(jsonString, ref bingImages);
+            for (int i = 0; i < bingImages.Length; i++)
             {
-                if (SilentBigInvoked)
-                {
-                    Application.Exit();
-                    return;
-                }
-                CurrentFile = ImagePath;
-                OpenImage();
-                return;
+                if (bingImages[i] == null)
+                    continue;
+
+                string imagePath = Path.Combine(SaveFilePathBing, bingImages[i].Date + ".jpg");
+
+                if (File.Exists(imagePath))
+                    continue;
+
+                byte[] bytes = await BingImageDownloader.GetImageOfTheDayData(bingImages[i]);
+                using (FileStream fs = new FileStream(imagePath, FileMode.Create))
+                    await fs.WriteAsync(bytes, 0, bytes.Length);
             }
 
-            //Download the image
-            using (WebClient wc = new WebClient())
-            {
-                wc.DownloadFileAsync(new Uri(ImageUrl), ImagePath);
-                if (SilentBigInvoked)
-                    wc.DownloadFileCompleted += ExitDownloadedBingImageOfTheDay;
-                else
-                    wc.DownloadFileCompleted += OpenDownloadedBingImageOfTheDay(ImagePath);
-            }
-        }
-
-        private AsyncCompletedEventHandler OpenDownloadedBingImageOfTheDay(string imagePath)
-        {
-            Action<object, AsyncCompletedEventArgs> action = (sender, e) =>
-            {
-                CurrentFile = imagePath;
-                OpenImage();
-            };
-            return new AsyncCompletedEventHandler(action);
-        }
-
-        private void ExitDownloadedBingImageOfTheDay(object sender, AsyncCompletedEventArgs e)
-        {
-            Application.Exit();
+            if (SilentBingInvoked)
+                Application.Exit();
         }
         #endregion
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (SilentBigInvoked)
+            if (SilentBingInvoked)
                 return;
 
             SaveAppSetting();
@@ -821,11 +731,19 @@ namespace ArdaViewer
         {
             if (NoCommandInvoked)
                 BingAction();
-
-            if (SilentBigInvoked)
+            else if (SilentBingInvoked)
             {
                 this.Hide();
-                BingAction();
+                if (SilentBingNumberOfImages == 1)
+                    BingAction();
+                else
+                    BingActionMultiple();
+            }
+            else if (SaveFilePathBingInvoked)
+            {
+                this.Hide();
+                SaveFilePathBing = SaveFilePathBingOverride;
+                Application.Exit();
             }
         }
 
