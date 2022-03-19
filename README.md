@@ -13,6 +13,7 @@ ArdaViewer is an extremely lightweight image viewing application completely writ
 - .gif
 - .tiff
 - .tif
+- .ico
 - .tga
 - .dds
 
