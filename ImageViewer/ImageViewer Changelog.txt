@@ -1,0 +1,39 @@
+**2.3:** (FUTURE)
+
+-	Settings Menu
+-	Updated Original Black Color Scheme
+-	Windows Accent Color Scheme
+-	.webp file format capability added
+
+**2:2:**
+
+-	Changed Name to ImageViewer
+
+**2.1:**
+
+-	ArdaBing Created (Improved Bing Functionality)
+-	Ctrl + B downloads last 8 images of the day from Bing
+-	-silentBingMultiple command added as a multiple equivalent of -silentBing command
+-	default SaveFilePathBing is now "My Pictures/Bing Images" instead of "Desktop"
+-	-saveFilePathBing command added (example: ./ArdaViewer.exe -saveFilePathBing="C:\My Images")
+-	Ctrl + O pops up Open File Dialog
+-	Documentation.htm added
+
+**2.0:**
+
+- 	BUGFIX: next&previous image button functionality fixed
+- 	BUGFIX: memory leaks
+- 	AppSettings now saves to roaming appdata
+- 	Tiff file multipage support added (PageUp & PageDn)
+- 	Current page and page count of multipage .tiff is now displayed
+- 	PixelFormat of .dds is now displayed
+- 	Bits Per Pixel and Compression Type of .tga is now displayed
+
+**1.9:**
+
+- 	Zoom feature added
+
+**1.8:**
+
+- 	.dds and .tga file format compatibility added
+- 	64 bit
