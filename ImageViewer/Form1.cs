@@ -91,7 +91,7 @@ namespace ImageViewer
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string fileName = AppSettingPath;
-            AppSettingPath = Path.Combine(appDataPath, "ArdaSuite");
+            AppSettingPath = Path.Combine(appDataPath, "ImageViewer");
             if (!Directory.Exists(AppSettingPath))
                 Directory.CreateDirectory(AppSettingPath);
             AppSettingPath = Path.Combine(AppSettingPath, fileName);
