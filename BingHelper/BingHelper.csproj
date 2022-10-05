@@ -8,4 +8,11 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="TagLibSharp">
+      <HintPath>..\taglib-sharp\Release\netstandard2.0\TagLibSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+
 </Project>

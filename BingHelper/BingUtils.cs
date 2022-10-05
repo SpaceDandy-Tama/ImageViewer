@@ -63,6 +63,10 @@ namespace BingHelper
 
         public static bool ParseSingleImageJsonString(string jsonString, ref BingImageData imageData)
         {
+#if DEBUG
+            System.IO.File.WriteAllText("singleJson.json", jsonString);
+#endif
+
             try
             {
                 //Parse the Data without using json implementations.
@@ -71,12 +75,23 @@ namespace BingHelper
                 strJsonData = strJsonData[3].Split(new char[] { '"' });
                 string imageUrlTemp = BingUrl + strJsonData[3];
 
+                strJsonData = jsonString.Split(new char[] { '"' });
+                string copyrightTemp = strJsonData[25];
+                string copyrightLinkTemp = strJsonData[29];
+
                 if (!BingUtils.WebsiteExists(ref imageUrlTemp))
                     imageUrlTemp = BingUrl + strJsonData[2];
 
+#if DEBUG
+                System.IO.File.WriteAllText("data.txt", imageDateTemp);
+                System.IO.File.AppendAllText("data.txt", "\n" + imageUrlTemp);
+                System.IO.File.AppendAllText("data.txt", "\n" + copyrightTemp);
+                System.IO.File.AppendAllText("data.txt", "\n" + copyrightLinkTemp);
+#endif
+
                 if (BingUtils.WebsiteExists(ref imageUrlTemp))
                 {
-                    imageData = new BingImageData(imageDateTemp, imageUrlTemp);
+                    imageData = new BingImageData(imageDateTemp, imageUrlTemp, copyrightTemp, copyrightLinkTemp);
                     return true;
                 }
                 else
@@ -99,9 +114,18 @@ namespace BingHelper
 
         public static void ParseMultipleImageJsonString(string jsonString, ref BingImageData[] imageDatas)
         {
+
+#if DEBUG
+            System.IO.File.WriteAllText("multipleJson.json", jsonString);
+#endif
+
             //Parse the Data without using json implementations.
             string[] strJsonData = jsonString.Split(new char[] { ',' });
             imageDatas = new BingImageData[strJsonData.Length];
+
+            string[] strJsonData2 = jsonString.Split(new string[] { "\"copyright\":\"" }, StringSplitOptions.None);
+            string[] strJsonData3 = jsonString.Split(new string[] { "\"copyrightlink\":\"" }, StringSplitOptions.None);
+            int counter = 0;
 
             for (int i = 0; i < strJsonData.Length; i++)
             {
@@ -112,15 +136,53 @@ namespace BingHelper
                         imageDateTemp = strJsonData[i - 3].Split(new char[] { '"' })[5];
                     else
                         imageDateTemp = strJsonData[i - 3].Split(new char[] { '"' })[3];
-                    string[] strJsonData2 = strJsonData[i].Split(new char[] { '"' });
-                    string imageUrlTemp = BingUrl + strJsonData2[3];
+                    string imageUrlTemp = BingUrl + strJsonData[i].Split(new char[] { '"' })[3];
 
-                    imageDatas[i] = new BingImageData(imageDateTemp, imageUrlTemp);
+                    counter++;
+                    string copyrightTemp = strJsonData2[counter].Split(new string[] { "\",\"copyrightlink\"" }, StringSplitOptions.None)[0];
+                    string copyrightLinkTemp = strJsonData3[counter].Split(new string[] { "\",\"title\"" }, StringSplitOptions.None)[0];
+#if DEBUG
+                    System.IO.File.WriteAllText(imageDateTemp + ".txt", copyrightTemp);
+                    System.IO.File.AppendAllText(imageDateTemp + ".txt", "\n" + copyrightLinkTemp);
+#endif
+
+                    imageDatas[i] = new BingImageData(imageDateTemp, imageUrlTemp, copyrightTemp, copyrightLinkTemp);
                 }
                 else
                 {
                     imageDatas[i] = null;
                 }
+            }
+        }
+
+        public static bool CheckIfID3TagExists(string imagePath)
+        {
+            TagLib.Id3v2.Tag.DefaultVersion = 3;
+            TagLib.Id3v2.Tag.ForceDefaultVersion = true;
+            TagLib.Id3v2.Tag.DefaultEncoding = TagLib.StringType.UTF8;
+            TagLib.Id3v2.Tag.ForceDefaultEncoding = true;
+
+            TagLib.File tagFile = TagLib.File.Create(imagePath, TagLib.ReadStyle.None);
+            bool result = tagFile.TagTypes != TagLib.TagTypes.None;
+            tagFile.Dispose();
+            return result;
+        }
+
+        public static void WriteID3Tag(string imagePath, string copyrightText)
+        {
+            //ID3 Tag Writing
+            TagLib.Id3v2.Tag.DefaultVersion = 3;
+            TagLib.Id3v2.Tag.ForceDefaultVersion = true;
+            TagLib.Id3v2.Tag.DefaultEncoding = TagLib.StringType.UTF8;
+            TagLib.Id3v2.Tag.ForceDefaultEncoding = true;
+
+            using (TagLib.File tagFile = TagLib.File.Create(imagePath, TagLib.ReadStyle.None))
+            {
+                tagFile.Mode = TagLib.File.AccessMode.Write;
+                TagLib.Tag tag = tagFile.GetTag(TagLib.TagTypes.XMP, true);
+                tag.Copyright = copyrightText;
+                tag.SetInfoTag();
+                tagFile.Save();
             }
         }
     }

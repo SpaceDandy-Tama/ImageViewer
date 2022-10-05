@@ -18,10 +18,6 @@ namespace BingHelper
             if (BingUtils.ParseSingleImageJsonString(jsonString, ref imageData))
                 DownloadImageOfTheDay(directory, imageData);
         }
-        public static void DownloadImageOfTheDay(string directory, string imageDate, string imageUrl)
-        {
-            DownloadImageOfTheDay(directory, new BingImageData(imageDate, imageUrl));
-        }
         public static async void DownloadImageOfTheDay(string directory, BingImageData imageData, bool abortIfFileExists = true)
         {
             if (!Directory.Exists(directory))
@@ -36,6 +32,8 @@ namespace BingHelper
                 using (FileStream fs = new FileStream(imagePath, FileMode.Create))
                     await fs.WriteAsync(bytes, 0, bytes.Length);
             }
+
+            BingUtils.WriteID3Tag(imagePath, imageData.Copyright);
 
             OnImageDownloadedAndSaved?.Invoke(null, new BingImageDownloadedEventArgs(imageData, imagePath));
         }

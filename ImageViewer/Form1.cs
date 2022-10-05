@@ -50,11 +50,15 @@ namespace ImageViewer
         public bool ArdaVirusInvoked = false;
         public bool SaveFilePathBingInvoked = false;
         public string SaveFilePathBingOverride = null;
+        public bool AttemptToGetId3TagsInvoked = false;
         public bool NoCommandInvoked = false;
 
         #region Constructor
         public Form1(string[] args)
         {
+            //Remove Before Launch
+            //args = new string[] { "-attemptToGetId3Tags" };
+
             if (args.Length > 0)
             {
                 if (args[0] == "-silentBing")
@@ -66,10 +70,14 @@ namespace ImageViewer
                 {
                     SilentBingInvoked = true;
                 }
-                else if(args[0].StartsWith("-saveFilePathBing=", StringComparison.Ordinal))
+                else if (args[0].StartsWith("-saveFilePathBing=", StringComparison.Ordinal))
                 {
                     SaveFilePathBingInvoked = true;
                     SaveFilePathBingOverride = args[0].Split('=')[1];
+                }
+                else if (args[0].StartsWith("-attemptToGetId3Tags", StringComparison.Ordinal))
+                {
+                    AttemptToGetId3TagsInvoked = true;
                 }
                 else
                 {
@@ -99,6 +107,7 @@ namespace ImageViewer
             //Set the parents for the UI buttons. Otherwise their transparency doesn't work.
             fileNameBox.Parent = pictureBox1;
             fileNameText.Parent = fileNameBox;
+            copyrightText.Parent = fileNameBox;
 
             arrowLeft.Parent = pictureBox1;
             arrowRight.Parent = pictureBox1;
@@ -107,6 +116,7 @@ namespace ImageViewer
             fullscreen.Parent = pictureBox1;
             bing.Parent = pictureBox1;
 
+#if !DEBUG
             if (LoadAppSetting())
             {
                 Fullscreen = CurAppSetting.fullscreen;
@@ -129,6 +139,7 @@ namespace ImageViewer
                 SaveFilePathBing = CurAppSetting.savePathBingImage;
             }
             else
+#endif
             {
                 HideUi = false;
                 GoDefault();
@@ -147,9 +158,9 @@ namespace ImageViewer
                 OpenImage();
             }
         }
-        #endregion
+#endregion
 
-        #region Starting Screen Types
+#region Starting Screen Types
         private void GoDefault()
         {
             Fullscreen = false;
@@ -189,9 +200,9 @@ namespace ImageViewer
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.WindowState = FormWindowState.Maximized;
         }
-        #endregion
+#endregion
 
-        #region App Settings
+#region App Settings
         [DataContract]
         public class AppSetting
         {
@@ -272,9 +283,9 @@ namespace ImageViewer
             }
             return false;
         }
-        #endregion
+#endregion
 
-        #region User Interface Button Actions
+#region User Interface Button Actions
 
         public void ArrowLeftAction()
         {
@@ -307,7 +318,7 @@ namespace ImageViewer
         {
             RetrieveBingImageOfTheDayMultiple();
         }
-        #endregion
+#endregion
 
         public string GetSafeName(string fileName) => Path.GetFileName(fileName);
 
@@ -398,6 +409,21 @@ namespace ImageViewer
                 SetFileNameText(GetSafeName(CurrentFile));
             }
 
+            if (CurrentFile.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
+            {
+                string copyright = null;
+
+                TagLib.Id3v2.Tag.DefaultVersion = 3;
+                TagLib.Id3v2.Tag.ForceDefaultVersion = true;
+                using (TagLib.File tagFile = TagLib.File.Create(CurrentFile, TagLib.ReadStyle.None))
+                {
+                    tagFile.Mode = TagLib.File.AccessMode.Read;
+                    copyright = tagFile.Tag.Copyright;
+                }
+
+                SetCopyrightText(copyright);
+            }
+
             ChangeMultiPageImage(0);
 
             if (CurrentImage.Width > this.Width || CurrentImage.Height > this.Height)
@@ -428,13 +454,31 @@ namespace ImageViewer
             SetFileNameText(GetSafeName(CurrentFile), String.Format("Page {0} of {1}", i + 1, pageCount));
         }
 
-        private void SetFileNameText(string name, string extra = null)
+        private void SetFileNameText(string name, string extra = null, string copyright = null, string copyrightUrl = null)
 		{
+            //fileNameText
             this.Text = ArdaVirusInvoked ? "Desktop" : name;
             fileNameText.Text = name;
             if (extra != null && extra.Length > 0)
                 fileNameText.Text += String.Format(" ({0})", extra);
             fileNameBox.Size = fileNameText.Size;
+        }
+
+        private void SetCopyrightText(string copyright)
+        {
+            if (copyright != null && copyright.Length > 0)
+            {
+                copyrightText.Text = copyright;
+                Size size = Size.Empty;
+                size.Width = fileNameText.Width > copyrightText.Width ? fileNameText.Width : copyrightText.Width;
+                size.Height = fileNameText.Height + copyrightText.Height;
+                fileNameBox.Size = size;
+            }
+            else
+            {
+                copyrightText.Text = "";
+                fileNameBox.Size = fileNameText.Size;
+            }
         }
        
         public void ZoomDisplayedImage(int direction, int x = -1, int y = -1)
@@ -663,7 +707,7 @@ namespace ImageViewer
             }
         }
 
-        #region BingStuff
+#region BingStuff
         private void RetrieveBingImageOfTheDay()
         {
             if (CurAppSetting != null && CurAppSetting.enableBingFeature == false)
@@ -712,12 +756,57 @@ namespace ImageViewer
                 byte[] bytes = await BingImageDownloader.GetImageOfTheDayData(bingImages[i]);
                 using (FileStream fs = new FileStream(imagePath, FileMode.Create))
                     await fs.WriteAsync(bytes, 0, bytes.Length);
+
+                BingUtils.WriteID3Tag(imagePath, bingImages[i].Copyright);
             }
 
             if (SilentBingInvoked)
                 Application.Exit();
         }
-        #endregion
+
+        private async void AttemptToGetId3TagsOfExistingImages()
+        {
+            string archiveWebsiteLink = "https://bingwallpaper.anerg.com/archive/us/";
+            string dir = CurAppSetting.savePathBingImage;
+            string[] files = Directory.GetFiles(dir);
+
+            for(int i = 0; i < files.Length; i++)
+            {
+                string fileName = files[i];
+
+                //Skip file if it already has ID3 Tag
+                if (BingUtils.CheckIfID3TagExists(fileName))
+                    continue;
+
+                //get html
+                string yearAndMonth = GetSafeName(fileName);
+                int day = int.Parse(yearAndMonth.Remove(yearAndMonth.Length - 4).Remove(0, 6));
+                yearAndMonth = yearAndMonth.Remove(yearAndMonth.Length - 6);
+                string linkToArchiveMonth = archiveWebsiteLink + yearAndMonth;
+                WebClient webClient = new WebClient();
+                Stream data = webClient.OpenRead(linkToArchiveMonth);
+                StreamReader sr = new StreamReader(data);
+                string html = await sr.ReadToEndAsync();
+
+                //parse the shit out of it
+                int startIndex = html.IndexOf("<div class=\"fw-bold pt-3 border-top\">", StringComparison.OrdinalIgnoreCase);
+                int endIndex = html.IndexOf("<div class=\"container mt-3 pb-3\">", StringComparison.OrdinalIgnoreCase);
+                html = html.Substring(startIndex, endIndex - startIndex);
+                string[] split1 = html.Split(new string[] { "alt=\"" }, StringSplitOptions.None);
+                string[] split2 = new string[split1.Length - 1];
+                for (int j = split1.Length - 1; j > 0; j--)
+                {
+                    split2[split1.Length - 1 - j] = split1[j].Split(new string[] { "\" />" }, StringSplitOptions.None)[0];
+                    split2[split1.Length - 1 - j] = split2[split1.Length - 1 - j].Remove(split2[split1.Length - 1 - j].LastIndexOf('('));
+                }
+
+                //Write ID3 Tag
+                BingUtils.WriteID3Tag(files[i], split2[day - 1]);
+            }
+
+            Application.Exit();
+        }
+#endregion
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -745,9 +834,14 @@ namespace ImageViewer
                 SaveFilePathBing = SaveFilePathBingOverride;
                 Application.Exit();
             }
+            else if (AttemptToGetId3TagsInvoked)
+            {
+                this.Hide();
+                AttemptToGetId3TagsOfExistingImages();
+            }
         }
 
-        #region User Interface Button Events
+#region User Interface Button Events
         private void fullscreen_MouseEnter(object sender, EventArgs e)
         {
             fullscreen.Image = Properties.Resources.fullscreenHover;
@@ -856,7 +950,7 @@ namespace ImageViewer
             BingAction();
         }
 
-        #endregion
+#endregion
 
     }
 }

@@ -1,11 +1,15 @@
-**2.3:** (FUTURE)
+**2.4:** (FUTURE)
 
 -	Settings Menu
 -	Updated Original Black Color Scheme
 -	Windows Accent Color Scheme
 -	.webp file format capability added
 
-**2:2:**
+**2.3:**
+
+-	Added Functionality to Save Image Information as ID3 Tags, and the ability to display them when opened.
+
+**2.2:**
 
 -	Changed Name to ImageViewer
 

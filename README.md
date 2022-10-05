@@ -37,4 +37,10 @@ There is no easy or automatic method to associate image files with ImageViewer. 
 
 *Note: After doing this for the first time ImageViewer might show on "Choose Another App" making it possible to omit browsing steps*
 
-*Another Note: See Documentation.htm for more information such as hotkeys and command line arguments that aren't listed here*
+## Updating from Version 2.2 or Below
+### (Only relevant if you saved up Bing Images in a folder somewhere)
+If you have a folder where you saved up daily Bing Images with earlier versions, you can now add additional image information to each and every image.
+Run the application once, after updating and setting saveFilePathBing, like this, "./ImageViewer.exe -attemptToGetId3Tags", without the quotes. And wait several minutes.
+When it's finished, the app will automaticly exit. You can enjoy the updated, old Bing Images with the additional information they originally came with.
+
+*Note: See Documentation.htm for more information such as hotkeys and command line arguments that aren't listed here*

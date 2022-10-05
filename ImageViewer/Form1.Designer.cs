@@ -38,6 +38,7 @@
             this.bing = new System.Windows.Forms.PictureBox();
             this.fileNameBox = new System.Windows.Forms.PictureBox();
             this.fileNameText = new System.Windows.Forms.Label();
+            this.copyrightText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrowLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrowRight)).BeginInit();
@@ -161,7 +162,7 @@
             this.fileNameBox.Image = global::ImageViewer.Properties.Resources.blank;
             this.fileNameBox.Location = new System.Drawing.Point(0, 0);
             this.fileNameBox.Name = "fileNameBox";
-            this.fileNameBox.Size = new System.Drawing.Size(48, 48);
+            this.fileNameBox.Size = new System.Drawing.Size(64, 64);
             this.fileNameBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.fileNameBox.TabIndex = 2;
             this.fileNameBox.TabStop = false;
@@ -178,11 +179,24 @@
             this.fileNameText.TabIndex = 3;
             this.fileNameText.Text = "fileNameText";
             // 
+            // copyrightText
+            // 
+            this.copyrightText.AutoSize = true;
+            this.copyrightText.BackColor = System.Drawing.Color.Transparent;
+            this.copyrightText.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.copyrightText.ForeColor = System.Drawing.Color.Silver;
+            this.copyrightText.Location = new System.Drawing.Point(0, 29);
+            this.copyrightText.Name = "copyrightText";
+            this.copyrightText.Size = new System.Drawing.Size(137, 30);
+            this.copyrightText.TabIndex = 4;
+            this.copyrightText.Text = "copyrightText";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(240, 217);
+            this.Controls.Add(this.copyrightText);
             this.Controls.Add(this.fileNameText);
             this.Controls.Add(this.fileNameBox);
             this.Controls.Add(this.bing);
@@ -224,6 +238,7 @@
         private System.Windows.Forms.PictureBox bing;
         private System.Windows.Forms.PictureBox fileNameBox;
         private System.Windows.Forms.Label fileNameText;
+        private System.Windows.Forms.Label copyrightText;
     }
 }
 
