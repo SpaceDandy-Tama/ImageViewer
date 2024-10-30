@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using BingHelper;
+using ImageViewer.BingHelper;
 
 namespace Tama.ImageViewer
 {
@@ -11,7 +10,7 @@ namespace Tama.ImageViewer
     {
         public static OpenFileDialog Ofd;
         public static string Filter = "Image Files (*.bmp, *.jpg, *.jpeg, *.png, *.gif, *.tiff, *.tif, *.ico, *.tga, *.dds, *.webp)|" +
-            "*.bmp;*.jpg;*.jepg;*.png;*.gif;*.tiff;*.tif;*.ico;*.tga;*.dds;*.webp";
+            "*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.tiff;*.tif;*.ico;*.tga;*.dds;*.webp";
         public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".tif", ".ico", ".tga", ".dds", ".webp" };
 
         public static string CurrentFile = null;
@@ -21,24 +20,16 @@ namespace Tama.ImageViewer
         {
             AppSetting.Load();
 
-            if (args.Length > 1)
+            if (args.Length == 2)
             {
                 if (args[0].StartsWith("-print"))
                 {
                     ImagePrinter.PrintImage(args[1]);
                 }
-                else
-                {
-                    Size size = Helpers.GetSizeFromString(args[0]);
-                    string absolutePathToFile = args[1];
-
-                    //Todo: ThumbnailProvider
-                    //Example: https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/winui/shell/appplatform/UsingThumbnailProviders
-                }
 
                 return;
             }
-            if(args.Length > 0)
+            if(args.Length == 1)
             {
                 if (args[0].StartsWith("-"))
                 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BingHelper
+namespace ImageViewer.BingHelper
 {
     [Serializable]
     class InvalidBingUrlException : Exception

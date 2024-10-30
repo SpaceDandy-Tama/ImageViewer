@@ -8,22 +8,6 @@ namespace Tama.ImageViewer
 {
     public static class Helpers
     {
-        public static Size GetSizeFromString(string sizeString)
-        {
-            string[] split = sizeString.Split('x');
-            Size size = new Size();
-            try
-            {
-                size.Width = int.Parse(split[0]);
-                size.Height = int.Parse(split[1]);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return size;
-        }
-
         public static bool IsExtensionSupported(string filePath, string[] filters)
         {
             if (!Path.HasExtension(filePath))

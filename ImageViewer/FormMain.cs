@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.IO;
 using ImageViewer.Properties;
-using BingHelper;
+using ImageViewer.BingHelper;
 using WebPWrapper;
 using Imaging.DDSReader;
 using Paloma;

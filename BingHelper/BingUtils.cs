@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BingHelper
+namespace ImageViewer.BingHelper
 {
     public static class BingUtils
     {

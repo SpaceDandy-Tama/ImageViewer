@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BingHelper
+namespace ImageViewer.BingHelper
 {
     public delegate void BingImageDownloadedEventHandler(object sender, BingImageDownloadedEventArgs args);
 

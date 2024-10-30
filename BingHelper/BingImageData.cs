@@ -1,4 +1,4 @@
-﻿namespace BingHelper
+﻿namespace ImageViewer.BingHelper
 {
     public class BingImageData
     {
