@@ -5,7 +5,6 @@
 - **New Installer** for streamlined setup.
 - **File Associations**: Easily open files directly with ImageViewer.
 - **Brand New Icons** for better user experience
-- **Thumbnails**: Quick preview of images.
 - **Light and Dark Modes**: Added Light/Dark Themes.
 - **Print Feature**: Print images directly from the app.
 	- `-print <file>` prints the image from command line.
@@ -31,6 +30,7 @@
 	- `-saveFilePathBing`
 	- `-DesktopJoke.png`
 	- `-attemptToGetId3Tags`
+- **TGA Thumbnails**: An attempt was make in this version to create ThumbnailProvider and register it to COM for .tga files. Unfortunately it doesn't work.
 
 ---
 
