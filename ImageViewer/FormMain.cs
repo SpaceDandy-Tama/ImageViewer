@@ -51,7 +51,13 @@ namespace Tama.ImageViewer
             this.KeyPreview = true;
             this.StartPosition = FormStartPosition.Manual; //This is required for being able to set this.Location
 
-            ApplyTheme();
+            if (ApplyTheme() && AppSetting.Current.ThemeCheckInterval > 0)
+            {
+                Timer timer = new Timer();
+                timer.Interval = Math.Min(5, AppSetting.Current.ThemeCheckInterval) * 1000;
+                timer.Tick += Timer_Tick;
+                timer.Start();
+            }
 
             this.pictureBox1.MouseWheel += pictureBox1_MouseWheel;
 
@@ -107,8 +113,10 @@ namespace Tama.ImageViewer
             this.Location = Screen.AllScreens[screenIndex].Bounds.Location;
         }
 
-        private void ApplyTheme()
+        private bool ApplyTheme()
         {
+            bool result = false;
+
             //Determine what Theme the user wants
             bool isCustom = AppSetting.Current.Theme == Theme.CustomColor;
             bool isLight = true;
@@ -122,6 +130,10 @@ namespace Tama.ImageViewer
                     if (!Helpers.IsWindows10OrHigher())
                     {
                         AppSetting.Current.Theme = isLight ? Theme.Light : Theme.Dark;
+                    }
+                    else
+                    {
+                        result = true;
                     }
                 }
                 else if (AppSetting.Current.Theme == Theme.Dark)
@@ -146,6 +158,13 @@ namespace Tama.ImageViewer
                     this.BackColor = System.Drawing.Color.Black;
                 }
             }
+
+            return result;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            ApplyTheme();
         }
 
         #region User Interface Button Actions
