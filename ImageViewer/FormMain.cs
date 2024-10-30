@@ -241,11 +241,7 @@ namespace Tama.ImageViewer
 
         public void PrintAction()
         {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-            MessageBox.Show("Not Implemented");
-#endif
+            ImagePrinter.PrintImage(Program.CurrentFile);
         }
         #endregion
 
