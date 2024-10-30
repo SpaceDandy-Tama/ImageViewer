@@ -54,7 +54,7 @@ namespace Tama.ImageViewer
             if (ApplyTheme() && AppSetting.Current.ThemeCheckInterval > 0)
             {
                 Timer timer = new Timer();
-                timer.Interval = Math.Min(5, AppSetting.Current.ThemeCheckInterval) * 1000;
+                timer.Interval = Math.Max(Math.Min(5, AppSetting.Current.ThemeCheckInterval), 1) * 1000;
                 timer.Tick += Timer_Tick;
                 timer.Start();
             }
