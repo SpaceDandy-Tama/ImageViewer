@@ -7,7 +7,9 @@ using System.Windows.Forms;
 using System.IO;
 using ImageViewer.Properties;
 using BingHelper;
-using System.Windows.Forms.VisualStyles;
+using WebPWrapper;
+using Imaging.DDSReader;
+using Paloma;
 
 namespace Tama.ImageViewer
 {
@@ -22,9 +24,11 @@ namespace Tama.ImageViewer
         public int CurrentIndex;
 
         public Image CurrentImage;
+        public bool IsImageDirty;
         public Image TempImage; //For zooming purposes
         public int ZoomFactor = 1;
         public int ActivePage = 0;
+        public int PageCount;
 
         #region Constructor
         public FormMain()
@@ -191,7 +195,40 @@ namespace Tama.ImageViewer
         {
             BingImageDownloader.DownloadLast8Images(AppSetting.Current.BingImageSavePath, null);
         }
-#endregion
+
+        public void SaveAction()
+        {
+            SaveImage();
+        }
+
+        public void PrevPageAction()
+        {
+            ChangeMultiPageImage(ActivePage - 1);
+        }
+
+        public void NextPageAction()
+        {
+            ChangeMultiPageImage(ActivePage + 1);
+        }
+
+        public void SettingsAction()
+        {
+#if DEBUG
+            throw new NotImplementedException();
+#else
+            MessageBox.Show("Not Implemented");
+#endif
+        }
+
+        public void PrintAction()
+        {
+#if DEBUG
+            throw new NotImplementedException();
+#else
+            MessageBox.Show("Not Implemented");
+#endif
+        }
+        #endregion
 
         public void OpenFileDialog()
         {
@@ -238,9 +275,9 @@ namespace Tama.ImageViewer
                         CurrentIndex = i;
                     }
                 }
-
-                RefreshUI();
             }
+
+            RefreshUI();
 
             PreviousDir = CurrentDir;
         }
@@ -266,6 +303,24 @@ namespace Tama.ImageViewer
                 pictureBox1.Image = CurrentImage;
                 SetFileNameText(CurrentFileName, ddsImage.PixelFormat.ToString());
                 ddsImage.Dispose();
+            }
+            else if(Program.CurrentFile.EndsWith(".webp", StringComparison.OrdinalIgnoreCase))
+            {
+                byte[] rawWebp = File.ReadAllBytes(Program.CurrentFile);
+                using (WebP webp = new WebP())
+                {
+                    CurrentImage = webp.Decode(rawWebp);
+                    pictureBox1.Image = CurrentImage;
+
+                    int width;
+                    int height;
+                    bool hasAlpha;
+                    bool hasAnimation;
+                    string format;
+                    webp.GetInfo(rawWebp, out width, out height, out hasAlpha, out hasAnimation, out format);
+
+                    SetFileNameText(CurrentFileName, $"{format}");
+                }
             }
             else
             {
@@ -300,23 +355,26 @@ namespace Tama.ImageViewer
         public void ChangeMultiPageImage(int i)
         {
             if (Program.CurrentFile.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+            {
+                PageCount = 1;
                 return;
-
-            int pageCount = CurrentImage.GetFrameCount(FrameDimension.Page);
+            }
+                
+            PageCount = CurrentImage.GetFrameCount(FrameDimension.Page);
             
-            if (pageCount == 1)
+            if (PageCount == 1)
 			{
                 ActivePage = 0;
                 return;
 			}
 
-            if (i < 0 || i >= pageCount)
+            if (i < 0 || i >= PageCount)
                 return;
 
             CurrentImage.SelectActiveFrame(FrameDimension.Page, i);
             ActivePage = i;
             pictureBox1.Image = CurrentImage;
-            SetFileNameText(CurrentFileName, String.Format("Page {0} of {1}", i + 1, pageCount));
+            SetFileNameText(CurrentFileName, String.Format("Page {0} of {1}", i + 1, PageCount));
         }
 
         private void SetFileNameText(string name, string extra = null, string copyright = null, string copyrightUrl = null)
@@ -466,10 +524,10 @@ namespace Tama.ImageViewer
                     ChangeScreen(5);
                     return;
                 case Keys.PageUp:
-                    ChangeMultiPageImage(ActivePage-1);
+                    PrevPageAction();
                     return;
                 case Keys.PageDown:
-                    ChangeMultiPageImage(ActivePage+1);
+                    NextPageAction();
                     return;
                 case Keys.B:
                     BingAction();
@@ -491,6 +549,10 @@ namespace Tama.ImageViewer
             {
                 OpenImage(true);
             }
+            else if(e.Control && e.KeyCode == Keys.P)
+            {
+                PrintAction();
+            }
         }
 
         private void RefreshUI()
@@ -498,13 +560,18 @@ namespace Tama.ImageViewer
             if (AppSetting.Current.UIVisible)
             {
                 fileNameBox.Visible = true;
-                //Todo: Instead of making the following 4 buttons invisible, create a disabled sprite and use those.
+                //Todo: Instead of making buttons invisible, disable them.
                 arrowLeft.Visible = FilesInDirectory.Length > 1;
                 arrowRight.Visible = FilesInDirectory.Length > 1;
                 rotateLeft.Visible = CanRotate;
                 rotateRight.Visible = CanRotate;
                 fullscreen.Visible = true;
                 bing.Visible = AppSetting.Current.BingButtonVisible;
+                save.Visible = IsImageDirty;
+                prevPage.Visible = PageCount > 1;
+                nextPage.Visible = PageCount > 1;
+                settings.Visible = true;
+                print.Visible = true;
             }
             else
             {
@@ -515,6 +582,11 @@ namespace Tama.ImageViewer
                 rotateRight.Visible = false;
                 fullscreen.Visible = false;
                 bing.Visible = false;
+                save.Visible = false;
+                prevPage.Visible = false;
+                nextPage.Visible = false;
+                settings.Visible = false;
+                print.Visible = false;
             }
         }
 
@@ -536,8 +608,53 @@ namespace Tama.ImageViewer
 
             pictureBox1.Image = CurrentImage;
 
-            if(!(Program.CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase) ))
+            IsImageDirty = true;
+            RefreshUI();
+        }
+
+        private void SaveImage()
+        {
+            if(!Helpers.IsExtensionSupported(Program.CurrentFile, Program.Filters))
+            {
+                MessageBox.Show("File extension not supported", "Tama's Image Viewer");
+                return;
+            }
+
+            if (Program.CurrentFile.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Can't save .gif files", "Tama's Image Viewer");
+            }
+            else if (Program.CurrentFile.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Can't save .tiff files", "Tama's Image Viewer");
+            }
+            else if (Program.CurrentFile.EndsWith(".tif", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Can't save .tif files", "Tama's Image Viewer");
+            }
+            else if (Program.CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Can't save .tga files", "Tama's Image Viewer");
+            }
+            else if (Program.CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Can't save .dds files", "Tama's Image Viewer");
+            }
+            else if (Program.CurrentFile.EndsWith(".webp", StringComparison.OrdinalIgnoreCase))
+            {
+                using (WebP webp = new WebP())
+                {
+                    byte[] rawWebP = webp.EncodeLossless((Bitmap)CurrentImage);
+                    File.WriteAllBytes(Program.CurrentFile, rawWebP);
+                }
+            }
+            else
+            {
                 CurrentImage.Save(Program.CurrentFile);
+            }
+
+            IsImageDirty = false;
+            RefreshUI();
         }
 
         private void NextImage()
@@ -698,7 +815,131 @@ namespace Tama.ImageViewer
             BingAction();
         }
 
-#endregion
+        private void save_MouseEnter(object sender, EventArgs e)
+        {
+            save.Image = Resources.blankHover;
+        }
+        private void save_MouseDown(object sender, MouseEventArgs e)
+        {
+            save.Image = Resources.blankDown;
+        }
+        private void save_MouseLeave(object sender, EventArgs e)
+        {
+            save.Image = Resources.blank;
+        }
+        private void save_MouseUp(object sender, MouseEventArgs e)
+        {
+            save.Image = Resources.blank;
+            SaveAction();
+        }
 
+        private void prevPage_MouseEnter(object sender, EventArgs e)
+        {
+            prevPage.Image = Resources.blankHover;
+        }
+        private void prevPage_MouseDown(object sender, MouseEventArgs e)
+        {
+            prevPage.Image = Resources.blankDown;
+        }
+        private void prevPage_MouseLeave(object sender, EventArgs e)
+        {
+            prevPage.Image = Resources.blank;
+        }
+        private void prevPage_MouseUp(object sender, MouseEventArgs e)
+        {
+            prevPage.Image = Resources.blank;
+            PrevPageAction();
+        }
+
+        private void nextPage_MouseEnter(object sender, EventArgs e)
+        {
+            nextPage.Image = Resources.blankHover;
+        }
+        private void nextPage_MouseDown(object sender, MouseEventArgs e)
+        {
+            nextPage.Image = Resources.blankDown;
+        }
+        private void nextPage_MouseLeave(object sender, EventArgs e)
+        {
+            nextPage.Image = Resources.blank;
+        }
+        private void nextPage_MouseUp(object sender, MouseEventArgs e)
+        {
+            nextPage.Image = Resources.blank;
+            NextPageAction();
+        }
+
+        private void settings_MouseEnter(object sender, EventArgs e)
+        {
+            settings.Image = Resources.blankHover;
+        }
+        private void settings_MouseDown(object sender, MouseEventArgs e)
+        {
+            settings.Image = Resources.blankDown;
+        }
+        private void settings_MouseLeave(object sender, EventArgs e)
+        {
+            settings.Image = Resources.blank;
+        }
+        private void settings_MouseUp(object sender, MouseEventArgs e)
+        {
+            settings.Image = Resources.blank;
+            SettingsAction();
+        }
+
+        private void print_MouseEnter(object sender, EventArgs e)
+        {
+            print.Image = Resources.blankHover;
+        }
+        private void print_MouseDown(object sender, MouseEventArgs e)
+        {
+            print.Image = Resources.blankDown;
+        }
+        private void print_MouseLeave(object sender, EventArgs e)
+        {
+            print.Image = Resources.blank;
+        }
+        private void print_MouseUp(object sender, MouseEventArgs e)
+        {
+            print.Image = Resources.blank;
+            PrintAction();
+        }
+
+        #endregion
+
+        private void onDragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Link;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void onDragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if(files != null && files.Length > 0)
+                {
+                    string file = files[0];
+
+                    if(Helpers.IsExtensionSupported(file, Program.Filters))
+                    {
+                        Program.CurrentFile = file;
+                        OpenImage();
+                    }
+                    else
+                    {
+                        MessageBox.Show("File extension not supported", "Tama's ImageViewer");
+                    }
+                }
+            }
+        }
     }
 }

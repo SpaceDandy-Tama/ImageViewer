@@ -4,6 +4,7 @@
 
 - **New Installer** for streamlined setup.
 - **File Associations**: Easily open files directly with ImageViewer.
+- **Brand New Icons** for better user experience
 - **Thumbnails**: Quick preview of images.
 - **Light and Dark Modes**: Added Light/Dark Themes.
 - **Print Feature**: Print images directly from the app.
@@ -23,6 +24,7 @@
 - **Image Rotation**: *Save* button now appears instead of immediate overwrite when rotating.
 - **Window Management**: Improved window state memory for a more seamless and consistent experience when going in and out of fullscreen and maximized modes.
 - **Open File Dialog**: Added missing file extensions.
+- **Drag&Drop** feature added as an alternate method to open images.
 - **TINY Serialization**: Replaced built-in JSON with TINYSharp for optimized performance and code clarity.
 - **Performance Improvements**: Optimized *Next* and *Previous* actions.
 - **Commandline**: Removed some outdated commandline options.
