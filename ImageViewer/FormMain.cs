@@ -552,7 +552,7 @@ namespace Tama.ImageViewer
                     return;
             }
 
-            if ((e.Alt && e.KeyCode == Keys.Enter) && (e.Control && e.Shift && e.KeyCode == Keys.F))
+            if ((e.Alt && e.KeyCode == Keys.Enter) || (e.Control && e.Shift && e.KeyCode == Keys.F))
             {
                 FullscreenAction();
             }
