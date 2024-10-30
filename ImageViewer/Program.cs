@@ -58,7 +58,7 @@ namespace Tama.ImageViewer
                 {
                     if (Helpers.IsExtensionSupported(args[0], Filters))
                     {
-                        CurrentFile = args[0];
+                        CurrentFile = Path.GetFullPath(args[0]);
                     }
                     else
                     {

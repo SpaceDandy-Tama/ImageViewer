@@ -205,7 +205,6 @@
             this.Controls.Add(this.arrowLeft);
             this.Controls.Add(this.fullscreen);
             this.Controls.Add(this.pictureBox1);
-            this.MaximizeBox = false;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ImageViewer";

@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
+﻿using System.IO;
 using System.Windows.Forms;
 
 using Tiny;
@@ -21,11 +20,14 @@ namespace Tama.ImageViewer
         }
 
         public bool Fullscreen = true;
+        public bool Maximized = false;
         public Vector2Int WindowSize = new Vector2Int(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 2);
         public Vector2Int WindowLocation = new Vector2Int(Screen.PrimaryScreen.Bounds.Width / 4, Screen.PrimaryScreen.Bounds.Height / 4);
         public bool UIVisible = true;
         public bool BingButtonVisible = true;
         public string BingImageSavePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyPictures), "Bing Images");
+        public Theme Theme = Theme.Dark;
+        public Color CustomBackgroundColor = new Color(88, 22, 44);
 
         public static AppSetting Load()
         {

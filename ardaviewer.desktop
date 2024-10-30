@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=ArdaViewer
-Comment=ArdaViewer is an extremely lightweight image viewing application completely written in C#. 
-Exec="/home/tama/ArdaSuite/ArdaViewer/ArdaViewer.exe" %U
-Terminal=false
-Type=Application
-Icon=/home/tama/ArdaSuite/ArdaViewer/arda.ico
-Categories=Graphics;
-TryExec=/home/tama/ArdaSuite/ArdaViewer/ArdaViewer.exe

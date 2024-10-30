@@ -1,70 +1,87 @@
 # Tama's ImageViewer Changelog
 
-### v2.4
+## v2.4
 
-- Installer
-- File Associations
-- Thumbnails
-- Print Feature!
-- .webp file format support
-- F11 keys added for fullscreen*
-- Ctrl+Shift+F added for fullscreen*
-- Alt+Enter retained for fullscreen*
-- Next and Previous buttons are disabled when there are no other images in the directory!
-- Rotate Left and Right buttons are disabled when the image format isn't supported (.gif, .dds, .tif)!
-- Image isn't immediately overwriten when it's rotated anymore, instead Save button appears
-- Maximize button disabled*
-- Improved WindowState memory*
-- Added missing extensions to Open File Dialog*
-- Replaced built-in JSON Serializer with TINYSharp*
-- Optimized Next and Previous Actions*
-- Settings is not saved in Appdata/Roaming/TamaSuite/
-
----
-
-### v2.3
-
-- Added Functionality to Save Image Information as ID3 Tags, and the ability to display them when opened.
-
----
-
-### v2.2
-
-- Changed Name to ImageViewer
+- **New Installer** for streamlined setup.
+- **File Associations**: Easily open files directly with ImageViewer.
+- **Thumbnails**: Quick preview of images.
+- **Light and Dark Modes**: Added Light/Dark Themes.
+- **Print Feature**: Print images directly from the app.
+	- `-print <file>` prints the image from command line.
+	- `Ctrl+P` added for printing from app.
+- **New Format Support**: `.webp` files now supported.
+- **Fullscreen Options**:
+  - `F11` key added for fullscreen mode.
+  - `Ctrl+Shift+F` added for fullscreen mode.
+  - `Alt+Enter` retained for fullscreen mode.
+- **Navigation Buttons**:
+  - *Next* and *Previous* buttons are disabled if no other images are available in the directory.
+  - *Rotate Left* and *Rotate Right* buttons are disabled for unsupported formats (.gif, .dds, .tif).
+  - *Page Up* and *Page Down* buttons are now shown when a multipage document is opened.
+  - *Print* button added.
+  - *Save* button added.
+- **Image Rotation**: *Save* button now appears instead of immediate overwrite when rotating.
+- **Window Management**: Improved window state memory for a more seamless and consistent experience when going in and out of fullscreen and maximized modes.
+- **Open File Dialog**: Added missing file extensions.
+- **TINY Serialization**: Replaced built-in JSON with TINYSharp for optimized performance and code clarity.
+- **Performance Improvements**: Optimized *Next* and *Previous* actions.
+- **Commandline**: Removed some outdated commandline options.
+	- `-saveFilePathBing`
+	- `-DesktopJoke.png`
+	- `-attemptToGetId3Tags`
 
 ---
 
-### v2.1
+## v2.3
 
-- ArdaBing Created (Improved Bing Functionality)
-- Ctrl + B downloads last 8 images of the day from Bing
-- -silentBingMultiple command added as a multiple equivalent of -silentBing command
-- default SaveFilePathBing is now "My Pictures/Bing Images" instead of "Desktop"
-- -saveFilePathBing command added (example: ./ArdaViewer.exe -saveFilePathBing="C:\My Images")
-- Ctrl + O pops up Open File Dialog
-- Documentation.htm added
+- **ID3 Tag Support**: Save and display image information as ID3 tags.
 
 ---
 
-### v2.0
+## v2.2
 
-- BUGFIX: next&previous image button functionality fixed
-- BUGFIX: memory leaks
-- AppSettings now saves to roaming appdata
-- Tiff file multipage support added (PageUp & PageDn)
-- Current page and page count of multipage .tiff is now displayed
-- PixelFormat of .dds is now displayed
-- Bits Per Pixel and Compression Type of .tga is now displayed
+- **App Rename**: Renamed to *ImageViewer*.
 
 ---
 
-### v1.9
+## v2.1
 
-- Zoom feature added
+- **ArdaBing Integration**: Enhanced Bing functionality.
+  - `Ctrl+B` downloads the last 8 Bing images of the day.
+  - `-silentBingMultiple` command added for multiple silent Bing downloads.
+  - *Default Save Path*: Updated to `"My Pictures/Bing Images"` from `"Desktop"`.
+  - New `-saveFilePathBing` command (e.g., `./ArdaViewer.exe -saveFilePathBing="C:\My Images"`).
+  - `Ctrl+O` opens the File Dialog.
+- **Documentation**: Added `Documentation.htm`.
 
 ---
 
-### v1.8
+## v2.0
 
-- .dds and .tga file format compatibility added
-- 64 bit
+- **Bug Fixes**:
+  - Fixed *Next* and *Previous* button functionality.
+  - Addressed memory leaks.
+- **AppSettings**: Now saved to roaming AppData.
+- **Multipage TIFF Support**:
+  - Use `PageUp` and `PageDown` for navigation.
+  - Displays the current page and page count for `.tiff` files.
+- **File Information**:
+  - Displays PixelFormat for `.dds` files.
+  - Displays Bits Per Pixel and Compression Type for `.tga` files.
+
+---
+
+## v1.9
+
+- **Zoom Feature**: Added zooming capabilities.
+
+---
+
+## v1.8
+
+- **New Format Compatibility**: Added support for `.dds` and `.tga` file formats.
+- **64-Bit Support**: Enhanced compatibility and performance.
+
+---
+
+*Note: Changelog wasn't maintained for earlier versions.*

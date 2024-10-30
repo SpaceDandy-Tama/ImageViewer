@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.IO;
 using ImageViewer.Properties;
 using BingHelper;
+using System.Windows.Forms.VisualStyles;
 
 namespace Tama.ImageViewer
 {
@@ -43,16 +44,19 @@ namespace Tama.ImageViewer
             bing.Parent = pictureBox1;
 
             this.Icon = Resources.icon;
-            this.BackColor = Color.Black;
             this.KeyPreview = true;
             this.StartPosition = FormStartPosition.Manual; //This is required for being able to set this.Location
+
+            ApplyTheme();
 
             this.pictureBox1.MouseWheel += pictureBox1_MouseWheel;
 
             if (string.IsNullOrEmpty(Program.CurrentFile))
             {
                 //Todo: remove this line and display a sample image, perhaps sample image could contain instructions
+#if DEBUG
                 throw new NotImplementedException();
+#endif
             }
             OpenImage();
 
@@ -65,22 +69,26 @@ namespace Tama.ImageViewer
             if (AppSetting.Current.Fullscreen == true)
             {
                 this.FormBorderStyle = FormBorderStyle.None;
+                this.WindowState = FormWindowState.Normal;
 
                 this.Width = Screen.PrimaryScreen.Bounds.Width;
                 this.Height = Screen.PrimaryScreen.Bounds.Height;
                 this.Location = new Point(0, 0);
-
-                this.WindowState = FormWindowState.Normal;
             }
             else
             {
-                this.FormBorderStyle = FormBorderStyle.Sizable;
+                //It is crucial the following code inside this scope are done in this exact order, otherwise weird things happen to windows forms.
 
+                //Set the Borders to Resizable
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+                //Set window state to maximized if Appsettings say they are maximized, or to normal windowed mode if not
+                this.WindowState = AppSetting.Current.Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
+
+                //Set the window size and location from appsetting regardless of maximized or normal, this is great for when coming out of maximized
+                //Because this code will not execute again when user decides to come out of maximize mode, there is no event for maximize.
                 this.Width = AppSetting.Current.WindowSize.x;
                 this.Height = AppSetting.Current.WindowSize.y;
                 this.Location = new Point(AppSetting.Current.WindowLocation.x, AppSetting.Current.WindowLocation.y);
-
-                this.WindowState = FormWindowState.Normal;
             }
 
             RefreshUI();
@@ -93,6 +101,47 @@ namespace Tama.ImageViewer
             this.Width = Screen.AllScreens[screenIndex].Bounds.Width;
             this.Height = Screen.AllScreens[screenIndex].Bounds.Height;
             this.Location = Screen.AllScreens[screenIndex].Bounds.Location;
+        }
+
+        private void ApplyTheme()
+        {
+            //Determine what Theme the user wants
+            bool isCustom = AppSetting.Current.Theme == Theme.CustomColor;
+            bool isLight = true;
+            if (!isCustom)
+            {
+                if (AppSetting.Current.Theme == Theme.Default)
+                {
+                    isLight = Helpers.IsLightMode();
+
+                    //Modify AppSetting if below windows 10, because only win10 and higher support light/dark themes
+                    if (!Helpers.IsWindows10OrHigher())
+                    {
+                        AppSetting.Current.Theme = isLight ? Theme.Light : Theme.Dark;
+                    }
+                }
+                else if (AppSetting.Current.Theme == Theme.Dark)
+                {
+                    isLight = false;
+                }
+            }
+
+            //Adjust background color
+            if (isCustom)
+            {
+                this.BackColor = AppSetting.Current.CustomBackgroundColor.ToSystemDrawingColor();
+            }
+            else
+            {
+                if (isLight)
+                {
+                    this.BackColor = System.Drawing.Color.WhiteSmoke;
+                }
+                else
+                {
+                    this.BackColor = System.Drawing.Color.Black;
+                }
+            }
         }
 
         #region User Interface Button Actions
@@ -341,7 +390,7 @@ namespace Tama.ImageViewer
 
             Graphics bmGraphics = Graphics.FromImage(TempImage);
 
-            bmGraphics.Clear(Color.Black);
+            bmGraphics.Clear(this.BackColor);
 
             bmGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
@@ -527,6 +576,16 @@ namespace Tama.ImageViewer
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Save the Maximized State of Window
+            AppSetting.Current.Maximized = this.WindowState == FormWindowState.Maximized;
+
+            //Save WindowSize and Location only when in windowed mode to ensure consistent windowing memory.
+            if (!AppSetting.Current.Fullscreen && !AppSetting.Current.Maximized)
+            {
+                AppSetting.Current.WindowSize = new Vector2Int(this.Width, this.Height);
+                AppSetting.Current.WindowLocation = new Vector2Int(this.Location.X, this.Location.Y);
+            }
+
             AppSetting.Current.Save();
         }
 
