@@ -23,29 +23,23 @@ namespace Tama.ImageViewer
         public string[] FilesInDirectory;
         public int CurrentIndex;
 
-        public Image CurrentImage;
+        public DisposableImage CurrentImage;
         public bool IsImageDirty;
-        public Image TempImage; //For zooming purposes
+        public Bitmap TempBitmap; //For zooming purposes
         public int ZoomFactor = 1;
         public int ActivePage = 0;
         public int PageCount;
+
+        public static int[] ButtonSizes = { 48, 64, 80, 96, 128, 160, 192, 256, 320, 416, 512 };
 
         #region Constructor
         public FormMain()
         {
             InitializeComponent();
 
-            //Set the parents for the UI buttons. Otherwise their transparency doesn't work.
-            fileNameBox.Parent = pictureBox1;
-            fileNameText.Parent = fileNameBox;
-            copyrightText.Parent = fileNameBox;
+            SetParentsOfUIControlsForTransparencyToWork();
 
-            arrowLeft.Parent = pictureBox1;
-            arrowRight.Parent = pictureBox1;
-            rotateLeft.Parent = pictureBox1;
-            rotateRight.Parent = pictureBox1;
-            fullscreen.Parent = pictureBox1;
-            bing.Parent = pictureBox1;
+            AdjustControlSizes();
 
             this.Icon = Resources.icon;
             this.KeyPreview = true;
@@ -61,18 +55,20 @@ namespace Tama.ImageViewer
 
             this.pictureBox1.MouseWheel += pictureBox1_MouseWheel;
 
+            BingImageDownloader.OnImageDownloadedAndSaved += OnImageDownloadedAndSaved;
+
             if (string.IsNullOrEmpty(Program.CurrentFile))
             {
-                //Todo: remove this line and display a sample image, perhaps sample image could contain instructions
-#if DEBUG
-                throw new NotImplementedException();
-#endif
+                BingAction();
             }
-            OpenImage();
+            else
+            {
+                OpenImage();
+            }
 
             ApplyWindowSettings();
         }
-#endregion
+        #endregion
 
         private void ApplyWindowSettings()
         {
@@ -202,17 +198,45 @@ namespace Tama.ImageViewer
         }
         public void BingAction()
         {
-            BingImageDownloader.OnImageDownloadedAndSaved += (object sender, BingImageDownloadedEventArgs args) =>
-            {
-                Program.CurrentFile = args.ImagePath;
-                OpenImage();
-            };
-            BingImageDownloader.DownloadImageOfTheDay(AppSetting.Current.BingImageSavePath, null);
+            BingImageDownloader.DownloadImageOfTheDay(AppSetting.Current.BingImageSavePath, AppSetting.Current.BingRegion);
         }
 
         public void BingActionMultiple()
         {
-            BingImageDownloader.DownloadLast8Images(AppSetting.Current.BingImageSavePath, null);
+            BingImageDownloader.DownloadLast8Images(AppSetting.Current.BingImageSavePath, AppSetting.Current.BingRegion);
+        }
+
+        public void OnImageDownloadedAndSaved(BingImageDownloadedEventArgs args)
+        {
+            if (CurrentDir == Path.GetDirectoryName(args.ImagePath[0]))
+            {
+                RefreshFilesInDirectory();
+            }
+
+            if (!string.IsNullOrEmpty(Program.CurrentFile) && AppSetting.Current.OpenBingImageAfterDownload == AskOrNoOption.Never)
+            {
+                return;
+            }
+
+            string message = $"The following image{(args.ImagePath.Length > 1 ? "s" : string.Empty)} have been downloaded and saved:\n";
+            for (int i = args.ImagePath.Length - 1; i >= 0; i--)
+            {
+                message += $"\n\"{args.ImagePath[i]}\"";
+            }
+
+            if (!string.IsNullOrEmpty(Program.CurrentFile) && AppSetting.Current.OpenBingImageAfterDownload == AskOrNoOption.Ask)
+            {
+                message += $"\n\nWould you like to open {(args.ImagePath.Length > 1 ? "the last image" : "it")}?";
+                DialogResult result = MessageBox.Show(message, Application.ProductName, MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
+            Program.CurrentFile = args.ImagePath[0]; //Index increases as image becomes older, so index 0 is the latest image.
+            OpenImage();
         }
 
         public void SaveAction()
@@ -232,11 +256,7 @@ namespace Tama.ImageViewer
 
         public void SettingsAction()
         {
-#if DEBUG
-            throw new NotImplementedException();
-#else
-            MessageBox.Show("Not Implemented");
-#endif
+            Helpers.Message("Settings not implemented");
         }
 
         public void PrintAction()
@@ -254,6 +274,33 @@ namespace Tama.ImageViewer
             Program.CurrentFile = Program.Ofd.FileName;
         }
 
+        public void RefreshFilesInDirectory()
+        {
+            List<string> tempList = new List<string>(Directory.GetFiles(CurrentDir));
+            List<int> elementsToRemove = new List<int>();
+
+            for (int i = 0; i < tempList.Count; i++)
+            {
+                if (!Helpers.IsExtensionSupported(tempList[i], ImageDecoder.Filters))
+                    elementsToRemove.Add(i);
+            }
+
+            for (int i = elementsToRemove.Count - 1; i > -1; i--)
+            {
+                tempList.RemoveAt(elementsToRemove[i]);
+            }
+
+            FilesInDirectory = tempList.ToArray();
+
+            for (int i = 0; i < FilesInDirectory.Length; i++)
+            {
+                if (FilesInDirectory[i] == Program.CurrentFile)
+                {
+                    CurrentIndex = i;
+                }
+            }
+        }
+
         public void OpenImage(bool showDialog = false)
         {
             if(showDialog)
@@ -262,34 +309,11 @@ namespace Tama.ImageViewer
             if (!File.Exists(Program.CurrentFile))
                 return;
 
-            RefleshDisplayedImage();
+            RefreshDisplayedImage();
 
             if (CurrentDir != PreviousDir)
             {
-
-                List<string> tempList = new List<string>(Directory.GetFiles(CurrentDir));
-                List<int> elementsToRemove = new List<int>();
-
-                for (int i = 0; i < tempList.Count; i++)
-                {
-                    if (!Helpers.IsExtensionSupported(tempList[i], Program.Filters))
-                        elementsToRemove.Add(i);
-                }
-
-                for (int i = elementsToRemove.Count - 1; i > -1; i--)
-                {
-                    tempList.RemoveAt(elementsToRemove[i]);
-                }
-
-                FilesInDirectory = tempList.ToArray();
-
-                for (int i = 0; i < FilesInDirectory.Length; i++)
-                {
-                    if (FilesInDirectory[i] == Program.CurrentFile)
-                    {
-                        CurrentIndex = i;
-                    }
-                }
+                RefreshFilesInDirectory();
             }
 
             RefreshUI();
@@ -297,51 +321,57 @@ namespace Tama.ImageViewer
             PreviousDir = CurrentDir;
         }
 
-        public void RefleshDisplayedImage()
+        public void RefreshDisplayedImage()
         {
             CurrentImage?.Dispose();
-            TempImage?.Dispose();
+            TempBitmap?.Dispose();
+            pictureBox1.Image?.Dispose();
             ZoomFactor = 1;
+
+            try
+            {
+                CurrentImage = ImageDecoder.Decode(Program.CurrentFile);
+            }
+            catch (Exception exception)
+            {
+#if !DEBUG
+                if (exception is DecodingNotSupported)
+#endif
+                {
+                    Helpers.Message(exception.Message);
+                    return;
+                }
+            }
+
+            pictureBox1.Image = CurrentImage;
 
             if (Program.CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
             {
-                Paloma.TargaImage targaImage = new Paloma.TargaImage(Program.CurrentFile);
-                CurrentImage = Paloma.TargaImage.CopyToBitmap(targaImage);
-                pictureBox1.Image = CurrentImage;
-                SetFileNameText(CurrentFileName, String.Format("{0} bpp {1}", targaImage.Header.PixelDepth, targaImage.Header.IsRLE ? "RLE" : "RAW"));
-                targaImage.Dispose();
+                SetFileNameText(CurrentFileName, $"{CurrentImage.TargaPixelDepth} bpp {(CurrentImage.TargaRLE ? "RLE" : "RAW")}");
             }
             else if (Program.CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
             {
-                Imaging.DDSReader.DDSImage ddsImage = Imaging.DDSReader.DDS.LoadImage(Program.CurrentFile);
-                CurrentImage = Imaging.DDSReader.DDS.CopyToBitmap(ddsImage);
-                pictureBox1.Image = CurrentImage;
-                SetFileNameText(CurrentFileName, ddsImage.PixelFormat.ToString());
-                ddsImage.Dispose();
+                SetFileNameText(CurrentFileName, CurrentImage.DDSPixelFormat.ToString());
             }
             else if(Program.CurrentFile.EndsWith(".webp", StringComparison.OrdinalIgnoreCase))
             {
-                byte[] rawWebp = File.ReadAllBytes(Program.CurrentFile);
-                using (WebP webp = new WebP())
-                {
-                    CurrentImage = webp.Decode(rawWebp);
-                    pictureBox1.Image = CurrentImage;
-
-                    int width;
-                    int height;
-                    bool hasAlpha;
-                    bool hasAnimation;
-                    string format;
-                    webp.GetInfo(rawWebp, out width, out height, out hasAlpha, out hasAnimation, out format);
-
-                    SetFileNameText(CurrentFileName, $"{format}");
-                }
+                SetFileNameText(CurrentFileName, CurrentImage.WEBPFormat);
             }
             else
             {
-                CurrentImage = Image.FromFile(Program.CurrentFile);
-                pictureBox1.Image = CurrentImage;
-                SetFileNameText(CurrentFileName);
+                if(Program.CurrentFile.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+                {
+                    FrameDimension dimension = new FrameDimension(CurrentImage.FrameDimensionsList[0]);
+                    SetFileNameText(CurrentFileName, $"{CurrentImage.GetFrameCount(dimension)} frames total");
+                }
+                else if (Program.CurrentFile.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase) || Program.CurrentFile.EndsWith(".tif", StringComparison.OrdinalIgnoreCase))
+                {
+                    SetFileNameText(CurrentFileName, $"{ActivePage + 1}/{CurrentImage.GetFrameCount(FrameDimension.Page)} pages");
+                }
+                else
+                {
+                    SetFileNameText(CurrentFileName);
+                }
             }
 
             if (Program.CurrentFile.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
@@ -357,6 +387,10 @@ namespace Tama.ImageViewer
                 }
 
                 SetCopyrightText(copyright);
+            }
+            else
+            {
+                SetCopyrightText(null);
             }
 
             ChangeMultiPageImage(0);
@@ -392,13 +426,11 @@ namespace Tama.ImageViewer
             SetFileNameText(CurrentFileName, String.Format("Page {0} of {1}", i + 1, PageCount));
         }
 
-        private void SetFileNameText(string name, string extra = null, string copyright = null, string copyrightUrl = null)
+        private void SetFileNameText(string name, string extra = null)
 		{
             //fileNameText
             this.Text = name;
-            fileNameText.Text = name;
-            if (extra != null && extra.Length > 0)
-                fileNameText.Text += String.Format(" ({0})", extra);
+            fileNameText.Text = $"{name}{(string.IsNullOrEmpty(extra) ? string.Empty : $" ({extra})")}";
             fileNameBox.Size = fileNameText.Size;
         }
 
@@ -409,7 +441,7 @@ namespace Tama.ImageViewer
                 copyrightText.Text = copyright;
                 Size size = Size.Empty;
                 size.Width = fileNameText.Width > copyrightText.Width ? fileNameText.Width : copyrightText.Width;
-                size.Height = fileNameText.Height + copyrightText.Height;
+                size.Height = AppSetting.Current.DesiredUISize;
                 fileNameBox.Size = size;
             }
             else
@@ -438,16 +470,16 @@ namespace Tama.ImageViewer
                 else
                     pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
 
-                if (TempImage != null)
-                    TempImage.Dispose();
+                if (TempBitmap != null)
+                    TempBitmap.Dispose();
 
                 return;
             }
             else
                 ZoomFactor += direction;
 
-            if(TempImage != null)
-                TempImage.Dispose();
+            if(TempBitmap != null)
+                TempBitmap.Dispose();
 
             int width = pictureBox1.Width / ZoomFactor;
             int height = pictureBox1.Height / ZoomFactor;
@@ -459,9 +491,9 @@ namespace Tama.ImageViewer
             else
                 point = new Point(x - (width / 2), y - (height / 2));
 
-            TempImage =  new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            TempBitmap =  new Bitmap(width, height, PixelFormat.Format24bppRgb);
 
-            Graphics bmGraphics = Graphics.FromImage(TempImage);
+            Graphics bmGraphics = Graphics.FromImage(TempBitmap);
 
             bmGraphics.Clear(this.BackColor);
 
@@ -471,7 +503,7 @@ namespace Tama.ImageViewer
             Rectangle srcRect = new Rectangle(point, size);
             bmGraphics.DrawImage(CurrentImage, dstRect, srcRect, GraphicsUnit.Pixel);
 
-            pictureBox1.Image = TempImage;
+            pictureBox1.Image = TempBitmap;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
             bmGraphics.Dispose();
@@ -503,71 +535,178 @@ namespace Tama.ImageViewer
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
-            {
-                case Keys.Escape: //Quit
-                    Application.Exit();
-                    return;
-                case Keys.Right: //Next Image in the CurrentDir
-                    NextImage();
-                    return;
-                case Keys.Left: //Previous Image in the CurrentDir
-                    PreviousImage();
-                    return;
-                case Keys.Add: //ZoomIn
-                    ZoomDisplayedImage(1);
-                    return;
-                case Keys.Subtract: //ZoomOut
-                    ZoomDisplayedImage(-1);
-                    return;
-                case Keys.NumPad1:
-                    ChangeScreen(0);
-                    return;
-                case Keys.NumPad2:
-                    ChangeScreen(1);
-                    return;
-                case Keys.NumPad3:
-                    ChangeScreen(2);
-                    return;
-                case Keys.NumPad4:
-                    ChangeScreen(3);
-                    return;
-                case Keys.NumPad5:
-                    ChangeScreen(4);
-                    return;
-                case Keys.NumPad6:
-                    ChangeScreen(5);
-                    return;
-                case Keys.PageUp:
-                    PrevPageAction();
-                    return;
-                case Keys.PageDown:
-                    NextPageAction();
-                    return;
-                case Keys.B:
-                    BingAction();
-                    return;
-                case Keys.F11:
-                    FullscreenAction();
-                    return;
-            }
-
             if ((e.Alt && e.KeyCode == Keys.Enter) || (e.Control && e.Shift && e.KeyCode == Keys.F))
             {
                 FullscreenAction();
+                return;
             }
             else if (e.Control && e.KeyCode == Keys.B)
             {
                 BingActionMultiple();
+                return;
             }
             else if (e.Control && e.KeyCode == Keys.O)
             {
                 OpenImage(true);
+                return;
             }
-            else if(e.Control && e.KeyCode == Keys.P)
+            else if (e.Control && e.KeyCode == Keys.P)
             {
                 PrintAction();
+                return;
             }
+
+            switch (e.KeyCode)
+            {
+                case Keys.Escape: //Quit
+                    Application.Exit();
+                    break;
+                case Keys.Right: //Next Image in the CurrentDir
+                    NextImage();
+                    break;
+                case Keys.Left: //Previous Image in the CurrentDir
+                    PreviousImage();
+                    break;
+                case Keys.Add: //ZoomIn
+                    ZoomDisplayedImage(1);
+                    break;
+                case Keys.Subtract: //ZoomOut
+                    ZoomDisplayedImage(-1);
+                    break;
+                case Keys.NumPad1:
+                    ChangeScreen(0);
+                    break;
+                case Keys.NumPad2:
+                    ChangeScreen(1);
+                    break;
+                case Keys.NumPad3:
+                    ChangeScreen(2);
+                    break;
+                case Keys.NumPad4:
+                    ChangeScreen(3);
+                    break;
+                case Keys.NumPad5:
+                    ChangeScreen(4);
+                    break;
+                case Keys.NumPad6:
+                    ChangeScreen(5);
+                    break;
+                case Keys.PageUp:
+                    PrevPageAction();
+                    break;
+                case Keys.PageDown:
+                    NextPageAction();
+                    break;
+                case Keys.Up:
+                    PrevPageAction();
+                    break;
+                case Keys.Down:
+                    NextPageAction();
+                    break;
+                case Keys.Space:
+                    NextPageAction();
+                    break;
+                case Keys.B:
+                    BingAction();
+                    break;
+                case Keys.F11:
+                    FullscreenAction();
+                    break;
+            }
+        }
+
+        private void SetParentsOfUIControlsForTransparencyToWork()
+        {
+            //Set the parents for the UI Elements. Otherwise their transparency doesn't work. From front to back.
+            arrowLeft.Parent = pictureBox1;
+            arrowRight.Parent = pictureBox1;
+            rotateLeft.Parent = pictureBox1;
+            rotateRight.Parent = pictureBox1;
+            fullscreen.Parent = pictureBox1;
+            bing.Parent = pictureBox1;
+            save.Parent = pictureBox1;
+            prevPage.Parent = pictureBox1;
+            nextPage.Parent = pictureBox1;
+            settings.Parent = pictureBox1;
+            print.Parent = pictureBox1;
+
+            fileNameBox.Parent = pictureBox1;
+            fileNameText.Parent = fileNameBox;
+            copyrightText.Parent = fileNameBox;
+        }
+
+        public int FindClosestButtonSize(int targetSize)
+        {
+            int closestSize = ButtonSizes[0];
+            int smallestDifference = Math.Abs(ButtonSizes[0] - targetSize);
+
+            foreach (int size in ButtonSizes)
+            {
+                int difference = Math.Abs(size - targetSize);
+                if (difference < smallestDifference)
+                {
+                    smallestDifference = difference;
+                    closestSize = size;
+                }
+            }
+
+            return closestSize;
+        }
+
+        public int CalculateOptimumButtonSize()
+        {
+            int resolutionSum = Screen.PrimaryScreen.Bounds.Width + Screen.PrimaryScreen.Bounds.Height;
+            int magicNumber = 42;
+            return (int)Math.Round((double)resolutionSum / magicNumber);
+        }
+
+        private void AdjustControlSizes()
+        {
+            if (AppSetting.Current.AutoUISize)
+            {
+                AppSetting.Current.DesiredUISize = CalculateOptimumButtonSize();
+            }
+            AppSetting.Current.DesiredUISize = FindClosestButtonSize(AppSetting.Current.DesiredUISize);
+
+            Size size = new Size(AppSetting.Current.DesiredUISize, AppSetting.Current.DesiredUISize);
+
+            //BottomLeftButtonsFromLeftToRight
+            settings.Size = size;
+            arrowLeft.Size = size;
+            arrowRight.Size = size;
+            rotateLeft.Size = size;
+            rotateRight.Size = size;
+            save.Size = size;
+            settings.Location = new Point(0, this.ClientSize.Height - size.Height);
+            arrowLeft.Location = new Point(size.Width, this.ClientSize.Height - size.Height);
+            arrowRight.Location = new Point(size.Width * 2, this.ClientSize.Height - size.Height);
+            rotateLeft.Location = new Point(size.Width * 3, this.ClientSize.Height - size.Height);
+            rotateRight.Location = new Point(size.Width * 4, this.ClientSize.Height - size.Height);
+            save.Location = new Point(size.Width * 5, this.ClientSize.Height - size.Height);
+
+            //BottomRightButtonsFromRightToLeft
+            fullscreen.Size = size;
+            fullscreen.Location = new Point(this.ClientSize.Width - size.Width, this.ClientSize.Height - size.Height);
+
+            //TopRightButtonsFromRightToLeft
+            print.Size = size;
+            bing.Size = size;
+            print.Location = new Point(this.ClientSize.Width - size.Width, 0);
+            bing.Location = new Point(this.ClientSize.Width - size.Width * 2, 0);
+            
+            //RightButtonsFromTopToBottom
+            prevPage.Size = size;
+            nextPage.Size = size;
+            prevPage.Location = new Point(this.ClientSize.Width - size.Width, this.ClientSize.Height / 2 - size.Height / 2);
+            nextPage.Location = new Point(this.ClientSize.Width - size.Width, this.ClientSize.Height / 2 + size.Height / 2);
+
+            //OtherControls
+            fileNameBox.Size = size;
+            fileNameText.Font = new Font("Segoe UI", size.Height / 4, FontStyle.Bold); //AutoSize controls Size property
+            copyrightText.Font = new Font("Segoe UI", size.Height / 4, FontStyle.Regular); //AutoSize controls Size property
+            fileNameBox.Location = new Point(0, 0);
+            fileNameText.Location = new Point(0, 0);
+            copyrightText.Location = new Point(0, size.Height / 2);
         }
 
         private void RefreshUI()
@@ -576,8 +715,8 @@ namespace Tama.ImageViewer
             {
                 fileNameBox.Visible = true;
                 //Todo: Instead of making buttons invisible, disable them.
-                arrowLeft.Visible = FilesInDirectory.Length > 1;
-                arrowRight.Visible = FilesInDirectory.Length > 1;
+                arrowLeft.Visible = FilesInDirectory != null && FilesInDirectory.Length > 1;
+                arrowRight.Visible = FilesInDirectory != null && FilesInDirectory.Length > 1;
                 rotateLeft.Visible = CanRotate;
                 rotateRight.Visible = CanRotate;
                 fullscreen.Visible = true;
@@ -612,7 +751,7 @@ namespace Tama.ImageViewer
 
             if(CanRotate == false)
             {
-                MessageBox.Show("Sorry, can't rotate this type of file", "Tama's Image Viewer");
+                Helpers.Message("Sorry, can't rotate this type of file");
                 return;
             }
 
@@ -629,44 +768,19 @@ namespace Tama.ImageViewer
 
         private void SaveImage()
         {
-            if(!Helpers.IsExtensionSupported(Program.CurrentFile, Program.Filters))
+            DialogResult result =  MessageBox.Show($"Are you sure you want to overwrite {Program.CurrentFile}?", Application.ProductName, MessageBoxButtons.OKCancel);
+
+            if(result == DialogResult.Cancel)
             {
-                MessageBox.Show("File extension not supported", "Tama's Image Viewer");
                 return;
             }
 
-            if (Program.CurrentFile.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+            ImageEncoderQuality quality = null;
+            if (Program.CurrentFile.EndsWith(".webp", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show("Can't save .gif files", "Tama's Image Viewer");
+                quality = new ImageEncoderQuality() { Quality = 40, WebpComplexity = WebPEncodingComplexity.NearLossless };
             }
-            else if (Program.CurrentFile.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show("Can't save .tiff files", "Tama's Image Viewer");
-            }
-            else if (Program.CurrentFile.EndsWith(".tif", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show("Can't save .tif files", "Tama's Image Viewer");
-            }
-            else if (Program.CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show("Can't save .tga files", "Tama's Image Viewer");
-            }
-            else if (Program.CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show("Can't save .dds files", "Tama's Image Viewer");
-            }
-            else if (Program.CurrentFile.EndsWith(".webp", StringComparison.OrdinalIgnoreCase))
-            {
-                using (WebP webp = new WebP())
-                {
-                    byte[] rawWebP = webp.EncodeLossless((Bitmap)CurrentImage);
-                    File.WriteAllBytes(Program.CurrentFile, rawWebP);
-                }
-            }
-            else
-            {
-                CurrentImage.Save(Program.CurrentFile);
-            }
+            ImageEncoder.Encode(CurrentImage, Program.CurrentFile, quality);
 
             IsImageDirty = false;
             RefreshUI();
@@ -679,11 +793,11 @@ namespace Tama.ImageViewer
                 if (CurrentIndex >= FilesInDirectory.Length - 1)
                     return;
 
-                if (Helpers.IsExtensionSupported(FilesInDirectory[CurrentIndex + 1], Program.Filters))
+                if (Helpers.IsExtensionSupported(FilesInDirectory[CurrentIndex + 1], ImageDecoder.Filters))
                 {
                     CurrentIndex += 1;
                     Program.CurrentFile = FilesInDirectory[CurrentIndex];
-                    RefleshDisplayedImage();
+                    RefreshDisplayedImage();
                     RefreshUI();
                 }
             }
@@ -696,11 +810,11 @@ namespace Tama.ImageViewer
                 if (CurrentIndex <= 0)
                     return;
 
-                if (Helpers.IsExtensionSupported(FilesInDirectory[CurrentIndex - 1], Program.Filters))
+                if (Helpers.IsExtensionSupported(FilesInDirectory[CurrentIndex - 1], ImageDecoder.Filters))
                 {
                     CurrentIndex -= 1;
                     Program.CurrentFile = FilesInDirectory[CurrentIndex];
-                    RefleshDisplayedImage();
+                    RefreshDisplayedImage();
                     RefreshUI();
                 }
             }
@@ -944,14 +1058,10 @@ namespace Tama.ImageViewer
                 {
                     string file = files[0];
 
-                    if(Helpers.IsExtensionSupported(file, Program.Filters))
+                    if(Helpers.IsExtensionSupported(file, ImageDecoder.Filters))
                     {
                         Program.CurrentFile = file;
                         OpenImage();
-                    }
-                    else
-                    {
-                        MessageBox.Show("File extension not supported", "Tama's ImageViewer");
                     }
                 }
             }

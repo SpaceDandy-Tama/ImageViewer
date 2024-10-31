@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace Tama.ImageViewer
+namespace Tama
 {
     public static class Helpers
     {
-        public static bool IsExtensionSupported(string filePath, string[] filters)
+        public static bool IsExtensionSupported(string filePath, string[] supportedExtensions)
         {
             if (!Path.HasExtension(filePath))
             {
                 return false;
             }
 
-            for (int i = 0; i < filters.Length; i++)
+            for (int i = 0; i < supportedExtensions.Length; i++)
             {
-                if (Path.GetExtension(filePath).Equals(filters[i], StringComparison.OrdinalIgnoreCase))
+                if (Path.GetExtension(filePath).Equals(supportedExtensions[i], StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -72,6 +71,12 @@ namespace Tama.ImageViewer
         {
             Version osVersion = Environment.OSVersion.Version;
             return osVersion.Major >= 10;
+        }
+
+        public static void Message(string message, string caption = "")
+        {
+            Console.WriteLine(message);
+            MessageBox.Show(message, caption == string.Empty ? Application.ProductName : caption);
         }
     }
 }

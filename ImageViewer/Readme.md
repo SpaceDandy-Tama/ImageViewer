@@ -55,8 +55,8 @@ Tama's ImageViewer supports a wide range of image file formats, including:
 - **Display Switch**:
   - **Numpad 1-6**: Quickly switch display in Fullscreen mode
 - **Multipage Navigation**:
-  - **Page Up**: Previous Page (Multipage Image Only)
-  - **Page Down**: Next Page (Multipage Image Only)
+  - **Page Up**, **Up Arrow**: Previous Page (Multipage Image Only)
+  - **Page Down**, **Down Arrow**, **Space**: Next Page (Multipage Image Only)
 - **Bing Image of the Day**:
   - **B**: Download today's Bing Image
   - **Ctrl + B**: Download Bing Images of the Day from the past 8 days
@@ -64,6 +64,8 @@ Tama's ImageViewer supports a wide range of image file formats, including:
   - **Ctrl + O**: Open File Dialog
 - **Fullscreen Toggle**:
   - **Alt + Enter**, **Ctrl + Shift + F**, or **F11**: Toggle Fullscreen
+- **Print**:
+  - **Ctrl + P**: Print Image
 
 ---
 
@@ -77,5 +79,25 @@ Tama's ImageViewer supports a wide range of image file formats, including:
 
 - `-print <path>`  
   Prints the specified image and exits.
-  
-  ---
+
+- `-encode <sourcePath> -to <outputPath> [EncoderParameters]`  
+  Encodes a single image file located at `<sourcePath>` and saves the encoded version to `<outputPath>`. This command is useful for converting images into different formats or applying specific encoding settings.
+
+  **Parameters:**
+  - `<sourcePath>`: The path to the image file that you want to encode.
+  - `<outputPath>`: The path where the encoded image will be saved.
+  - `[EncoderParameters]`: Optional parameters to customize the encoding process, including:
+    - `-quality <quality 0-100>`: Sets the quality of the output image (0 = lowest, 100 = highest).
+    - `-simple`: Applies a simple encoding strategy that prioritizes speed over quality.
+    - `-advanced <speed 1-9>`: Uses an advanced encoding method, where lower values prioritize speed and higher values prioritize quality.
+    - `-nearLossless <speed 1-9>`: Aims for nearly lossless encoding, balancing compression and image fidelity.
+    - `-lossless`: Enables lossless encoding, ensuring no information is lost in the output image.
+
+- `-encodeAll <sourceDir> -to <destinationDir> <extension> [EncoderParameters]`  
+  Encodes all image files within the specified directory `<sourceDir>` and saves the encoded versions to `<destinationDir>`. This command is ideal for batch processing multiple images with consistent encoding parameters.
+
+  **Parameters:**
+  - `<sourceDir>`: The path to the directory containing the images to encode.
+  - `<destinationDir>`: The path to the directory where the encoded images will be saved.
+  - `<extension>`: The file extension for the output images (e.g., `.jpg`, `.png`, `.webp`).
+  - `[EncoderParameters]`: Optional parameters for controlling the encoding process, same as those in the `-encode` command.

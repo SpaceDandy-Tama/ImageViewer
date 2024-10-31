@@ -111,12 +111,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AB9E59EF17284A9FB3F192740B654A07"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
         "OwnerKey" = "8:_EE4C4F34D8175C3EDDC7BA55F1D0E683"
         "MsmSig" = "8:_UNDEFINED"
@@ -197,18 +191,6 @@
         {
         "MsmKey" = "8:_FBCA2F0FA748403F6E2297750C8D2E57"
         "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E0C676DD31B8744A2863B29F0D3ACD24"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_AB9E59EF17284A9FB3F192740B654A07"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -325,6 +307,12 @@
         "OwnerKey" = "8:_9FF35BF44AD6A4F58807D46742406F21"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E0C676DD31B8744A2863B29F0D3ACD24"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -343,6 +331,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -359,42 +363,28 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7FB53756F706486C8DD53891401E048E"
-            {
-            "Name" = "8:RegAsm.exe"
-            "Condition" = "8:"
-            "Object" = "8:_AB9E59EF17284A9FB3F192740B654A07"
-            "FileType" = "3:2"
-            "InstallAction" = "3:4"
-            "Arguments" = "8:/unregister \"[TARGETDIR]ImageViewer.ThumbnailProvider.dll\""
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_0C514363_486B_48BE_92E2_02D14E3C63A2"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            "Run64Bit" = "11:TRUE"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_897B81B640144B098350B0AF8549D7B2"
-            {
-            "Name" = "8:RegAsm.exe"
-            "Condition" = "8:"
-            "Object" = "8:_AB9E59EF17284A9FB3F192740B654A07"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:/codebase \"[TARGETDIR]ImageViewer.ThumbnailProvider.dll\""
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_ADA30638_F36F_4F30_9AA7_3D3E517425D1"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            "Run64Bit" = "11:TRUE"
-            }
         }
         "DefaultFeature"
         {
@@ -870,37 +860,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AB9E59EF17284A9FB3F192740B654A07"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:RegAsm, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64"
-                "ScatterAssemblies"
-                {
-                    "_AB9E59EF17284A9FB3F192740B654A07"
-                    {
-                    "Name" = "8:RegAsm.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\RegAsm.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AFFBC98CA58FF8A3C17F22E3C366C916"
             {
             "AssemblyRegister" = "3:1"
@@ -1236,7 +1195,7 @@
         {
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_36018A4CD2754A3FBAAC49B6D9AB022C"
             {
-            "Name" = "8:tifffile"
+            "Name" = "8:tifffile #%d1"
             "Description" = "8:Tag Image File Format"
             "Extensions" = "8:.tif;.tiff"
             "MIME" = "8:image/tiff"
@@ -1259,7 +1218,7 @@
             }
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_463BC403A5864279B2F0EB490AED97A9"
             {
-            "Name" = "8:ddsfile"
+            "Name" = "8:ddsfile #%d1"
             "Description" = "8:DDS Image"
             "Extensions" = "8:.dds"
             "MIME" = "8:image/vnd.ms-dds"
@@ -1282,7 +1241,7 @@
             }
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_480768251AEA41108743251721E83297"
             {
-            "Name" = "8:tgafile"
+            "Name" = "8:tgafile #%d1"
             "Description" = "8:Targa Image"
             "Extensions" = "8:.tga"
             "MIME" = "8:image/tga"
@@ -1305,7 +1264,7 @@
             }
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_71D1A4CE105643248E239D1E711DC4A9"
             {
-            "Name" = "8:giffile"
+            "Name" = "8:giffile #%d1"
             "Description" = "8:GIF Image"
             "Extensions" = "8:.gif"
             "MIME" = "8:image/gif"
@@ -1328,7 +1287,7 @@
             }
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_78F4986FF214448980E6916FB0FF087B"
             {
-            "Name" = "8:jpegfile"
+            "Name" = "8:jpegfile #%d1"
             "Description" = "8:JPEG Image"
             "Extensions" = "8:.jpeg;.jpg"
             "MIME" = "8:image/jpeg"
@@ -1351,7 +1310,7 @@
             }
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_88A19218F94D4E6BAD362DD0573E896A"
             {
-            "Name" = "8:pngfile"
+            "Name" = "8:pngfile #%d1"
             "Description" = "8:PNG Image"
             "Extensions" = "8:.png"
             "MIME" = "8:image/png"
@@ -1374,7 +1333,7 @@
             }
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_9DC6E8008AAF4882BDE4E59875EF96D3"
             {
-            "Name" = "8:icofile"
+            "Name" = "8:icofile #%d1"
             "Description" = "8:Icon"
             "Extensions" = "8:.ico"
             "MIME" = "8:image/x-icon"
@@ -1397,7 +1356,7 @@
             }
             "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_BC973149AEDC4C65AAD8714C4877BB8B"
             {
-            "Name" = "8:webpfile"
+            "Name" = "8:webpfile #%d1"
             "Description" = "8:WebP File"
             "Extensions" = "8:.webp"
             "MIME" = "8:image/webp"
@@ -1572,64 +1531,6 @@
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_CDE09085A1544B649B97E9A1629F560B"
-                    {
-                    "Name" = "8:tgafile"
-                    "Condition" = "8:"
-                    "AlwaysCreate" = "11:FALSE"
-                    "DeleteAtUninstall" = "11:FALSE"
-                    "Transitive" = "11:FALSE"
-                        "Keys"
-                        {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_2A5514148B764266801B3C9070B6B08E"
-                            {
-                            "Name" = "8:ShellEx"
-                            "Condition" = "8:"
-                            "AlwaysCreate" = "11:FALSE"
-                            "DeleteAtUninstall" = "11:FALSE"
-                            "Transitive" = "11:FALSE"
-                                "Keys"
-                                {
-                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_C501E9A7BAD84CB48B6C010805471197"
-                                    {
-                                    "Name" = "8:{e357fccd-a995-4576-b01f-234630754e1f}"
-                                    "Condition" = "8:"
-                                    "AlwaysCreate" = "11:FALSE"
-                                    "DeleteAtUninstall" = "11:TRUE"
-                                    "Transitive" = "11:FALSE"
-                                        "Keys"
-                                        {
-                                        }
-                                        "Values"
-                                        {
-                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_4E8716BB25204DE8867CC0885B687109"
-                                            {
-                                            "Name" = "8:(Default)"
-                                            "Condition" = "8:"
-                                            "Transitive" = "11:FALSE"
-                                            "ValueTypes" = "3:1"
-                                            "Value" = "8:{8F5AC546-2733-4163-8F41-2700A9927E9F}"
-                                            }
-                                        }
-                                    }
-                                }
-                                "Values"
-                                {
-                                }
-                            }
-                        }
-                        "Values"
-                        {
-                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_F2BDEC52A2B74FD68CB7FF55B5C70927"
-                            {
-                            "Name" = "8:(Default)"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "ValueTypes" = "3:1"
-                            "Value" = "8:Targa Image"
-                            }
-                        }
-                    }
                 }
             }
             "HKU"

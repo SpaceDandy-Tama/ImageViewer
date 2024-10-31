@@ -2,17 +2,17 @@
 
 namespace ImageViewer.BingHelper
 {
-    public delegate void BingImageDownloadedEventHandler(object sender, BingImageDownloadedEventArgs args);
+    public delegate void BingImageDownloadedEventHandler(BingImageDownloadedEventArgs args);
 
     public class BingImageDownloadedEventArgs : EventArgs
     {
-        public BingImageDownloadedEventArgs(BingImageData imageData, string imagePath)
+        public BingImageDownloadedEventArgs(BingImageData[] imageDatas, string[] imagePaths)
         {
-            ImageData = imageData;
-            ImagePath = imagePath;
+            ImageData = imageDatas;
+            ImagePath = imagePaths;
         }
 
-        public BingImageData ImageData { get; set; }
-        public string ImagePath { get; set; }
+        public BingImageData[] ImageData { get; set; }
+        public string[] ImagePath { get; set; }
     }
 }

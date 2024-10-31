@@ -84,7 +84,10 @@
   <ItemGroup>
     <Compile Include="AppSetting.cs" />
     <Compile Include="Color.cs" />
+    <Compile Include="DisposableImage.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="ImageDecoder.cs" />
+    <Compile Include="ImageEncoder.cs" />
     <Compile Include="ImagePrinter.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>

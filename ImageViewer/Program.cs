@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,18 +12,54 @@ namespace Tama.ImageViewer
         public static OpenFileDialog Ofd;
         public static string Filter = "Image Files (*.bmp, *.jpg, *.jpeg, *.png, *.gif, *.tiff, *.tif, *.ico, *.tga, *.dds, *.webp)|" +
             "*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.tiff;*.tif;*.ico;*.tga;*.dds;*.webp";
-        public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".tif", ".ico", ".tga", ".dds", ".webp" };
 
         public static string CurrentFile = null;
+
+        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.jpg -quality 80
+        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.webp -quality 75 -simple
+        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.webp -lossless -advanced 9
+        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.webp -quality 40 -nearLossless 9
+        //./ImageViewer.exe -encodeAll C:/Images -to C:/Images/converted .webp -quality 75 -advanced 9
 
         [STAThread]
         static void Main(string[] args)
         {
             AppSetting.Load();
 
-            if (args.Length == 2)
+            if(args.Length > 3)
             {
-                if (args[0].StartsWith("-print"))
+                if (args[0] == ("-encode"))
+                {
+                    string sourceFile = Path.GetFullPath(args[1]);
+                    string outputFile = Path.GetFullPath(args[3]);
+                    ImageEncoderQuality quality = null;
+                    //Optional arguments
+                    if (args.Length > 4)
+                    {
+                        int position = 4;
+                        quality = ImageEncoder.ParseEncoderArguments(args, ref position);
+                    }
+                    ImageEncoder.Encode(sourceFile, outputFile, quality);
+                }
+                else if (args[0] == "-encodeAll" && args.Length > 4)
+                {
+                    string sourceDir = Path.GetFullPath(args[1]);
+                    string outputDir = Path.GetFullPath(args[3]);
+                    string extension = args[4];
+                    ImageEncoderQuality quality = null;
+                    //Optional arguments
+                    if (args.Length > 5)
+                    {
+                        int position = 5;
+                        quality = ImageEncoder.ParseEncoderArguments(args, ref position);
+                    }
+                }
+
+                return;
+            }
+            if (args.Length > 1)
+            {
+                if (args[0] == "-print")
                 {
                     ImagePrinter.PrintImage(args[1]);
                 }
@@ -47,13 +84,13 @@ namespace Tama.ImageViewer
                 }
                 else
                 {
-                    if (Helpers.IsExtensionSupported(args[0], Filters))
+                    if (Helpers.IsExtensionSupported(args[0], ImageDecoder.Filters))
                     {
                         CurrentFile = Path.GetFullPath(args[0]);
                     }
                     else
                     {
-                        MessageBox.Show("Unrecognized file extension. Please refer to Readme.md for a list of supported file extensions.", "Tama's Image Viewer");
+                        Helpers.Message($"Reading {Path.GetExtension(args[0])} files not supported. Please refer to the Readme.md file for a list of supported formats.");
                         return;
                     }
                 }

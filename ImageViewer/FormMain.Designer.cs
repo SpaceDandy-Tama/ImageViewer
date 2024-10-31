@@ -63,7 +63,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(343, 215);
+            this.pictureBox1.Size = new System.Drawing.Size(453, 268);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -76,9 +76,9 @@
             this.arrowLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.arrowLeft.BackColor = System.Drawing.Color.Transparent;
             this.arrowLeft.Image = global::ImageViewer.Properties.Resources.arrowLeft;
-            this.arrowLeft.Location = new System.Drawing.Point(48, 167);
+            this.arrowLeft.Location = new System.Drawing.Point(64, 204);
             this.arrowLeft.Name = "arrowLeft";
-            this.arrowLeft.Size = new System.Drawing.Size(48, 48);
+            this.arrowLeft.Size = new System.Drawing.Size(64, 64);
             this.arrowLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.arrowLeft.TabIndex = 1;
             this.arrowLeft.TabStop = false;
@@ -92,9 +92,9 @@
             this.arrowRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.arrowRight.BackColor = System.Drawing.Color.Transparent;
             this.arrowRight.Image = global::ImageViewer.Properties.Resources.arrowRight;
-            this.arrowRight.Location = new System.Drawing.Point(96, 167);
+            this.arrowRight.Location = new System.Drawing.Point(128, 204);
             this.arrowRight.Name = "arrowRight";
-            this.arrowRight.Size = new System.Drawing.Size(48, 48);
+            this.arrowRight.Size = new System.Drawing.Size(64, 64);
             this.arrowRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.arrowRight.TabIndex = 1;
             this.arrowRight.TabStop = false;
@@ -108,9 +108,9 @@
             this.rotateLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rotateLeft.BackColor = System.Drawing.Color.Transparent;
             this.rotateLeft.Image = global::ImageViewer.Properties.Resources.rotateLeft;
-            this.rotateLeft.Location = new System.Drawing.Point(144, 167);
+            this.rotateLeft.Location = new System.Drawing.Point(192, 204);
             this.rotateLeft.Name = "rotateLeft";
-            this.rotateLeft.Size = new System.Drawing.Size(48, 48);
+            this.rotateLeft.Size = new System.Drawing.Size(64, 64);
             this.rotateLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.rotateLeft.TabIndex = 1;
             this.rotateLeft.TabStop = false;
@@ -124,9 +124,9 @@
             this.rotateRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rotateRight.BackColor = System.Drawing.Color.Transparent;
             this.rotateRight.Image = global::ImageViewer.Properties.Resources.rotateRight;
-            this.rotateRight.Location = new System.Drawing.Point(192, 167);
+            this.rotateRight.Location = new System.Drawing.Point(256, 204);
             this.rotateRight.Name = "rotateRight";
-            this.rotateRight.Size = new System.Drawing.Size(48, 48);
+            this.rotateRight.Size = new System.Drawing.Size(64, 64);
             this.rotateRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.rotateRight.TabIndex = 1;
             this.rotateRight.TabStop = false;
@@ -140,9 +140,9 @@
             this.fullscreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.fullscreen.BackColor = System.Drawing.Color.Transparent;
             this.fullscreen.Image = global::ImageViewer.Properties.Resources.fullscreen;
-            this.fullscreen.Location = new System.Drawing.Point(295, 167);
+            this.fullscreen.Location = new System.Drawing.Point(389, 204);
             this.fullscreen.Name = "fullscreen";
-            this.fullscreen.Size = new System.Drawing.Size(48, 48);
+            this.fullscreen.Size = new System.Drawing.Size(64, 64);
             this.fullscreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.fullscreen.TabIndex = 1;
             this.fullscreen.TabStop = false;
@@ -156,9 +156,9 @@
             this.bing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bing.BackColor = System.Drawing.Color.Transparent;
             this.bing.Image = global::ImageViewer.Properties.Resources.bing;
-            this.bing.Location = new System.Drawing.Point(247, 0);
+            this.bing.Location = new System.Drawing.Point(325, 0);
             this.bing.Name = "bing";
-            this.bing.Size = new System.Drawing.Size(48, 48);
+            this.bing.Size = new System.Drawing.Size(64, 64);
             this.bing.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.bing.TabIndex = 1;
             this.bing.TabStop = false;
@@ -182,11 +182,11 @@
             // 
             this.fileNameText.AutoSize = true;
             this.fileNameText.BackColor = System.Drawing.Color.Transparent;
-            this.fileNameText.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.fileNameText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.fileNameText.ForeColor = System.Drawing.Color.White;
-            this.fileNameText.Location = new System.Drawing.Point(0, -1);
+            this.fileNameText.Location = new System.Drawing.Point(0, 0);
             this.fileNameText.Name = "fileNameText";
-            this.fileNameText.Size = new System.Drawing.Size(134, 30);
+            this.fileNameText.Size = new System.Drawing.Size(150, 30);
             this.fileNameText.TabIndex = 3;
             this.fileNameText.Text = "fileNameText";
             // 
@@ -194,11 +194,11 @@
             // 
             this.copyrightText.AutoSize = true;
             this.copyrightText.BackColor = System.Drawing.Color.Transparent;
-            this.copyrightText.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.copyrightText.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.copyrightText.ForeColor = System.Drawing.Color.Silver;
-            this.copyrightText.Location = new System.Drawing.Point(0, 29);
+            this.copyrightText.Location = new System.Drawing.Point(0, 32);
             this.copyrightText.Name = "copyrightText";
-            this.copyrightText.Size = new System.Drawing.Size(137, 30);
+            this.copyrightText.Size = new System.Drawing.Size(144, 30);
             this.copyrightText.TabIndex = 4;
             this.copyrightText.Text = "copyrightText";
             // 
@@ -207,9 +207,9 @@
             this.save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.save.BackColor = System.Drawing.Color.Transparent;
             this.save.Image = global::ImageViewer.Properties.Resources.blank;
-            this.save.Location = new System.Drawing.Point(240, 167);
+            this.save.Location = new System.Drawing.Point(320, 204);
             this.save.Name = "save";
-            this.save.Size = new System.Drawing.Size(48, 48);
+            this.save.Size = new System.Drawing.Size(64, 64);
             this.save.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.save.TabIndex = 5;
             this.save.TabStop = false;
@@ -223,9 +223,9 @@
             this.prevPage.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.prevPage.BackColor = System.Drawing.Color.Transparent;
             this.prevPage.Image = global::ImageViewer.Properties.Resources.blank;
-            this.prevPage.Location = new System.Drawing.Point(295, 59);
+            this.prevPage.Location = new System.Drawing.Point(389, 70);
             this.prevPage.Name = "prevPage";
-            this.prevPage.Size = new System.Drawing.Size(48, 48);
+            this.prevPage.Size = new System.Drawing.Size(64, 64);
             this.prevPage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.prevPage.TabIndex = 6;
             this.prevPage.TabStop = false;
@@ -239,9 +239,9 @@
             this.nextPage.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.nextPage.BackColor = System.Drawing.Color.Transparent;
             this.nextPage.Image = global::ImageViewer.Properties.Resources.blank;
-            this.nextPage.Location = new System.Drawing.Point(295, 107);
+            this.nextPage.Location = new System.Drawing.Point(389, 134);
             this.nextPage.Name = "nextPage";
-            this.nextPage.Size = new System.Drawing.Size(48, 48);
+            this.nextPage.Size = new System.Drawing.Size(64, 64);
             this.nextPage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.nextPage.TabIndex = 7;
             this.nextPage.TabStop = false;
@@ -255,9 +255,9 @@
             this.settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.settings.BackColor = System.Drawing.Color.Transparent;
             this.settings.Image = global::ImageViewer.Properties.Resources.blank;
-            this.settings.Location = new System.Drawing.Point(0, 167);
+            this.settings.Location = new System.Drawing.Point(0, 204);
             this.settings.Name = "settings";
-            this.settings.Size = new System.Drawing.Size(48, 48);
+            this.settings.Size = new System.Drawing.Size(64, 64);
             this.settings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.settings.TabIndex = 8;
             this.settings.TabStop = false;
@@ -271,9 +271,9 @@
             this.print.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.print.BackColor = System.Drawing.Color.Transparent;
             this.print.Image = global::ImageViewer.Properties.Resources.blank;
-            this.print.Location = new System.Drawing.Point(295, 0);
+            this.print.Location = new System.Drawing.Point(389, 0);
             this.print.Name = "print";
-            this.print.Size = new System.Drawing.Size(48, 48);
+            this.print.Size = new System.Drawing.Size(64, 64);
             this.print.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.print.TabIndex = 9;
             this.print.TabStop = false;
@@ -287,7 +287,7 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(343, 215);
+            this.ClientSize = new System.Drawing.Size(453, 268);
             this.Controls.Add(this.print);
             this.Controls.Add(this.settings);
             this.Controls.Add(this.nextPage);

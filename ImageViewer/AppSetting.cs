@@ -6,6 +6,14 @@ using Tiny;
 namespace Tama.ImageViewer
 {
     [System.Serializable]
+    public enum AskOrNoOption
+    {
+        Ask,
+        Always,
+        Never,
+    }
+
+    [System.Serializable]
     public class AppSetting
     {
         public static AppSetting Current;
@@ -26,9 +34,13 @@ namespace Tama.ImageViewer
         public bool UIVisible = true;
         public bool BingButtonVisible = true;
         public string BingImageSavePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyPictures), "Bing Images");
+        public AskOrNoOption OpenBingImageAfterDownload = AskOrNoOption.Ask;
+        public string BingRegion = null;
         public Theme Theme = Theme.Dark;
         public Color CustomBackgroundColor = new Color(88, 22, 44);
         public int ThemeCheckInterval = 1;
+        public bool AutoUISize = true;
+        public int DesiredUISize = 48;
 
         public static AppSetting Load()
         {
@@ -38,12 +50,18 @@ namespace Tama.ImageViewer
                 {
                     string tiny = File.ReadAllText(FullPath);
                     Current = Deserializer.Deserialize<AppSetting>(tiny);
+                    File.Delete(FullPath);
+                    if(Current == null)
+                    {
+                        Current = new AppSetting();
+                    }
                 }
                 else
                 {
                     Current = new AppSetting();
-                    Current.Save();
                 }
+
+                Current.Save();
             }
             return Current;
         }

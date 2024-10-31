@@ -1,10 +1,10 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
+using System.IO;
 using System.Windows.Forms;
 
-namespace Tama.ImageViewer
+namespace Tama
 {
     public static class ImagePrinter
     {
@@ -13,14 +13,15 @@ namespace Tama.ImageViewer
         public static void PrintImage(string imagePath)
         {
             // Check if the image file exists
-            if (!System.IO.File.Exists(imagePath))
+            if (!File.Exists(imagePath))
             {
-                throw new ArgumentException("Image file does not exist: " + imagePath);
+                Helpers.Message($"{imagePath} doesn't exist");
+                return;
             }
 
-            if(!Helpers.IsExtensionSupported(imagePath, ImagePrinter.Filters))
+            if (!Helpers.IsExtensionSupported(imagePath, ImagePrinter.Filters))
             {
-                MessageBox.Show("Print isn't supported for this file extension", "Tama's ImageViewer");
+                Helpers.Message($"Printing {Path.GetExtension(imagePath)} files not supported");
                 return;
             }
 

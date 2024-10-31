@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -121,12 +122,22 @@ namespace ImageViewer.BingHelper
 
             //Parse the Data without using json implementations.
             string[] strJsonData = jsonString.Split(new char[] { ',' });
-            imageDatas = new BingImageData[strJsonData.Length];
+
+            int counter = 0;
+            for (int i = 0; i < strJsonData.Length; i++)
+            {
+                if (strJsonData[i].StartsWith("\"url\"", StringComparison.Ordinal))
+                {
+                    counter++;
+                }
+            }
+
+            imageDatas = new BingImageData[counter];
 
             string[] strJsonData2 = jsonString.Split(new string[] { "\"copyright\":\"" }, StringSplitOptions.None);
             string[] strJsonData3 = jsonString.Split(new string[] { "\"copyrightlink\":\"" }, StringSplitOptions.None);
-            int counter = 0;
 
+            counter = 0;
             for (int i = 0; i < strJsonData.Length; i++)
             {
                 if (strJsonData[i].StartsWith("\"url\"", StringComparison.Ordinal))
@@ -138,19 +149,14 @@ namespace ImageViewer.BingHelper
                         imageDateTemp = strJsonData[i - 3].Split(new char[] { '"' })[3];
                     string imageUrlTemp = BingUrl + strJsonData[i].Split(new char[] { '"' })[3];
 
-                    counter++;
-                    string copyrightTemp = strJsonData2[counter].Split(new string[] { "\",\"copyrightlink\"" }, StringSplitOptions.None)[0];
-                    string copyrightLinkTemp = strJsonData3[counter].Split(new string[] { "\",\"title\"" }, StringSplitOptions.None)[0];
+                    string copyrightTemp = strJsonData2[counter + 1].Split(new string[] { "\",\"copyrightlink\"" }, StringSplitOptions.None)[0];
+                    string copyrightLinkTemp = strJsonData3[counter + 1].Split(new string[] { "\",\"title\"" }, StringSplitOptions.None)[0];
 #if DEBUG
                     System.IO.File.WriteAllText(imageDateTemp + ".txt", copyrightTemp);
                     System.IO.File.AppendAllText(imageDateTemp + ".txt", "\n" + copyrightLinkTemp);
 #endif
-
-                    imageDatas[i] = new BingImageData(imageDateTemp, imageUrlTemp, copyrightTemp, copyrightLinkTemp);
-                }
-                else
-                {
-                    imageDatas[i] = null;
+                    imageDatas[counter] = new BingImageData(imageDateTemp, imageUrlTemp, copyrightTemp, copyrightLinkTemp);
+                    counter++;
                 }
             }
         }
