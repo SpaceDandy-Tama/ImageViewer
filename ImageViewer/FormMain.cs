@@ -327,6 +327,7 @@ namespace Tama.ImageViewer
             TempBitmap?.Dispose();
             pictureBox1.Image?.Dispose();
             ZoomFactor = 1;
+            IsImageDirty = false;
 
             try
             {
@@ -622,13 +623,14 @@ namespace Tama.ImageViewer
             arrowRight.Parent = pictureBox1;
             rotateLeft.Parent = pictureBox1;
             rotateRight.Parent = pictureBox1;
-            fullscreen.Parent = pictureBox1;
             bing.Parent = pictureBox1;
             save.Parent = pictureBox1;
+            fullscreen.Parent = pictureBox1;
             prevPage.Parent = pictureBox1;
             nextPage.Parent = pictureBox1;
             settings.Parent = pictureBox1;
             print.Parent = pictureBox1;
+            file.Parent = pictureBox1;
 
             fileNameBox.Parent = pictureBox1;
             fileNameText.Parent = fileNameBox;
@@ -671,28 +673,30 @@ namespace Tama.ImageViewer
             Size size = new Size(AppSetting.Current.DesiredUISize, AppSetting.Current.DesiredUISize);
 
             //BottomLeftButtonsFromLeftToRight
-            settings.Size = size;
             arrowLeft.Size = size;
             arrowRight.Size = size;
             rotateLeft.Size = size;
             rotateRight.Size = size;
             save.Size = size;
-            settings.Location = new Point(0, this.ClientSize.Height - size.Height);
-            arrowLeft.Location = new Point(size.Width, this.ClientSize.Height - size.Height);
-            arrowRight.Location = new Point(size.Width * 2, this.ClientSize.Height - size.Height);
-            rotateLeft.Location = new Point(size.Width * 3, this.ClientSize.Height - size.Height);
-            rotateRight.Location = new Point(size.Width * 4, this.ClientSize.Height - size.Height);
-            save.Location = new Point(size.Width * 5, this.ClientSize.Height - size.Height);
+            arrowLeft.Location = new Point(0, this.ClientSize.Height - size.Height);
+            arrowRight.Location = new Point(size.Width, this.ClientSize.Height - size.Height);
+            rotateLeft.Location = new Point(size.Width * 2, this.ClientSize.Height - size.Height);
+            rotateRight.Location = new Point(size.Width * 3, this.ClientSize.Height - size.Height);
+            save.Location = new Point(size.Width * 4, this.ClientSize.Height - size.Height);
 
             //BottomRightButtonsFromRightToLeft
             fullscreen.Size = size;
+            settings.Size = size;
+            file.Size = size;
+            print.Size = size;
             fullscreen.Location = new Point(this.ClientSize.Width - size.Width, this.ClientSize.Height - size.Height);
+            settings.Location = new Point(this.ClientSize.Width - size.Width * 2, this.ClientSize.Height - size.Height);
+            file.Location = new Point(this.ClientSize.Width - size.Width * 3, this.ClientSize.Height - size.Height);
+            print.Location = new Point(this.ClientSize.Width - size.Width * 4, this.ClientSize.Height - size.Height);
 
             //TopRightButtonsFromRightToLeft
-            print.Size = size;
             bing.Size = size;
-            print.Location = new Point(this.ClientSize.Width - size.Width, 0);
-            bing.Location = new Point(this.ClientSize.Width - size.Width * 2, 0);
+            bing.Location = new Point(this.ClientSize.Width - size.Width, 0);
             
             //RightButtonsFromTopToBottom
             prevPage.Size = size;
@@ -726,6 +730,7 @@ namespace Tama.ImageViewer
                 nextPage.Visible = PageCount > 1;
                 settings.Visible = true;
                 print.Visible = true;
+                file.Visible = true;
             }
             else
             {
@@ -741,6 +746,7 @@ namespace Tama.ImageViewer
                 nextPage.Visible = false;
                 settings.Visible = false;
                 print.Visible = false;
+                file.Visible = false;
             }
         }
 
@@ -946,92 +952,110 @@ namespace Tama.ImageViewer
 
         private void save_MouseEnter(object sender, EventArgs e)
         {
-            save.Image = Resources.blankHover;
+            save.Image = Resources.floppyHover;
         }
         private void save_MouseDown(object sender, MouseEventArgs e)
         {
-            save.Image = Resources.blankDown;
+            save.Image = Resources.floppyDown;
         }
         private void save_MouseLeave(object sender, EventArgs e)
         {
-            save.Image = Resources.blank;
+            save.Image = Resources.floppy;
         }
         private void save_MouseUp(object sender, MouseEventArgs e)
         {
-            save.Image = Resources.blank;
+            save.Image = Resources.floppy;
             SaveAction();
         }
 
         private void prevPage_MouseEnter(object sender, EventArgs e)
         {
-            prevPage.Image = Resources.blankHover;
+            prevPage.Image = Resources.arrowUpHover;
         }
         private void prevPage_MouseDown(object sender, MouseEventArgs e)
         {
-            prevPage.Image = Resources.blankDown;
+            prevPage.Image = Resources.arrowUpDown;
         }
         private void prevPage_MouseLeave(object sender, EventArgs e)
         {
-            prevPage.Image = Resources.blank;
+            prevPage.Image = Resources.arrowUp;
         }
         private void prevPage_MouseUp(object sender, MouseEventArgs e)
         {
-            prevPage.Image = Resources.blank;
+            prevPage.Image = Resources.arrowUp;
             PrevPageAction();
         }
 
         private void nextPage_MouseEnter(object sender, EventArgs e)
         {
-            nextPage.Image = Resources.blankHover;
+            nextPage.Image = Resources.arrowDownHover;
         }
         private void nextPage_MouseDown(object sender, MouseEventArgs e)
         {
-            nextPage.Image = Resources.blankDown;
+            nextPage.Image = Resources.arrowDownDown;
         }
         private void nextPage_MouseLeave(object sender, EventArgs e)
         {
-            nextPage.Image = Resources.blank;
+            nextPage.Image = Resources.arrowDown;
         }
         private void nextPage_MouseUp(object sender, MouseEventArgs e)
         {
-            nextPage.Image = Resources.blank;
+            nextPage.Image = Resources.arrowDown;
             NextPageAction();
         }
 
         private void settings_MouseEnter(object sender, EventArgs e)
         {
-            settings.Image = Resources.blankHover;
+            settings.Image = Resources.cogHover;
         }
         private void settings_MouseDown(object sender, MouseEventArgs e)
         {
-            settings.Image = Resources.blankDown;
+            settings.Image = Resources.cogDown;
         }
         private void settings_MouseLeave(object sender, EventArgs e)
         {
-            settings.Image = Resources.blank;
+            settings.Image = Resources.cog;
         }
         private void settings_MouseUp(object sender, MouseEventArgs e)
         {
-            settings.Image = Resources.blank;
+            settings.Image = Resources.cog;
             SettingsAction();
         }
 
         private void print_MouseEnter(object sender, EventArgs e)
         {
-            print.Image = Resources.blankHover;
+            print.Image = Resources.printerHover;
         }
         private void print_MouseDown(object sender, MouseEventArgs e)
         {
-            print.Image = Resources.blankDown;
+            print.Image = Resources.printerDown;
         }
         private void print_MouseLeave(object sender, EventArgs e)
         {
-            print.Image = Resources.blank;
+            print.Image = Resources.printer;
         }
         private void print_MouseUp(object sender, MouseEventArgs e)
         {
-            print.Image = Resources.blank;
+            print.Image = Resources.printer;
             PrintAction();
+        }
+
+        private void file_MouseEnter(object sender, EventArgs e)
+        {
+            file.Image = Resources.fileHover;
+        }
+        private void file_MouseDown(object sender, MouseEventArgs e)
+        {
+            file.Image = Resources.fileDown;
+        }
+        private void file_MouseLeave(object sender, EventArgs e)
+        {
+            file.Image = Resources.file;
+        }
+        private void file_MouseUp(object sender, MouseEventArgs e)
+        {
+            file.Image = Resources.file;
+            OpenImage(true);
         }
 
         #endregion

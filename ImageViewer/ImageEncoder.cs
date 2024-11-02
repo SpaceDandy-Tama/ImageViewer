@@ -47,7 +47,7 @@ namespace Tama.ImageViewer
 
     public class ImageEncoder
     {
-        public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".webp" };
+        public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".webp", ".obi" };
 
         public static void Encode(DisposableImage image, string outputFile, ImageEncoderQuality quality = null)
         {

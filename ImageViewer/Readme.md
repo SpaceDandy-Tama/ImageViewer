@@ -23,6 +23,7 @@ Tama's ImageViewer supports a wide range of image file formats, including:
 - `.tga`
 - `.dds`
 - `.webp`
+- `.obi`
 
 ---
 

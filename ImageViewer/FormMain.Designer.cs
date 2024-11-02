@@ -43,6 +43,7 @@
             this.nextPage = new System.Windows.Forms.PictureBox();
             this.settings = new System.Windows.Forms.PictureBox();
             this.print = new System.Windows.Forms.PictureBox();
+            this.file = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrowLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrowRight)).BeginInit();
@@ -56,6 +57,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nextPage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.print)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.file)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -63,7 +65,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(453, 268);
+            this.pictureBox1.Size = new System.Drawing.Size(586, 272);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -76,7 +78,7 @@
             this.arrowLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.arrowLeft.BackColor = System.Drawing.Color.Transparent;
             this.arrowLeft.Image = global::ImageViewer.Properties.Resources.arrowLeft;
-            this.arrowLeft.Location = new System.Drawing.Point(64, 204);
+            this.arrowLeft.Location = new System.Drawing.Point(0, 208);
             this.arrowLeft.Name = "arrowLeft";
             this.arrowLeft.Size = new System.Drawing.Size(64, 64);
             this.arrowLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -92,7 +94,7 @@
             this.arrowRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.arrowRight.BackColor = System.Drawing.Color.Transparent;
             this.arrowRight.Image = global::ImageViewer.Properties.Resources.arrowRight;
-            this.arrowRight.Location = new System.Drawing.Point(128, 204);
+            this.arrowRight.Location = new System.Drawing.Point(64, 208);
             this.arrowRight.Name = "arrowRight";
             this.arrowRight.Size = new System.Drawing.Size(64, 64);
             this.arrowRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -108,7 +110,7 @@
             this.rotateLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rotateLeft.BackColor = System.Drawing.Color.Transparent;
             this.rotateLeft.Image = global::ImageViewer.Properties.Resources.rotateLeft;
-            this.rotateLeft.Location = new System.Drawing.Point(192, 204);
+            this.rotateLeft.Location = new System.Drawing.Point(128, 208);
             this.rotateLeft.Name = "rotateLeft";
             this.rotateLeft.Size = new System.Drawing.Size(64, 64);
             this.rotateLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -124,7 +126,7 @@
             this.rotateRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rotateRight.BackColor = System.Drawing.Color.Transparent;
             this.rotateRight.Image = global::ImageViewer.Properties.Resources.rotateRight;
-            this.rotateRight.Location = new System.Drawing.Point(256, 204);
+            this.rotateRight.Location = new System.Drawing.Point(193, 208);
             this.rotateRight.Name = "rotateRight";
             this.rotateRight.Size = new System.Drawing.Size(64, 64);
             this.rotateRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -140,7 +142,7 @@
             this.fullscreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.fullscreen.BackColor = System.Drawing.Color.Transparent;
             this.fullscreen.Image = global::ImageViewer.Properties.Resources.fullscreen;
-            this.fullscreen.Location = new System.Drawing.Point(389, 204);
+            this.fullscreen.Location = new System.Drawing.Point(522, 208);
             this.fullscreen.Name = "fullscreen";
             this.fullscreen.Size = new System.Drawing.Size(64, 64);
             this.fullscreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -156,7 +158,7 @@
             this.bing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bing.BackColor = System.Drawing.Color.Transparent;
             this.bing.Image = global::ImageViewer.Properties.Resources.bing;
-            this.bing.Location = new System.Drawing.Point(325, 0);
+            this.bing.Location = new System.Drawing.Point(522, 0);
             this.bing.Name = "bing";
             this.bing.Size = new System.Drawing.Size(64, 64);
             this.bing.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -206,8 +208,8 @@
             // 
             this.save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.save.BackColor = System.Drawing.Color.Transparent;
-            this.save.Image = global::ImageViewer.Properties.Resources.blank;
-            this.save.Location = new System.Drawing.Point(320, 204);
+            this.save.Image = global::ImageViewer.Properties.Resources.floppy;
+            this.save.Location = new System.Drawing.Point(256, 208);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(64, 64);
             this.save.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -222,8 +224,8 @@
             // 
             this.prevPage.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.prevPage.BackColor = System.Drawing.Color.Transparent;
-            this.prevPage.Image = global::ImageViewer.Properties.Resources.blank;
-            this.prevPage.Location = new System.Drawing.Point(389, 70);
+            this.prevPage.Image = global::ImageViewer.Properties.Resources.arrowUp;
+            this.prevPage.Location = new System.Drawing.Point(522, 72);
             this.prevPage.Name = "prevPage";
             this.prevPage.Size = new System.Drawing.Size(64, 64);
             this.prevPage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -238,8 +240,8 @@
             // 
             this.nextPage.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.nextPage.BackColor = System.Drawing.Color.Transparent;
-            this.nextPage.Image = global::ImageViewer.Properties.Resources.blank;
-            this.nextPage.Location = new System.Drawing.Point(389, 134);
+            this.nextPage.Image = global::ImageViewer.Properties.Resources.arrowDown;
+            this.nextPage.Location = new System.Drawing.Point(522, 136);
             this.nextPage.Name = "nextPage";
             this.nextPage.Size = new System.Drawing.Size(64, 64);
             this.nextPage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -252,10 +254,10 @@
             // 
             // settings
             // 
-            this.settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.settings.BackColor = System.Drawing.Color.Transparent;
-            this.settings.Image = global::ImageViewer.Properties.Resources.blank;
-            this.settings.Location = new System.Drawing.Point(0, 204);
+            this.settings.Image = global::ImageViewer.Properties.Resources.cog;
+            this.settings.Location = new System.Drawing.Point(458, 208);
             this.settings.Name = "settings";
             this.settings.Size = new System.Drawing.Size(64, 64);
             this.settings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -268,10 +270,10 @@
             // 
             // print
             // 
-            this.print.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.print.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.print.BackColor = System.Drawing.Color.Transparent;
-            this.print.Image = global::ImageViewer.Properties.Resources.blank;
-            this.print.Location = new System.Drawing.Point(389, 0);
+            this.print.Image = global::ImageViewer.Properties.Resources.printer;
+            this.print.Location = new System.Drawing.Point(330, 208);
             this.print.Name = "print";
             this.print.Size = new System.Drawing.Size(64, 64);
             this.print.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -282,12 +284,29 @@
             this.print.MouseLeave += new System.EventHandler(this.print_MouseLeave);
             this.print.MouseUp += new System.Windows.Forms.MouseEventHandler(this.print_MouseUp);
             // 
+            // file
+            // 
+            this.file.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.file.BackColor = System.Drawing.Color.Transparent;
+            this.file.Image = global::ImageViewer.Properties.Resources.file;
+            this.file.Location = new System.Drawing.Point(394, 208);
+            this.file.Name = "file";
+            this.file.Size = new System.Drawing.Size(64, 64);
+            this.file.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.file.TabIndex = 10;
+            this.file.TabStop = false;
+            this.file.MouseDown += new System.Windows.Forms.MouseEventHandler(this.file_MouseDown);
+            this.file.MouseEnter += new System.EventHandler(this.file_MouseEnter);
+            this.file.MouseLeave += new System.EventHandler(this.file_MouseLeave);
+            this.file.MouseUp += new System.Windows.Forms.MouseEventHandler(this.file_MouseUp);
+            // 
             // FormMain
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(453, 268);
+            this.ClientSize = new System.Drawing.Size(586, 272);
+            this.Controls.Add(this.file);
             this.Controls.Add(this.print);
             this.Controls.Add(this.settings);
             this.Controls.Add(this.nextPage);
@@ -323,6 +342,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nextPage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.print)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.file)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -345,6 +365,7 @@
         private System.Windows.Forms.PictureBox nextPage;
         private System.Windows.Forms.PictureBox settings;
         private System.Windows.Forms.PictureBox print;
+        private System.Windows.Forms.PictureBox file;
     }
 }
 

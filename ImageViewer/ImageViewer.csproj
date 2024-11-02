@@ -136,6 +136,24 @@
     <Content Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="UIAssets\printerHover.png" />
+    <None Include="UIAssets\printerDown.png" />
+    <None Include="UIAssets\printer.png" />
+    <None Include="UIAssets\floppyHover.png" />
+    <None Include="UIAssets\floppyDown.png" />
+    <None Include="UIAssets\floppy.png" />
+    <None Include="UIAssets\fileHover.png" />
+    <None Include="UIAssets\fileDown.png" />
+    <None Include="UIAssets\file.png" />
+    <None Include="UIAssets\cogHover.png" />
+    <None Include="UIAssets\cogDown.png" />
+    <None Include="UIAssets\cog.png" />
+    <None Include="UIAssets\arrowUpHover.png" />
+    <None Include="UIAssets\arrowUpDown.png" />
+    <None Include="UIAssets\arrowUp.png" />
+    <None Include="UIAssets\arrowDownHover.png" />
+    <None Include="UIAssets\arrowDownDown.png" />
+    <None Include="UIAssets\arrowDown.png" />
     <None Include="UIAssets\blankHover.png" />
     <None Include="UIAssets\blankDown.png" />
     <None Include="UIAssets\blank.png" />

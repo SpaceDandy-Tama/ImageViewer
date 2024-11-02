@@ -10,8 +10,8 @@ namespace Tama.ImageViewer
     public static class Program
     {
         public static OpenFileDialog Ofd;
-        public static string Filter = "Image Files (*.bmp, *.jpg, *.jpeg, *.png, *.gif, *.tiff, *.tif, *.ico, *.tga, *.dds, *.webp)|" +
-            "*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.tiff;*.tif;*.ico;*.tga;*.dds;*.webp";
+        public static string Filter = "Image Files (*.bmp, *.jpg, *.jpeg, *.png, *.gif, *.tiff, *.tif, *.ico, *.tga, *.dds, *.webp, *.obi)|" +
+            "*.bmp;*.jpg;*.jpeg;*.png;*.gif;*.tiff;*.tif;*.ico;*.tga;*.dds;*.webp;*.obi";
 
         public static string CurrentFile = null;
 

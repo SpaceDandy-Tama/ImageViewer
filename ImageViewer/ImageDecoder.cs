@@ -26,7 +26,7 @@ namespace Tama.ImageViewer
 
     public class ImageDecoder
     {
-        public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".tif", ".ico", ".tga", ".dds", ".webp" };
+        public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".tif", ".ico", ".tga", ".dds", ".webp", ".obi" };
 
         public static DisposableImage Decode(string sourceFile)
         {

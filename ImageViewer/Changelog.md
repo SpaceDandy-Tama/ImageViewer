@@ -9,13 +9,16 @@
 - **Light and Dark Modes**: Added Light/Dark Themes.
   - Also includes custom colors.
 - **Print Feature**: Print images directly from the app.
-- **New Format Support**: `.webp` files now supported.
+- **New Format Support**:
+  - `.webp` files now supported.
+  - `.obi` Open Book Image file support added.
 - **Navigation Buttons**:
   - *Next* and *Previous* buttons are disabled if no other images are available in the directory.
   - *Rotate Left* and *Rotate Right* buttons are disabled for unsupported formats (.gif, .dds, .tif).
   - *Page Up* and *Page Down* buttons are now shown when a multipage document is opened.
-  - *Print* button added.
-  - *Save* button added.
+  - *Print* button added to allow user easier printing experience.
+  - *Save* button added to allow user to save rotated images.
+  - *File* button added to allow the user to easily open images.
 - **Keyboard Shortcuts**:
   - `Ctrl + P` added for printing files directly from the app.
   - `Up Arrow` added as an alternative to `Page Up`.
@@ -38,7 +41,7 @@
 	- `-encode <sourcePath> -to <outputPath> [EncoderParameters]` added.
 	- `-encodeAll <sourceDir> -to <destinationDir> <extension> [EncoderParameters]` added.
 - **Countless Small Improvements and Bug Fixes**
-- **TGA Thumbnails**: An attempt was make in this version to create ThumbnailProvider and register it to COM for .tga files. Unfortunately it doesn't work.
+- **TGA Thumbnails**: An attempt was make in this version to create ThumbnailProvider and register it to COM for .tga files. Unfortunately it didn't work and had to be scrapped.
 
 ---
 
