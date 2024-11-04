@@ -5,7 +5,7 @@
 
 ![imageviewer.png](https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/imageviewer.png)
 
-Version 2.4 marks the 10th anniversary of ImageViewer and introduces a significant overhaul, packed with new features and a refreshed user interface. The old screenshot is kept as a nostalgic nod to the app’s earlier days:
+Version 2.4.1 marks the 10th anniversary of ImageViewer and introduces a significant overhaul, packed with new features and a refreshed user interface. The old screenshot is kept as a nostalgic nod to the app’s earlier days:
 
 ![imageviewer_old.png](https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/imageviewer_old.png)
 
@@ -37,7 +37,7 @@ Supported formats include:
 ---
 
 ## Installation Instructions
-1. **[Download](https://github.com/SpaceDandy-Tama/ImageViewer/releases/download/v2.4/ImageViewerSetup_v2.4.msi) the Latest Release**.
+1. **[Download](https://github.com/SpaceDandy-Tama/ImageViewer/releases/download/v2.4.1/ImageViewerSetup_v2.4.1.msi) the Latest Release**.
 2. **Run the Setup**: Double-click the setup file to begin installation.
 
 > **Note**: File associations will be automatically configured during the installation process.
