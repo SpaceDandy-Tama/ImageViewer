@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -40,100 +41,140 @@ namespace Tama.ImageViewer
         [STAThread]
         static void Main(string[] args)
         {
-            AppSetting.Load();
-
-            if (args.Length > 3)
+            try
             {
-                if (args[0] == ("-encode"))
+                AppSetting.Load();
+
+                if (args.Length > 3)
                 {
-                    string sourceFile = Path.GetFullPath(args[1]);
-                    string outputFile = Path.GetFullPath(args[3]);
-                    ImageEncoderQuality quality = null;
-                    //Optional arguments
-                    if (args.Length > 4)
+                    if (args[0].StartsWith("-encode"))
                     {
-                        int position = 4;
-                        quality = ImageEncoder.ParseEncoderArguments(args, ref position);
-                    }
-                    ImageEncoder.Encode(sourceFile, outputFile, quality);
-                }
-                else if (args[0] == "-encodeAll" && args.Length > 4)
-                {
-                    string sourceDir = Path.GetFullPath(args[1]);
-                    string outputDir = Path.GetFullPath(args[3]);
-                    string extension = args[4];
-                    ImageEncoderQuality quality = null;
-                    //Optional arguments
-                    if (args.Length > 5)
-                    {
-                        int position = 5;
-                        quality = ImageEncoder.ParseEncoderArguments(args, ref position);
-                    }
-                }
+                        ImageEncoderQuality quality = null;
 
-                return;
-            }
-            if (args.Length > 1)
-            {
-                if (args[0] == "-print")
-                {
-                    ImagePrinter.PrintImage(args[1]);
-                }
+                        if (args[0] == ("-encode"))
+                        {
+                            string sourceFile = Path.GetFullPath(args[1]);
+                            string outputFile = Path.GetFullPath(args[3]);
 
-                return;
-            }
-            if (args.Length == 1)
-            {
-                if (args[0].StartsWith("-"))
-                {
-                    if (args[0] == "-silentBing")
-                    {
-                        BingImageDownloader.DownloadImageOfTheDay(AppSetting.Current.BingImageSavePath, null).GetAwaiter().GetResult();
-                        AppSetting.Current.Save();
-                    }
-                    else if (args[0] == "-silentBingMultiple")
-                    {
-                        BingImageDownloader.DownloadLast8Images(AppSetting.Current.BingImageSavePath, null).GetAwaiter().GetResult();
-                    }
-                    else if (args[0] == "-downloadExampleImages")
-                    {
-                        DownloadExampleImages();
-                    }
-                    else if (args[0] == "-createShortcuts")
-                    {
-                        GetShortcutFullPaths(out string desktopUser, out string startMenuUser);
+#if DEBUG
+                            Helpers.Message(sourceFile, "sourceFile");
+                            Helpers.Message(outputFile, "outputFile");
+#endif
 
-                        Helpers.Message(desktopUser);
-                        Helpers.Message(startMenuUser);
+                            //Optional arguments
+                            if (args.Length > 4)
+                            {
+                                int position = 4;
+                                quality = ImageEncoder.ParseEncoderArguments(args, ref position);
+                            }
+                            ImageEncoder.Encode(sourceFile, outputFile, quality);
+                        }
+                        else if (args[0] == "-encodeAll" && args.Length > 4)
+                        {
+                            string sourceDir = Path.GetFullPath(args[1]);
+                            string outputDir = Path.GetFullPath(args[3]);
+                            string extension = args[4];
 
-                        Helpers.CreateShortcut(desktopUser, Application.ExecutablePath, Application.StartupPath, "Provides lightning fast image viewing for your everyday pleasure.", null);
-                        Helpers.CreateShortcut(startMenuUser, Application.ExecutablePath, Application.StartupPath, "Provides lightning fast image viewing for your everyday pleasure.", null);
-                    }
-                    else if (args[0] == "-removeShortcuts")
-                    {
-                        GetShortcutFullPaths(out string desktopUser, out string startMenuUser);
+#if DEBUG
+                            Helpers.Message(sourceDir, "sourceDir");
+                            Helpers.Message(outputDir, "outputDir");
+                            Helpers.Message(extension, "extension");
+#endif
+                            //Optional arguments
+                            if (args.Length > 5)
+                            {
+                                int position = 5;
+                                quality = ImageEncoder.ParseEncoderArguments(args, ref position);
+                            }
+                            ImageEncoder.EncodeAll(sourceDir, outputDir, extension, quality);
+                        }
 
-                        if (File.Exists(desktopUser))
-                            File.Delete(desktopUser);
-
-                        if (File.Exists(startMenuUser))
-                            File.Delete(startMenuUser);
+#if DEBUG
+                        string qualitySettingText = string.Empty;
+                        qualitySettingText += $"\n{quality.Quality.ToString()}";
+                        qualitySettingText += $"\n{quality.WebpComplexity.ToString()}";
+                        qualitySettingText += $"\n{quality.WebpType.ToString()}";
+                        qualitySettingText += $"\n{quality.WebpSpeed.ToString()}";
+                        qualitySettingText += $"\n{quality.ObiPixelFormat.ToString()}";
+                        qualitySettingText += $"\n{quality.ObiFlags.ToString()}";
+                        qualitySettingText += $"\n{quality.DitheringTechnique.ToString()}";
+                        qualitySettingText += $"\n{quality.UseRLE.ToString()}";
+                        qualitySettingText += $"\n{quality.RescaleMode.ToString()}";
+                        qualitySettingText += $"\n{quality.RescaleSize.ToString()}";
+                        Helpers.Message(qualitySettingText);
+#endif
                     }
 
                     return;
                 }
-                else
+                if (args.Length > 1)
                 {
-                    if (Helpers.IsExtensionSupported(args[0], ImageDecoder.Filters))
+                    if (args[0] == "-print")
                     {
-                        CurrentFile = Path.GetFullPath(args[0]);
+                        ImagePrinter.PrintImage(args[1]);
+                    }
+
+                    return;
+                }
+                if (args.Length == 1)
+                {
+                    if (args[0].StartsWith("-"))
+                    {
+                        if (args[0] == "-silentBing")
+                        {
+                            BingImageDownloader.DownloadImageOfTheDay(AppSetting.Current.BingImageSavePath, null).GetAwaiter().GetResult();
+                            AppSetting.Current.Save();
+                        }
+                        else if (args[0] == "-silentBingMultiple")
+                        {
+                            BingImageDownloader.DownloadLast8Images(AppSetting.Current.BingImageSavePath, null).GetAwaiter().GetResult();
+                        }
+                        else if (args[0] == "-downloadExampleImages")
+                        {
+                            DownloadExampleImages();
+                        }
+                        else if (args[0] == "-createShortcuts")
+                        {
+                            GetShortcutFullPaths(out string desktopUser, out string startMenuUser);
+
+                            Helpers.Message(desktopUser);
+                            Helpers.Message(startMenuUser);
+
+                            Helpers.CreateShortcut(desktopUser, Application.ExecutablePath, Application.StartupPath, "Provides lightning fast image viewing for your everyday pleasure.", null);
+                            Helpers.CreateShortcut(startMenuUser, Application.ExecutablePath, Application.StartupPath, "Provides lightning fast image viewing for your everyday pleasure.", null);
+                        }
+                        else if (args[0] == "-removeShortcuts")
+                        {
+                            GetShortcutFullPaths(out string desktopUser, out string startMenuUser);
+
+                            if (File.Exists(desktopUser))
+                                File.Delete(desktopUser);
+
+                            if (File.Exists(startMenuUser))
+                                File.Delete(startMenuUser);
+                        }
+
+                        return;
                     }
                     else
                     {
-                        Helpers.Message($"Reading {Path.GetExtension(args[0])} files not supported. Please refer to the Readme.md file for a list of supported formats.");
-                        return;
+                        if (Helpers.IsExtensionSupported(args[0], ImageDecoder.Filters))
+                        {
+                            CurrentFile = Path.GetFullPath(args[0]);
+                        }
+                        else
+                        {
+                            Helpers.Message($"Reading {Path.GetExtension(args[0])} files not supported. Please refer to the Readme.md file for a list of supported formats.");
+                            return;
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Helpers.Message(e.Message, $"{Application.ProductName} Something Went Wrong");
+#endif
             }
 
             Program.Ofd = new OpenFileDialog();

@@ -1934,7 +1934,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ImageViewer"
         "ProductCode" = "8:{F0A9209C-4CC9-4DE0-86C2-2720C00B9558}"
-        "PackageCode" = "8:{56B57177-1283-459F-9E73-78739AAA3954}"
+        "PackageCode" = "8:{13EB9464-8F60-4455-A7D7-B76B12236506}"
         "UpgradeCode" = "8:{6FD526FA-A415-467B-981F-0929C74C350A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"

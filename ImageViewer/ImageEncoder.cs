@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 
 using WebPWrapper;
-using System.Diagnostics;
 using LibObiNet;
 using Imaging.DDSReader.Utils;
 using LibObiNet.Dithering;
+using System.Windows.Forms;
+using System.Threading;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Tama.ImageViewer
 {
@@ -69,33 +73,28 @@ namespace Tama.ImageViewer
                 quality = new ImageEncoderQuality();
 
             Image resizedImage = null;
-            if (!outputFile.EndsWith(".obi") && quality.RescaleMode == 2)
+            if (!outputFile.EndsWith(".obi"))
             {
-                //This is a bit of a cheat, but it should work just fine
-                resizedImage = ObiUtils.RescaleBitmapToMaxDimensions((Bitmap)image, quality.RescaleSize.Width, quality.RescaleSize.Height, LibObiNet.PixelFormat.Format8Grayscale);
-            }
-            else if (!outputFile.EndsWith(".obi") && quality.RescaleMode == 3)
-            {
-                //This is a bit of a cheat, but it should work just fine
-                resizedImage = ObiUtils.StretchBitmap((Bitmap)image, quality.RescaleSize.Width, quality.RescaleSize.Height, LibObiNet.PixelFormat.Format8Grayscale);
-            }
-            else if (!outputFile.EndsWith(".obi") && quality.RescaleMode == 4)
-            {
-                //This is a bit of a cheat, but it should work just fine
-                resizedImage = ObiUtils.FillBitmap((Bitmap)image, quality.RescaleSize.Width, LibObiNet.PixelFormat.Format8Grayscale);
-            }
-            else
-            {
-                resizedImage = new Bitmap(image);
+                if (quality.RescaleMode == 2)
+                {
+                    //This is a bit of a cheat, but it should work just fine
+                    resizedImage = ObiUtils.RescaleBitmapToMaxDimensions((Bitmap)image, quality.RescaleSize.Width, quality.RescaleSize.Height, LibObiNet.PixelFormat.Format8Grayscale);
+                }
+                else if (quality.RescaleMode == 3)
+                {
+                    //This is a bit of a cheat, but it should work just fine
+                    resizedImage = ObiUtils.StretchBitmap((Bitmap)image, quality.RescaleSize.Width, quality.RescaleSize.Height, LibObiNet.PixelFormat.Format8Grayscale);
+                }
+                else if (quality.RescaleMode == 4)
+                {
+                    //This is a bit of a cheat, but it should work just fine
+                    resizedImage = ObiUtils.FillBitmap((Bitmap)image, quality.RescaleSize.Width, LibObiNet.PixelFormat.Format8Grayscale);
+                }
             }
 
             if (outputFile.EndsWith(".obi", StringComparison.OrdinalIgnoreCase))
             {
-                if (quality.RescaleMode == 0)
-                {
-                    resizedImage = new Bitmap(image);
-                }
-                else if (quality.RescaleMode == 1)
+                if (quality.RescaleMode == 1)
                 {
                     resizedImage = ObiUtils.StretchBitmapToMinWidthRequired((Bitmap)image, quality.ObiPixelFormat);
                 }
@@ -116,31 +115,31 @@ namespace Tama.ImageViewer
                 if (quality.ObiPixelFormat == LibObiNet.PixelFormat.Format8Grayscale && quality.DitheringTechnique > 0)
                 {
                     Console.WriteLine("Can't apply dithering for 8-bit.");
-                    ditheredImage = ObiUtils.ConvertToGrayscale((Bitmap)resizedImage, (byte)quality.ObiPixelFormat);
+                    ditheredImage = ObiUtils.ConvertToGrayscale((Bitmap)(quality.RescaleMode == 0 ? image : resizedImage), (byte)quality.ObiPixelFormat);
                 }
                 else if (quality.DitheringTechnique == 3)
                 {
                     if ((byte)quality.ObiPixelFormat > 1)
                     {
                         Console.WriteLine("Blue Noise Dithering only works for 1 bpp.");
-                        ditheredImage = ObiUtils.ConvertToGrayscale((Bitmap)resizedImage, (byte)quality.ObiPixelFormat);
+                        ditheredImage = ObiUtils.ConvertToGrayscale((Bitmap)(quality.RescaleMode == 0 ? image : resizedImage), (byte)quality.ObiPixelFormat);
                     }
                     else
                     {
-                        ditheredImage = BlueNoise.Dither((Bitmap)resizedImage);
+                        ditheredImage = BlueNoise.Dither((Bitmap)(quality.RescaleMode == 0 ? image : resizedImage));
                     }
                 }
                 else if (quality.DitheringTechnique == 2)
                 {
-                    ditheredImage = Stucki.Dither((Bitmap)resizedImage, (byte)quality.ObiPixelFormat);
+                    ditheredImage = Stucki.Dither((Bitmap)(quality.RescaleMode == 0 ? image : resizedImage), (byte)quality.ObiPixelFormat);
                 }
                 else if (quality.DitheringTechnique == 1)
                 {
-                    ditheredImage = FloydSteinberg.Dither((Bitmap)resizedImage, (byte)quality.ObiPixelFormat);
+                    ditheredImage = FloydSteinberg.Dither((Bitmap)(quality.RescaleMode == 0 ? image : resizedImage), (byte)quality.ObiPixelFormat);
                 }
                 else
                 {
-                    ditheredImage = ObiUtils.ConvertToGrayscale((Bitmap)resizedImage, (byte)quality.ObiPixelFormat);
+                    ditheredImage = ObiUtils.ConvertToGrayscale((Bitmap)(quality.RescaleMode == 0 ? image : resizedImage), (byte)quality.ObiPixelFormat);
                 }
 
                 ObiFile obiFile = new ObiFile(ditheredImage, quality.ObiPixelFormat, (quality.ObiFlags & ObiFlags.RLE) != 0);
@@ -149,48 +148,54 @@ namespace Tama.ImageViewer
             }
             else if (outputFile.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase))
             {
-                resizedImage.Save(outputFile, ImageFormat.Bmp);
+                Image imageRef = quality.RescaleMode == 0 ? image : resizedImage;
+                imageRef.Save(outputFile, ImageFormat.Bmp);
             }
             else if (outputFile.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) || outputFile.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase))
             {
                 ImageCodecInfo jpegCodec = ImageCodecInfo.GetImageEncoders().FirstOrDefault(codec => codec.FormatID == ImageFormat.Jpeg.Guid);
                 EncoderParameters encoderParams = new EncoderParameters(1);
                 encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, quality.Quality);
-                resizedImage.Save(outputFile, jpegCodec, encoderParams);
+
+                Image imageRef = quality.RescaleMode == 0 ? image : resizedImage;
+                imageRef.Save(outputFile, jpegCodec, encoderParams);
             }
             else if (outputFile.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
             {
-                resizedImage.Save(outputFile, ImageFormat.Png);
+                Image imageRef = quality.RescaleMode == 0 ? image : resizedImage;
+                imageRef.Save(outputFile, ImageFormat.Png);
             }
             else if (outputFile.EndsWith(".webp", StringComparison.OrdinalIgnoreCase))
             {
                 byte[] rawWebP = null;
                 using (WebP webp = new WebP())
                 {
+                    Image imageRef = quality.RescaleMode == 0 ? image : resizedImage;
+
                     if (quality.WebpComplexity == WebPEncodingComplexity.NearLossless)
                     {
-                        rawWebP = webp.EncodeNearLossless((Bitmap)resizedImage, quality.Quality, quality.WebpSpeed);
+                        rawWebP = webp.EncodeNearLossless((Bitmap)imageRef, quality.Quality, quality.WebpSpeed);
                     }
                     else if(quality.WebpComplexity == WebPEncodingComplexity.Advanced)
                     {
                         if(quality.WebpType == WebPEncodingType.Lossy)
                         {
-                            rawWebP = webp.EncodeLossy((Bitmap)resizedImage, quality.Quality, quality.WebpSpeed);
+                            rawWebP = webp.EncodeLossy((Bitmap)imageRef, quality.Quality, quality.WebpSpeed);
                         }
                         else if(quality.WebpType < WebPEncodingType.Lossless)
                         {
-                            rawWebP = webp.EncodeLossless((Bitmap)resizedImage, quality.WebpSpeed);
+                            rawWebP = webp.EncodeLossless((Bitmap)imageRef, quality.WebpSpeed);
                         }
                     }
                     else if(quality.WebpComplexity == WebPEncodingComplexity.Simple)
                     {
                         if (quality.WebpType == WebPEncodingType.Lossy)
                         {
-                            rawWebP = webp.EncodeLossy((Bitmap)resizedImage, quality.Quality);
+                            rawWebP = webp.EncodeLossy((Bitmap)imageRef, quality.Quality);
                         }
                         else if (quality.WebpType < WebPEncodingType.Lossless)
                         {
-                            rawWebP = webp.EncodeLossless((Bitmap)resizedImage);
+                            rawWebP = webp.EncodeLossless((Bitmap)imageRef);
                         }
                     }
                 }
@@ -207,6 +212,33 @@ namespace Tama.ImageViewer
             {
                 ImageEncoder.Encode(image, outputFile, quality);
             }
+        }
+
+        public static void EncodeAll(string sourceDir, string outputDir, string extension, ImageEncoderQuality quality = null)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            string[] files = Directory.GetFiles(sourceDir);
+            List<string> imageFiles = new List<string>();
+
+            foreach(string file in files)
+            {
+                if(Helpers.IsExtensionSupported(file, ImageDecoder.Filters) && Helpers.IsExtensionSupported(file, ImageEncoder.Filters))
+                {
+                    imageFiles.Add(file);
+                }
+            }
+
+            // Use Parallel.ForEach to process files in parallel
+            Parallel.ForEach(imageFiles, (imageFile) =>
+            {
+                string outputPath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(imageFile) + extension);
+                ImageEncoder.Encode(imageFile, outputPath, quality);
+            });
+
+            sw.Stop();
+
+            //Helpers.Message($"All threads done in {sw.ElapsedMilliseconds} milliseconds.", Application.ProductName);
         }
 
         public static ImageEncoderQuality ParseEncoderArguments(string[] args, ref int position)
