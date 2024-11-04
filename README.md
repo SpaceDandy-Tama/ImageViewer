@@ -11,7 +11,7 @@ Version 2.4.1 marks the 10th anniversary of ImageViewer and introduces a signifi
 
 This update was substantial enough that it nearly warranted a leap to version 3.0 instead of 2.4.
 
-For a comprehensive list of changes introduced in v2.4, refer to the [release notes](https://github.com/SpaceDandy-Tama/ImageViewer/releases/tag/v2.4).
+For a comprehensive list of changes introduced in v2.4.1, refer to the [release notes](https://github.com/SpaceDandy-Tama/ImageViewer/releases/tag/v2.4.1).
 
 With this update, ImageViewer is now more powerful, stable, and user-friendly than ever.
 
