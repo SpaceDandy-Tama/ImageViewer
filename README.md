@@ -37,7 +37,7 @@ Supported formats include:
 ---
 
 ## Installation Instructions
-1. **Download the Latest Release**.
+1. **[Download][https://github.com/SpaceDandy-Tama/ImageViewer/blob/master/ImageViewer/Changelog.md](https://github.com/SpaceDandy-Tama/ImageViewer/releases/download/v2.4/ImageViewerSetup_v2.4.msi) the Latest Release**.
 2. **Run the Setup**: Double-click the setup file to begin installation.
 
 > **Note**: File associations will be automatically configured during the installation process.
