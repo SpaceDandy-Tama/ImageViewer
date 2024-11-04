@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
@@ -77,6 +79,51 @@ namespace Tama
         {
             Console.WriteLine(message);
             MessageBox.Show(message, caption == string.Empty ? Application.ProductName : caption);
+        }
+
+        public static void CreateShortcut(string shortcutPath, string targetPath, string workingDir, string description, string iconPath)
+        {
+            IWshRuntimeLibrary.WshShell wsh = new IWshRuntimeLibrary.WshShell();
+
+            // Create the shortcut
+            IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)wsh.CreateShortcut(shortcutPath);
+
+            // Set the properties for the shortcut
+            shortcut.TargetPath = targetPath;
+            shortcut.WorkingDirectory = workingDir;
+            if(description != null)
+            {
+                shortcut.Description = description;
+            }
+            if (iconPath != null)
+            {
+                shortcut.IconLocation = iconPath;
+            }
+
+            // Save the shortcut
+            shortcut.Save();
+        }
+
+        public static async Task DownloadFileAsync(string url, string destinationPath)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    using (var fs = new FileStream(destinationPath, FileMode.Create, FileAccess.Write))
+                    {
+                        await response.Content.CopyToAsync(fs);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions (log them, show message, etc.)
+                    Console.WriteLine($"Error downloading file: {ex.Message}");
+                }
+            }
         }
     }
 }

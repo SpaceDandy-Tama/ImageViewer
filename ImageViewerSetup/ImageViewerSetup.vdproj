@@ -15,12 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_00140555C85C45C78080A6EC6C0D2FCC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0CF24972255A49D1E6D1C19014569180"
         "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
         "MsmSig" = "8:_UNDEFINED"
@@ -57,12 +51,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2A26D147B2F14E8482A7B271D1E34B88"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_2DE248B65A7F4E759FB168B0D11EC305"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -77,18 +65,6 @@
         {
         "MsmKey" = "8:_421DCEF4A4F94416658E48925453942D"
         "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_517EB440A9084FEFA3B09D0B348F9FF4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5296B09720844C6FA5F27F2D493AB598"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -117,12 +93,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_61C6504071F543FABBAD9FE0442C355B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6A019D54150A416F92C48732BFB635DC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -135,19 +105,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6F109504E0F6441BA79E899211E20B36"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_70BD9E8863A440F29DE8133A12D69487"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_78E7AAB04A01405EBC6537D8AD925E73"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -171,12 +129,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8C413B1314BC41FCA657CD5347245699"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9079BBF1830344CCB6B2F517324F22D1"
         "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
         "MsmSig" = "8:_UNDEFINED"
@@ -190,12 +142,6 @@
         "Entry"
         {
         "MsmKey" = "8:_954A7A7FC9BC4DC491B24D29C313D796"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9E673937C7B74F8A815348B4636BAAF6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -261,12 +207,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BE1A5F8054C940E6BAA165799C132934"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_CE2EF434D0C676F4E20A1FFB5490B52B"
         "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
         "MsmSig" = "8:_UNDEFINED"
@@ -274,13 +214,13 @@
         "Entry"
         {
         "MsmKey" = "8:_D22D78A291CF740889BA29B035BD9FDC"
-        "OwnerKey" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
+        "OwnerKey" = "8:_7D6E0EB85C12419DBC16CA10C43647AE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D22D78A291CF740889BA29B035BD9FDC"
-        "OwnerKey" = "8:_7D6E0EB85C12419DBC16CA10C43647AE"
+        "OwnerKey" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -347,12 +287,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7D6E0EB85C12419DBC16CA10C43647AE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -478,13 +412,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5C6494762E0A48029587F4016F7F257F"
+        "OwnerKey" = "8:_7D6E0EB85C12419DBC16CA10C43647AE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D22D78A291CF740889BA29B035BD9FDC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5C6494762E0A48029587F4016F7F257F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -559,6 +499,34 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_73E0BC52339342F89BE2B7770624B2AD"
+            {
+            "Name" = "8:ImageViewer.exe"
+            "Condition" = "8:"
+            "Object" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_CC73DA90_6885_4077_B425_32742DB49D14"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_9DDA0157D157473986FF90D1CFCABEB4"
+            {
+            "Name" = "8:ImageViewer.exe"
+            "Condition" = "8:"
+            "Object" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_CF9471A9_3B7A_47F4_A716_0C74E6F0433E"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -582,26 +550,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00140555C85C45C78080A6EC6C0D2FCC"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\Desert During Nighttime.jpg"
-            "TargetName" = "8:Desert During Nighttime.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0CF24972255A49D1E6D1C19014569180"
             {
             "AssemblyRegister" = "3:1"
@@ -755,26 +703,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2A26D147B2F14E8482A7B271D1E34B88"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\A Colorful Sunset Over a City with a Mountain in the Background.jpg"
-            "TargetName" = "8:A Colorful Sunset Over a City with a Mountain in the Background.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2DE248B65A7F4E759FB168B0D11EC305"
             {
             "SourcePath" = "8:..\\ImageViewer\\File Icons\\fileIcon_tga.ico"
@@ -855,46 +783,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_517EB440A9084FEFA3B09D0B348F9FF4"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\A Yellow Object in the Middle of a Black Background.jpg"
-            "TargetName" = "8:A Yellow Object in the Middle of a Black Background.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5296B09720844C6FA5F27F2D493AB598"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\A Mushroom in the Middle of a Forest.jpg"
-            "TargetName" = "8:A Mushroom in the Middle of a Forest.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5C6494762E0A48029587F4016F7F257F"
@@ -1021,26 +909,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_61C6504071F543FABBAD9FE0442C355B"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\The Sun is Shining Brightly Over the Water.jpg"
-            "TargetName" = "8:The Sun is Shining Brightly Over the Water.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6A019D54150A416F92C48732BFB635DC"
             {
             "SourcePath" = "8:..\\ImageViewer\\File Icons\\fileIcon_gif.ico"
@@ -1081,52 +949,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F109504E0F6441BA79E899211E20B36"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\A Small Waterfall in the Middle of a Mountain.jpg"
-            "TargetName" = "8:A Small Waterfall in the Middle of a Mountain.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70BD9E8863A440F29DE8133A12D69487"
             {
             "SourcePath" = "8:..\\ImageViewer\\File Icons\\fileIcon_dds.ico"
             "TargetName" = "8:fileIcon_dds.ico"
             "Tag" = "8:"
             "Folder" = "8:_8A258C313ED64531A59F02FA27A69BBD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_78E7AAB04A01405EBC6537D8AD925E73"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\Two Orange Flowers with Green Stems in Front of a Black Background.jpg"
-            "TargetName" = "8:Two Orange Flowers with Green Stems in Front of a Black Background.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1234,26 +1062,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8C413B1314BC41FCA657CD5347245699"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\A Scenic View of a Valley With Mountains in the Background.jpg"
-            "TargetName" = "8:A Scenic View of a Valley With Mountains in the Background.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9079BBF1830344CCB6B2F517324F22D1"
             {
             "AssemblyRegister" = "3:1"
@@ -1311,26 +1119,6 @@
             "TargetName" = "8:Readme.md"
             "Tag" = "8:"
             "Folder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E673937C7B74F8A815348B4636BAAF6"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\Starship and Super Heavy Stack.jpg"
-            "TargetName" = "8:Starship and Super Heavy Stack.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1482,7 +1270,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ImageViewer, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ImageViewer, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_BA495BE66D2745BBA3FC9BCD2EAD9380"
@@ -1589,26 +1377,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BE1A5F8054C940E6BAA165799C132934"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\Example Images\\A Colorful Aurora Bore Over a Rockey Beach.jpg"
-            "TargetName" = "8:A Colorful Aurora Bore Over a Rockey Beach.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CE2EF434D0C676F4E20A1FFB5490B52B"
@@ -2113,17 +1881,6 @@
             "Property" = "8:DesktopFolder"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_BEB2C6EAB28A4B2EB5FCD409400B2A88"
-                    {
-                    "Name" = "8:Example Images"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_F38D8E0C5612415BBEB4047B89AD4E1D"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_AC49EDD0110B4F609087E0867C9229FE"
@@ -2176,15 +1933,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ImageViewer"
-        "ProductCode" = "8:{B48EF834-D1F5-426A-8DC6-0F8B08E6EFEE}"
-        "PackageCode" = "8:{C7AC1AC9-B118-45EE-B17A-2036EEB0F56B}"
+        "ProductCode" = "8:{F0A9209C-4CC9-4DE0-86C2-2720C00B9558}"
+        "PackageCode" = "8:{56B57177-1283-459F-9E73-78739AAA3954}"
         "UpgradeCode" = "8:{6FD526FA-A415-467B-981F-0929C74C350A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.4"
+        "ProductVersion" = "8:2.4.1"
         "Manufacturer" = "8:TamaSuite"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -2297,34 +2054,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_384D4A2B2C3E43ECB1B098E905366CCA"
-            {
-            "Name" = "8:ImageViewer"
-            "Arguments" = "8:"
-            "Description" = "8:Provides lightning fast image viewing for your everyday pleasure."
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:32512"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
-            "Folder" = "8:_AC49EDD0110B4F609087E0867C9229FE"
-            "WorkingFolder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
-            "Icon" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_920C76B1C34A4216A767B42674826A5C"
-            {
-            "Name" = "8:ImageViewer"
-            "Arguments" = "8:"
-            "Description" = "8:Provides lightning fast image viewing for your everyday pleasure."
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:32512"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
-            "Folder" = "8:_96171EC1C2E749B0B9658F96C72C4135"
-            "WorkingFolder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
-            "Icon" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {

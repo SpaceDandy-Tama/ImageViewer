@@ -36,7 +36,7 @@ namespace Tama.ImageViewer
         public string BingImageSavePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyPictures), "Bing Images");
         public AskOrNoOption OpenBingImageAfterDownload = AskOrNoOption.Ask;
         public string BingRegion = null;
-        public Theme Theme = Theme.Dark;
+        public Theme Theme = Theme.Default;
         public Color CustomBackgroundColor = new Color(88, 22, 44);
         public int ThemeCheckInterval = 1;
         public bool AutoUISize = true;
