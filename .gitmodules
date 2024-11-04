@@ -1,3 +1,6 @@
 [submodule "TINYSharp"]
 	path = TINYSharp
 	url = git@github.com:SpaceDandy-Tama/TINYSharp.git
+[submodule "OpenBookImage"]
+	path = OpenBookImage
+	url = https://github.com/SpaceDandy-Tama/OpenBookImage

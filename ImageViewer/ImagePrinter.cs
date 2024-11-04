@@ -3,13 +3,12 @@ using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.IO;
 using System.Windows.Forms;
+using Tama.ImageViewer;
 
 namespace Tama
 {
     public static class ImagePrinter
     {
-        public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".tiff", ".tif", ".ico" };
-
         public static void PrintImage(string imagePath)
         {
             // Check if the image file exists
@@ -19,14 +18,14 @@ namespace Tama
                 return;
             }
 
-            if (!Helpers.IsExtensionSupported(imagePath, ImagePrinter.Filters))
+            if (!Helpers.IsExtensionSupported(imagePath, ImageDecoder.Filters))
             {
                 Helpers.Message($"Printing {Path.GetExtension(imagePath)} files not supported");
                 return;
             }
 
             // Load the image
-            using (Image imageToPrint = Image.FromFile(imagePath))
+            using (DisposableImage imageToPrint = ImageDecoder.Decode(imagePath))
             {
                 // Create a PrintDocument
                 using (PrintDocument printDocument = new PrintDocument())

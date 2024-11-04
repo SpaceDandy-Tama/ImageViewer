@@ -13,6 +13,8 @@ public class DisposableImage : IDisposable
     public bool TargaRLE;
     public Imaging.DDSReader.Utils.PixelFormat DDSPixelFormat;
     public string WEBPFormat;
+    public LibObiNet.PixelFormat ObiFormat;
+    public LibObiNet.ObiFlags ObiFlags;
 
     //These Properties and Methods are for easy of use
     public int Width => Image.Width;

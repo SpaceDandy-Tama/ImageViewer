@@ -346,7 +346,23 @@ namespace Tama.ImageViewer
 
             pictureBox1.Image = CurrentImage;
 
-            if (Program.CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
+            if (Program.CurrentFile.EndsWith(".obi", StringComparison.OrdinalIgnoreCase))
+            {
+                string extra = string.Empty;
+                if (CurrentImage.ObiFormat == LibObiNet.PixelFormat.Format8Grayscale)
+                    extra = "8-bit Grayscale";
+                else if (CurrentImage.ObiFormat == LibObiNet.PixelFormat.Format4Grayscale)
+                    extra = "4-bit Grayscale";
+                else if (CurrentImage.ObiFormat == LibObiNet.PixelFormat.Format2Grayscale)
+                    extra = "2-bit Grayscale";
+                else if (CurrentImage.ObiFormat == LibObiNet.PixelFormat.Monochromatic)
+                    extra = "Monochromatic";
+
+                extra += $" | {((CurrentImage.ObiFlags & LibObiNet.ObiFlags.RLE) != 0 ? "RLE" : "RAW")}";
+
+                SetFileNameText(CurrentFileName, extra);
+            }
+            else if (Program.CurrentFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
             {
                 SetFileNameText(CurrentFileName, $"{CurrentImage.TargaPixelDepth} bpp {(CurrentImage.TargaRLE ? "RLE" : "RAW")}");
             }

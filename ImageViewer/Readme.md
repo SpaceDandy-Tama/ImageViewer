@@ -1,4 +1,4 @@
-# Tama's ImageViewer
+# ImageViewer
 
 ## Overview
 **Tama's ImageViewer** is an ultra-lightweight image viewing application, fully developed in C#.
@@ -88,11 +88,23 @@ Tama's ImageViewer supports a wide range of image file formats, including:
   - `<sourcePath>`: The path to the image file that you want to encode.
   - `<outputPath>`: The path where the encoded image will be saved.
   - `[EncoderParameters]`: Optional parameters to customize the encoding process, including:
-    - `-quality <quality 0-100>`: Sets the quality of the output image (0 = lowest, 100 = highest).
-    - `-simple`: Applies a simple encoding strategy that prioritizes speed over quality.
-    - `-advanced <speed 1-9>`: Uses an advanced encoding method, where lower values prioritize speed and higher values prioritize quality.
-    - `-nearLossless <speed 1-9>`: Aims for nearly lossless encoding, balancing compression and image fidelity.
-    - `-lossless`: Enables lossless encoding, ensuring no information is lost in the output image.
+    - `-quality <quality 0-100>`: (webp, jpeg) Sets the quality of the output image (0 = lowest, 100 = highest).
+    - `-simple`: (webp) Applies a simple encoding strategy that prioritizes speed over quality.
+    - `-advanced <speed 1-9>`: (webp) Uses an advanced encoding method, where lower values prioritize speed and higher values prioritize quality.
+    - `-nearLossless <speed 1-9>`: (webp) Aims for nearly lossless encoding, balancing compression and image fidelity.
+    - `-lossless`: (webp) Enables lossless encoding, ensuring no information is lost in the output image.
+	- `-8bit`: (obi) Encodes using an 8-bit grayscale pixel format.
+	- `-4bit`: (obi) Encodes using a 4-bit grayscale pixel format.
+	- `-2bit`: (obi) Encodes using a 2-bit grayscale pixel format.
+	- `-1bit`: (obi) Encodes using a 1-bit monochromatic pixel format.
+	- `-min` or `-minimum`: (obi) Ensures minimum width is maintained during encoding.
+	- `-max:<width>x<height>` or `-maximum:<width>x<height>`: (all) Rescales the image if its width or height exceeds the specified dimensions, maintaining the aspect ratio.
+	- `-stretch:<width>x<height>`: (all) Rescales the image to the specified dimensions.
+	- `-fill:<width>x<height>`: (all) Adds black padding to the sides of the image until the specified width is achieved.
+	- `-blueNoise`: (obi) Applies blue noise dithering when encoding with the `-1bit` format.
+	- `-stucki`: (obi) Applies Stucki dithering during encoding. Not compatible with the `-8bit` format.
+	- `-floydSteinberg`: (obi) Applies Floyd-Steinberg dithering during encoding. Not compatible with the `-8bit` format.
+	- `-RLE`: (obi) Enables Run-Length Encoding for the obi format.
 
 - `-encodeAll <sourceDir> -to <destinationDir> <extension> [EncoderParameters]`  
   Encodes all image files within the specified directory `<sourceDir>` and saves the encoded versions to `<destinationDir>`. This command is ideal for batch processing multiple images with consistent encoding parameters.

@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageViewer.Common", "Image
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ImageViewerSetup", "ImageViewerSetup\ImageViewerSetup.vdproj", "{1D84A814-CC71-400B-BC0C-66000356FD0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibObiNet", "OpenBookImage\LibObiNet\LibObiNet.csproj", "{AE790CCC-72D0-4D1D-922A-179A7072E36B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibObiNet.Dithering", "OpenBookImage\LibObiNet.Dithering\LibObiNet.Dithering.csproj", "{01D7D095-D0BD-4217-8277-076530BBACCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{67196341-C77B-418C-8996-1893A06F56CF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1D84A814-CC71-400B-BC0C-66000356FD0E}.Debug|Any CPU.ActiveCfg = Debug
 		{1D84A814-CC71-400B-BC0C-66000356FD0E}.Release|Any CPU.ActiveCfg = Release
+		{AE790CCC-72D0-4D1D-922A-179A7072E36B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE790CCC-72D0-4D1D-922A-179A7072E36B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE790CCC-72D0-4D1D-922A-179A7072E36B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE790CCC-72D0-4D1D-922A-179A7072E36B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D7D095-D0BD-4217-8277-076530BBACCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D7D095-D0BD-4217-8277-076530BBACCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D7D095-D0BD-4217-8277-076530BBACCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D7D095-D0BD-4217-8277-076530BBACCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

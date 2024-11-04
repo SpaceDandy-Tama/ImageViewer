@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TamaSuite")]
 [assembly: AssemblyProduct("ImageViewer")]
-[assembly: AssemblyCopyright("Oğuz Can Soyselçuk ©  2022")]
+[assembly: AssemblyCopyright("Oğuz Can Soyselçuk ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

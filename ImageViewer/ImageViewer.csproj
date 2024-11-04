@@ -192,9 +192,13 @@
       <Project>{67196341-c77b-418c-8996-1893a06f56cf}</Project>
       <Name>ImageViewer.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImageViewer.ThumbnailProvider\ImageViewer.ThumbnailProvider.csproj">
-      <Project>{dac2d29e-990b-4539-bd2a-4ae280310b91}</Project>
-      <Name>ImageViewer.ThumbnailProvider</Name>
+    <ProjectReference Include="..\OpenBookImage\LibObiNet.Dithering\LibObiNet.Dithering.csproj">
+      <Project>{01d7d095-d0bd-4217-8277-076530bbaccd}</Project>
+      <Name>LibObiNet.Dithering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenBookImage\LibObiNet\LibObiNet.csproj">
+      <Project>{ae790ccc-72d0-4d1d-922a-179a7072e36b}</Project>
+      <Name>LibObiNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\TINYSharp\TINY\TINY.csproj">
       <Project>{ecf4f0de-156e-4634-8655-261043aceeee}</Project>

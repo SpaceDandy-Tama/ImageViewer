@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using Imaging.DDSReader;
 using Imaging.DDSReader.Utils;
+using LibObiNet;
 using Paloma;
 using WebPWrapper;
 
@@ -41,7 +42,14 @@ namespace Tama.ImageViewer
 
             DisposableImage image = null;
 
-            if (sourceFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
+            if (sourceFile.EndsWith(".obi", StringComparison.OrdinalIgnoreCase))
+            {
+                ObiFile obiFile = new ObiFile(sourceFile);
+                image = new DisposableImage(ObiUtils.CopyToBitmap(obiFile));
+                image.ObiFormat = obiFile.Header.PixelFormat;
+                image.ObiFlags = obiFile.Header.Flags;
+            }
+            else if (sourceFile.EndsWith(".tga", StringComparison.OrdinalIgnoreCase))
             {
                 using (TargaImage targaImage = new TargaImage(sourceFile))
                 {
