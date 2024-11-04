@@ -3,11 +3,11 @@
 ## Overview
 *Tama's ImageViewer* is an extremely lightweight image viewing application completely written in C#.
 
-![imageviewer.png](https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/imageviewer_old.png
+![imageviewer_old.png](https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/imageviewer_old.png)
 
 Latest version 2.4 celebrates the 10th birthday of ImageViewer by giving it a complete make over and tons of new features, leaving this old screenshot for old albums:
 
-![imageviewer_old.png](https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/imageviewer.png)
+![imageviewer.png](https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/imageviewer.png)
 
 v2.4 was a very big update, so much so I actually considered using v3.0 rather than v2.4.
 
