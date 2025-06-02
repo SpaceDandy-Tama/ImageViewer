@@ -1,5 +1,22 @@
 # Tama's ImageViewer Changelog
 
+## v2.4.2
+
+- **Fixed Encoding Issues**: Resolved issues affecting image encoding in certain edge cases.
+- **Updated libwebp**: Upgraded the `libwebp` library to the latest stable version (1.5.0) for improved security and compatibility.
+- **New Encoder Parameter**: Added the `-skipExisting` encoder parameter for `-encodeAll`, which skips re-encoding files if they already exist in the specified output directory.
+
+---
+
+## v2.4.1
+
+- **Fixed Installer Issues**: Resolved unexpected installer behavior for a smoother installation process.
+- **Shortcut Functionality**: Shortcuts now operate correctly.
+- **Example Images Download**: Example images are now downloaded silently post-installation, leading to a smaller installer size compared to v2.4. This change is intentional, as example images are no longer included in the installer package.
+- **Dynamic Theme Setting**: The default theme is no longer fixed to Dark; it now follows the theme selected in Windows. If you are upgrading from v2.4, the theme will still be set to Dark. To change it, navigate to the settings file located in `AppData/Roaming/TamaSuite` named `ImageViewerSettings.tiny`. Open it with your preferred text editor, locate the line starting with `Theme: Dark`, and change it to `Theme: Default`.
+
+---
+
 ## v2.4
 
 - **New Installer** for streamlined setup.

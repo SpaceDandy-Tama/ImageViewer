@@ -61,6 +61,7 @@ namespace Tama.ImageViewer
     public class ImageEncoder
     {
         public static string[] Filters = new string[] { ".bmp", ".jpg", ".jpeg", ".png", ".webp", ".obi" };
+        public static bool SkipExisting = false;
 
         public static void Encode(DisposableImage image, string outputFile, ImageEncoderQuality quality = null)
         {
@@ -203,7 +204,8 @@ namespace Tama.ImageViewer
                 File.WriteAllBytes(outputFile, rawWebP);
             }
 
-            resizedImage.Dispose();
+            if(resizedImage != null)
+                resizedImage.Dispose();
         }
 
         public static void Encode(string sourceFile, string outputFile, ImageEncoderQuality quality = null)
@@ -225,20 +227,37 @@ namespace Tama.ImageViewer
             {
                 if(Helpers.IsExtensionSupported(file, ImageDecoder.Filters) && Helpers.IsExtensionSupported(file, ImageEncoder.Filters))
                 {
+                    string outputPath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(file) + extension);
+
+                    if (ImageEncoder.SkipExisting && File.Exists(outputPath))
+                        continue;
+
                     imageFiles.Add(file);
                 }
             }
 
             // Use Parallel.ForEach to process files in parallel
-            Parallel.ForEach(imageFiles, (imageFile) =>
+            ParallelOptions parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
+            Parallel.ForEach(imageFiles, parallelOptions, (imageFile) =>
             {
                 string outputPath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(imageFile) + extension);
+
                 ImageEncoder.Encode(imageFile, outputPath, quality);
             });
 
+            //Singlethreaded version for testing
+            /*
+            foreach (string imageFile in imageFiles)
+            {
+                Console.WriteLine(imageFile);
+                string outputPath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(imageFile) + extension);
+                ImageEncoder.Encode(imageFile, outputPath, quality);
+            }
+            */
+
             sw.Stop();
 
-            //Helpers.Message($"All threads done in {sw.ElapsedMilliseconds} milliseconds.", Application.ProductName);
+            Helpers.Message($"All images re-encoded in {sw.ElapsedMilliseconds} milliseconds.", Application.ProductName);
         }
 
         public static ImageEncoderQuality ParseEncoderArguments(string[] args, ref int position)
@@ -289,53 +308,74 @@ namespace Tama.ImageViewer
                 else if (args[position] == "-8bit")
                 {
                     quality.ObiPixelFormat = LibObiNet.PixelFormat.Format8Grayscale;
+                    position++;
                 }
                 else if (args[position] == "-4bit")
                 {
                     quality.ObiPixelFormat = LibObiNet.PixelFormat.Format4Grayscale;
+                    position++;
                 }
                 else if (args[position] == "-2bit")
                 {
                     quality.ObiPixelFormat = LibObiNet.PixelFormat.Format2Grayscale;
+                    position++;
                 }
                 else if (args[position] == "-1bit")
                 {
                     quality.ObiPixelFormat = LibObiNet.PixelFormat.Monochromatic;
+                    position++;
                 }
                 else if (args[position] == "-min" || args[position] == "-minimum")
                 {
                     quality.RescaleMode = 1;
+                    position++;
                 }
                 else if (args[position].StartsWith("-max:") || args[position].StartsWith("-maximum:"))
                 {
                     quality.RescaleMode = 2;
                     quality.RescaleSize = ParseSize(args[position]);
+                    position++;
                 }
                 else if (args[position].StartsWith("-stretch:"))
                 {
                     quality.RescaleMode = 3;
                     quality.RescaleSize = ParseSize(args[position]);
+                    position++;
                 }
                 else if (args[position].StartsWith("-fill:"))
                 {
                     quality.RescaleMode = 4;
                     quality.RescaleSize = ParseSize(args[position]);
+                    position++;
                 }
                 else if (args[position] == "-blueNoise")
                 {
                     quality.DitheringTechnique = 3;
+                    position++;
                 }
                 else if (args[position] == "-stucki")
                 {
                     quality.DitheringTechnique = 2;
+                    position++;
                 }
                 else if (args[position] == "-floydSteinberg")
                 {
                     quality.DitheringTechnique = 1;
+                    position++;
                 }
                 else if (args[position] == "-RLE")
                 {
                     quality.UseRLE = true;
+                    position++;
+                }
+                else if (args[position] == "-skipExisting")
+                {
+                    ImageEncoder.SkipExisting = true;
+                    position++;
+                }
+                else
+                {
+                    position++;
                 }
             }
 

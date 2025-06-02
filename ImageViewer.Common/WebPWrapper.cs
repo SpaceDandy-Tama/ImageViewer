@@ -712,6 +712,8 @@ namespace WebPWrapper
         }
         #endregion
 
+        UnsafeNativeMethods.WebPMemoryWrite OnCallback;
+
         #region | Private Methods |
         /// <summary>Encoding image  using Advanced encoding API</summary>
         /// <param name="bmp">Bitmap with the image</param>
@@ -788,15 +790,15 @@ namespace WebPWrapper
                 wpic.custom_ptr = initPtr;
 
                 //Set up a byte-writing method (write-to-memory, in this case)
-                UnsafeNativeMethods.OnCallback = new UnsafeNativeMethods.WebPMemoryWrite(MyWriter);
-                wpic.writer = Marshal.GetFunctionPointerForDelegate(UnsafeNativeMethods.OnCallback);
+                OnCallback = new UnsafeNativeMethods.WebPMemoryWrite(MyWriter);
+                wpic.writer = Marshal.GetFunctionPointerForDelegate(OnCallback);
 
                 //compress the input samples
                 if (UnsafeNativeMethods.WebPEncode(ref config, ref wpic) != 1)
                     throw new Exception("Encoding error: " + ((WebPEncodingError)wpic.error_code).ToString());
 
                 //Remove OnCallback
-                UnsafeNativeMethods.OnCallback = null;
+                OnCallback = null;
 
                 //Unlock the pixels
                 bmp.UnlockBits(bmpData);
@@ -1079,7 +1081,7 @@ namespace WebPWrapper
         /// <returns></returns>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int WebPMemoryWrite([In()] IntPtr data, UIntPtr data_size, ref WebPPicture wpic);
-        internal static WebPMemoryWrite OnCallback;
+        //internal static WebPMemoryWrite OnCallback;
 
         /// <summary>Compress to WebP format</summary>
         /// <param name="config">The configuration structure for compression parameters</param>

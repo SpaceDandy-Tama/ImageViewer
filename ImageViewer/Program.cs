@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -80,6 +81,15 @@ namespace Tama.ImageViewer
                             Helpers.Message(outputDir, "outputDir");
                             Helpers.Message(extension, "extension");
 #endif
+
+                            if (!Directory.Exists(outputDir))
+                            {
+                                Directory.CreateDirectory(outputDir);
+#if DEBUG
+                                Helpers.Message("Output Directory Created", "outputDir");
+#endif
+                            }
+
                             //Optional arguments
                             if (args.Length > 5)
                             {
