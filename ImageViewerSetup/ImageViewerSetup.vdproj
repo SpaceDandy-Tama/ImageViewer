@@ -33,12 +33,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_1D3C2DD7795A4CB5BAC8526DB4592153"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_243615B88F90E1A721D744950BC7B27E"
         "OwnerKey" = "8:_BA495BE66D2745BBA3FC9BCD2EAD9380"
         "MsmSig" = "8:_UNDEFINED"
@@ -147,20 +141,26 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9DE251856D6E40D0B2C27085D8B11D25"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9FF35BF44AD6A4F58807D46742406F21"
         "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A830FAC8186377750CE11DEC69F665BD"
-        "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
+        "MsmKey" = "8:_A456EFA3E13D4328A829D14DEE2B3F95"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_AB38DA7D7B3747F89002B8977157B56D"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_A830FAC8186377750CE11DEC69F665BD"
+        "OwnerKey" = "8:_AFFBC98CA58FF8A3C17F22E3C366C916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -632,31 +632,11 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1D3C2DD7795A4CB5BAC8526DB4592153"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\bin\\Release\\libwebp_x64.dll"
-            "TargetName" = "8:libwebp_x64.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_243615B88F90E1A721D744950BC7B27E"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ImageViewer.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ImageViewer.Common, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_243615B88F90E1A721D744950BC7B27E"
@@ -1133,6 +1113,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9DE251856D6E40D0B2C27085D8B11D25"
+            {
+            "SourcePath" = "8:..\\ImageViewer\\bin\\Release\\libwebp_x64.dll"
+            "TargetName" = "8:libwebp_x64.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9FF35BF44AD6A4F58807D46742406F21"
             {
             "AssemblyRegister" = "3:1"
@@ -1164,6 +1164,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A456EFA3E13D4328A829D14DEE2B3F95"
+            {
+            "SourcePath" = "8:..\\ImageViewer\\bin\\Release\\libwebp_x86.dll"
+            "TargetName" = "8:libwebp_x86.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A830FAC8186377750CE11DEC69F665BD"
             {
             "AssemblyRegister" = "3:1"
@@ -1193,26 +1213,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AB38DA7D7B3747F89002B8977157B56D"
-            {
-            "SourcePath" = "8:..\\ImageViewer\\bin\\Release\\libwebp_x86.dll"
-            "TargetName" = "8:libwebp_x86.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_BB28C8EA09C3454E93CCAE0167E6CD01"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AFFBC98CA58FF8A3C17F22E3C366C916"
@@ -1270,7 +1270,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ImageViewer, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:ImageViewer, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_BA495BE66D2745BBA3FC9BCD2EAD9380"
@@ -1934,7 +1934,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ImageViewer"
         "ProductCode" = "8:{DFC30BFC-B5D9-49D6-A998-8121A2BF53F1}"
-        "PackageCode" = "8:{401EF886-D401-401B-BC9E-B6FCF2F79372}"
+        "PackageCode" = "8:{CCAFB368-9023-45D0-B69E-14AF105800F8}"
         "UpgradeCode" = "8:{6FD526FA-A415-467B-981F-0929C74C350A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"

@@ -241,15 +241,13 @@ namespace Tama.ImageViewer
             Parallel.ForEach(imageFiles, parallelOptions, (imageFile) =>
             {
                 string outputPath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(imageFile) + extension);
-
                 ImageEncoder.Encode(imageFile, outputPath, quality);
             });
 
-            //Singlethreaded version for testing
             /*
+            //Singlethreaded version for testing
             foreach (string imageFile in imageFiles)
             {
-                Console.WriteLine(imageFile);
                 string outputPath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(imageFile) + extension);
                 ImageEncoder.Encode(imageFile, outputPath, quality);
             }

@@ -3,7 +3,6 @@
 ## v2.4.2
 
 - **Fixed Encoding Issues**: Resolved issues affecting image encoding in certain edge cases.
-- **Updated libwebp**: Upgraded the `libwebp` library to the latest stable version (1.5.0) for improved security and compatibility.
 - **New Encoder Parameter**: Added the `-skipExisting` encoder parameter for `-encodeAll`, which skips re-encoding files if they already exist in the specified output directory.
 
 ---

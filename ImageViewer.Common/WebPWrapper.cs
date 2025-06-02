@@ -74,9 +74,9 @@ namespace WebPWrapper
                 int outputSize = bmpData.Stride * imgHeight;
                 IntPtr ptrData = pinnedWebP.AddrOfPinnedObject();
                 if (bmp.PixelFormat == PixelFormat.Format24bppRgb)
-                     UnsafeNativeMethods.WebPDecodeBGRInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
+                    UnsafeNativeMethods.WebPDecodeBGRInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
                 else
-                     UnsafeNativeMethods.WebPDecodeBGRAInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
+                    UnsafeNativeMethods.WebPDecodeBGRAInto(ptrData, rawWebP.Length, bmpData.Scan0, outputSize, bmpData.Stride);
 
                 return bmp;
             }
@@ -369,7 +369,7 @@ namespace WebPWrapper
             try
             {
                 int size;
-                
+
                 //Get bmp data
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
 
@@ -1081,7 +1081,7 @@ namespace WebPWrapper
         /// <returns></returns>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int WebPMemoryWrite([In()] IntPtr data, UIntPtr data_size, ref WebPPicture wpic);
-        //internal static WebPMemoryWrite OnCallback;
+        internal static WebPMemoryWrite OnCallback;
 
         /// <summary>Compress to WebP format</summary>
         /// <param name="config">The configuration structure for compression parameters</param>
@@ -1189,7 +1189,7 @@ namespace WebPWrapper
             {
                 case 4:
                     if (WebPDecodeBGRAInto_x86(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
-                        throw new InvalidOperationException("Can not decode WebP"); 
+                        throw new InvalidOperationException("Can not decode WebP");
                     break;
                 case 8:
                     if (WebPDecodeBGRAInto_x64(data, (UIntPtr)data_size, output_buffer, output_buffer_size, output_stride) == null)
