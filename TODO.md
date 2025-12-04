@@ -1,0 +1,2 @@
+- avif support
+- animated webp support
