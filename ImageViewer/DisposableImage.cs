@@ -13,10 +13,11 @@ public class DisposableImage : IDisposable
     public bool TargaRLE;
     public Imaging.DDSReader.Utils.PixelFormat DDSPixelFormat;
     public string WEBPFormat;
+    public int WEBPFrameDuration;
     public LibObiNet.PixelFormat ObiFormat;
     public LibObiNet.ObiFlags ObiFlags;
 
-    //These Properties and Methods are for easy of use
+    //These Properties and Methods are for ease of use
     public int Width => Image.Width;
     public int Height => Image.Height;
     public Guid[] FrameDimensionsList => Image.FrameDimensionsList;

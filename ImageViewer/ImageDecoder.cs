@@ -1,12 +1,16 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using Imaging.DDSReader;
+﻿using Imaging.DDSReader;
 using Imaging.DDSReader.Utils;
 using LibObiNet;
 using Paloma;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Windows.Forms;
 using WebPWrapper;
+using static WebPWrapper.WebP;
 
 namespace Tama.ImageViewer
 {
@@ -78,9 +82,39 @@ namespace Tama.ImageViewer
                     bool hasAnimation;
                     string format;
                     webp.GetInfo(webpRaw, out width, out height, out hasAlpha, out hasAnimation, out format);
+#if DEBUG
+                    MessageBox.Show("Width: " + width + "\n" +
+                        "Height: " + height + "\n" +
+                        "Has alpha: " + hasAlpha + "\n" +
+                        "Is animation: " + hasAnimation + "\n" +
+                        "Format: " + format);
+#endif
 
-                    image = new DisposableImage(webp.Decode(webpRaw));
-                    image.WEBPFormat = format;
+                    if (hasAnimation)
+                    {
+                        //TODO: This is janky as hell (had to use tiff encoding because gif dithers and turns to 256bit color, which meant custom playback was needed)
+
+                        //Get frames out of animated webp
+                        List<WebP.FrameData> frameData = (List<WebP.FrameData>)webp.AnimDecode(webpRaw);
+
+                        //Convert frames to a gif in memory
+                        byte[] gifBuffer = CreateAnimatedTiffBuffer(frameData);
+
+                        //get rid of the bitmaps used to construct the fake gif
+                        foreach (WebP.FrameData frame in frameData)
+                            frame.Bitmap.Dispose();
+
+                        //finally get an image
+                        image = new DisposableImage(gifBuffer);
+                        image.WEBPFrameDuration = frameData[0].Duration * frameData.Count;
+                        image.WEBPFormat = $"{image.WEBPFrameDuration}ms / {frameData.Count} frames";
+                        
+                    }
+                    else
+                    {
+                        image = new DisposableImage(webp.Decode(webpRaw));
+                        image.WEBPFormat = format;
+                    }
                 }
             }
             else
@@ -89,6 +123,50 @@ namespace Tama.ImageViewer
             }
 
             return image;
+        }
+
+        public static byte[] CreateAnimatedTiffBuffer(List<FrameData> frames)
+        {
+            if (frames == null || frames.Count == 0)
+                throw new ArgumentException("No frames provided.");
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                // Find GIF encoder
+                ImageCodecInfo encoder = null;
+                ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
+                for (int i = 0; i < encoders.Length; i++)
+                {
+                    if (encoders[i].FormatID == ImageFormat.Tiff.Guid)
+                    {
+                        encoder = encoders[i];
+                        break;
+                    }
+                }
+                if (encoder == null)
+                    throw new Exception("TIFF encoder not found.");
+
+                EncoderParameters ep = new EncoderParameters(1);
+
+                // 1) Start multi-frame GIF
+                ep.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.MultiFrame);
+                frames[0].Bitmap.Save(ms, encoder, ep);
+
+                // 2) Add each additional frame
+                ep.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.FrameDimensionPage);
+                int count = frames.Count;
+                for (int i = 1; i < count; i++)
+                {
+                    frames[0].Bitmap.SaveAdd(frames[i].Bitmap, ep);
+                }
+
+                // 3) Finalize
+                ep.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.Flush);
+                frames[0].Bitmap.SaveAdd(ep);
+
+                ms.Position = 0;
+                return ms.ToArray();
+            }
         }
     }
 }

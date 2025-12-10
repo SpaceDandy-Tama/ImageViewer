@@ -1,2 +1,2 @@
 - avif support
-- animated webp support
+- animated webp support (DONE v2.4.3)

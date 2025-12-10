@@ -1,5 +1,11 @@
 # Tama's ImageViewer Changelog
 
+## v2.4.3
+
+- **Animated WEBP Support**: Now animated webp files can be opened and viewed with ImageViewer.
+
+---
+
 ## v2.4.2
 
 - **Fixed Encoding Issues**: Resolved issues affecting image encoding in certain edge cases.

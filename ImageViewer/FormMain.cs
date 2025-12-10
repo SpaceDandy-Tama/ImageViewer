@@ -18,7 +18,7 @@ namespace Tama.ImageViewer
         private string PreviousDir;
         public string CurrentDir => Path.GetDirectoryName(Program.CurrentFile);
         public string CurrentFileName => Path.GetFileName(Program.CurrentFile);
-        public bool CanRotate => CurrentImage != null && !Program.CurrentFile.ToLower().EndsWith(".gif") && !Program.CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase) && !Program.CurrentFile.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase) && !Program.CurrentFile.EndsWith(".tif", StringComparison.OrdinalIgnoreCase);
+        public bool CanRotate => CurrentImage != null && !Program.CurrentFile.ToLower().EndsWith(".gif") && !Program.CurrentFile.EndsWith(".dds", StringComparison.OrdinalIgnoreCase) && !Program.CurrentFile.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase) && !Program.CurrentFile.EndsWith(".tif", StringComparison.OrdinalIgnoreCase) && CurrentImage.WEBPFormat?.Length < 1;
 
         public string[] FilesInDirectory;
         public int CurrentIndex;
@@ -29,6 +29,7 @@ namespace Tama.ImageViewer
         public int ZoomFactor = 1;
         public int ActivePage = 0;
         public int PageCount;
+        public Timer AnimatedWebpTimer;
 
         public static int[] ButtonSizes = { 48, 64, 80, 96, 128, 160, 192, 256, 320, 416, 512 };
 
@@ -52,6 +53,10 @@ namespace Tama.ImageViewer
                 timer.Tick += Timer_Tick;
                 timer.Start();
             }
+
+            AnimatedWebpTimer = new Timer();
+            AnimatedWebpTimer.Tick += AnimatedWebpTimer_Tick;
+            AnimatedWebpTimer.Enabled = false;
 
             this.pictureBox1.MouseWheel += pictureBox1_MouseWheel;
 
@@ -246,11 +251,17 @@ namespace Tama.ImageViewer
 
         public void PrevPageAction()
         {
+            if (CurrentImage.WEBPFormat?.Length > 0)
+                return;
+
             ChangeMultiPageImage(ActivePage - 1);
         }
 
         public void NextPageAction()
         {
+            if (CurrentImage.WEBPFormat?.Length > 0)
+                return;
+
             ChangeMultiPageImage(ActivePage + 1);
         }
 
@@ -416,6 +427,21 @@ namespace Tama.ImageViewer
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             else
                 pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            if(CurrentImage.WEBPFormat?.Length > 0 && CurrentImage.GetFrameCount(FrameDimension.Page) > 1)
+            {
+                AnimatedWebpTimer.Interval = CurrentImage.WEBPFrameDuration / 10;
+                AnimatedWebpTimer.Enabled = true;
+            }
+            else
+            {
+                AnimatedWebpTimer.Enabled = false;
+            }
+        }
+
+        private void AnimatedWebpTimer_Tick(object sender, EventArgs e)
+        {
+            ChangeMultiPageImage(ActivePage + 1);
         }
 
         public void ChangeMultiPageImage(int i)
@@ -434,13 +460,18 @@ namespace Tama.ImageViewer
                 return;
 			}
 
+            if (CurrentImage.WEBPFormat?.Length > 0 && i >= PageCount)
+                i = 0;
+
             if (i < 0 || i >= PageCount)
                 return;
 
             CurrentImage.SelectActiveFrame(FrameDimension.Page, i);
             ActivePage = i;
             pictureBox1.Image = CurrentImage;
-            SetFileNameText(CurrentFileName, String.Format("Page {0} of {1}", i + 1, PageCount));
+
+            if(CurrentImage.WEBPFormat == null || CurrentImage.WEBPFormat.Length < 1)
+                SetFileNameText(CurrentFileName, String.Format("Page {0} of {1}", i + 1, PageCount));
         }
 
         private void SetFileNameText(string name, string extra = null)
@@ -742,8 +773,8 @@ namespace Tama.ImageViewer
                 fullscreen.Visible = true;
                 bing.Visible = AppSetting.Current.BingButtonVisible;
                 save.Visible = IsImageDirty;
-                prevPage.Visible = PageCount > 1;
-                nextPage.Visible = PageCount > 1;
+                prevPage.Visible = PageCount > 1 && CurrentImage.WEBPFormat.Length < 1;
+                nextPage.Visible = PageCount > 1 && CurrentImage.WEBPFormat.Length < 1;
                 settings.Visible = true;
                 print.Visible = true;
                 file.Visible = true;
@@ -855,6 +886,8 @@ namespace Tama.ImageViewer
             }
 
             AppSetting.Current.Save();
+
+            AnimatedWebpTimer.Tick -= AnimatedWebpTimer_Tick;
         }
 
 #region User Interface Button Events
