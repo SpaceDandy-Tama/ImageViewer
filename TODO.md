@@ -1,4 +1,4 @@
 - AVIF support
 - HEIF support: .NET 8 and above support it
-- PGM, PPM, PBM support: https://github.com/atiksoftware/Portable-Viewer
+- PBM, PGM, PPM, PNM, PAM support: https://en.wikipedia.org/wiki/Netpbm
 - animated webp support (DONE v2.4.3)
