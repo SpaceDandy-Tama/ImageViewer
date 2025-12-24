@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using ImageViewer.BingHelper;
@@ -32,12 +27,6 @@ namespace Tama.ImageViewer
             "https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/ImageViewer/Example Images/The Sun is Shining Brightly Over the Water.jpg",
             "https://raw.githubusercontent.com/SpaceDandy-Tama/ImageViewer/master/ImageViewer/Example Images/Two Orange Flowers with Green Stems in Front of a Black Background.jpg",
         };
-
-        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.jpg -quality 80
-        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.webp -quality 75 -simple
-        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.webp -lossless -advanced 9
-        //./ImageViewer.exe -encode C:/Users/Desktop/bird.png -to C:/Users/Desktop/bird.webp -quality 40 -nearLossless 9
-        //./ImageViewer.exe -encodeAll C:/Images -to C:/Images/converted .webp -quality 75 -advanced 9
 
         [STAThread]
         static void Main(string[] args)
@@ -197,16 +186,16 @@ namespace Tama.ImageViewer
 
         public static void DownloadExampleImages()
         {
-            string desktopDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Example Images");
+            string picturesDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Example Images");
 
-            if (!Directory.Exists(desktopDir))
+            if (!Directory.Exists(picturesDir))
             {
-                Directory.CreateDirectory(desktopDir);
+                Directory.CreateDirectory(picturesDir);
             }
 
             for (int i = 0; i < ExampleImageURLs.Length; i++)
             {
-                string filePath = Path.Combine(desktopDir, Path.GetFileName(ExampleImageURLs[i]));
+                string filePath = Path.Combine(picturesDir, Path.GetFileName(ExampleImageURLs[i]));
 
                 if (!File.Exists(filePath))
                 {
